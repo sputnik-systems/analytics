@@ -1,0 +1,5 @@
+SELECT
+    count(if(report_date = cast('{2}' as DATE), `address_uuid`)) as `Units on SK platform`,
+    count(if(subsc_restrict = 'stricted' and report_date = cast('{2}' as DATE), `address_uuid`)) as `Units stricted monetization`,
+    count(if(subsc_restrict = 'freemonetization' and report_date = cast('{2}' as DATE), `address_uuid`)) as `Units free monetization`
+FROM `dwh-asgard-entries`

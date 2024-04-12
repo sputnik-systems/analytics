@@ -1,0 +1,1 @@
+https://api.appmetrica.yandex.ru/stat/v1/data/bytime?lang=ru&request_domain=ru&filters=&id=2914312&date1={}&date2={}&group=all&metrics=ym%3At%3Adevices&dimensions=ym%3At%3AoperatingSystemInfo%2Cym%3At%3AosMajorVersionInfo%2Cym%3At%3AoperatingSystemVersionInfo&limit=31&include_undefined=true&row_ids=%5B%5B%22android%22%5D%2C%5B%22iOS%22%5D%5D&accuracy=1&proposedAccuracy=true

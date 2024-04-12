@@ -1,0 +1,6 @@
+SELECT
+    count(distinct citizen_id) as paying_active_flats
+FROM `citizen_payments_st_mobile`
+WHERE state = "success" and
+      DateTime::MakeDatetime(DateTime::ParseIso8601(`created_at`)) between 
+      CAST("{0}T00:00:00Z" as DateTime) and CAST("{1}T00:00:00Z" as DateTime)

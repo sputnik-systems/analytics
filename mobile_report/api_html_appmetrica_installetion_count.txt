@@ -1,0 +1,1 @@
+https://api.appmetrica.yandex.ru/v2/user/acquisition?lang=ru&request_domain=ru&id=2914312&date1={}&date2={}&filters=&accuracy=1&dimensions=publisher&sort=-devices&eventNames=%5B%5D&limit={}&offset={}&source=installation&proposedAccuracy=true&metrics=clicks%2Cdevices%2Cdeeplinks%2Cconversion%2Csessions

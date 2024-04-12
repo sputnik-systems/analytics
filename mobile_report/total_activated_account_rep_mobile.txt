@@ -1,0 +1,9 @@
+SELECT
+    count(distinct citizens_st.citizen_id) as total_activated_account
+FROM
+    `citizens_dir_mobile` as  citizens_dir
+    JOIN `citizens_st_mobile` as citizens_st using(citizen_id)
+WHERE 
+    DateTime::MakeDatetime(DateTime::ParseIso8601(citizens_dir.`created_at`)) < CAST("{1}T00:00:00Z" as DateTime)
+    and citizens_st.state = "activated"
+    AND report_date = CAST("{2}" as DATE)

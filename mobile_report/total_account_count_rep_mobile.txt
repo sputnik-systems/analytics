@@ -1,0 +1,9 @@
+SELECT
+    count(distinct citizens_st.citizen_id) as total_account_count
+FROM 
+    `citizens_st_mobile` as citizens_st
+    join `citizens_dir_mobile` as citizens_dir using(citizen_id)
+WHERE 
+    DateTime::MakeDatetime(DateTime::ParseIso8601(citizens_dir.`created_at`)) < CAST("{2}T00:00:00Z" as DateTime)
+    and report_date = cast("{1}" as date)
+limit 100

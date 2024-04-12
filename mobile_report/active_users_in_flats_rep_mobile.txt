@@ -1,0 +1,47 @@
+SELECT
+    AVG(citizen_id_count) as active_users_in_flats
+FROM
+    (SELECT
+        flat_uuid,
+        COUNT(distinct citizens.citizen_id) AS citizen_id_count
+    FROM
+        (SELECT
+            report_date,
+            t2.citizen_id as citizen_id,
+            last_use,
+            flat_uuid
+        FROM 
+            (SELECT
+                citizen_id,
+                report_date,
+                last_use
+            FROM    
+                (SELECT
+                    citizen_id,
+                    report_date,
+                    DateTime::MakeDatetime(DateTime::ParseIso8601(`last_use`)) as last_use
+                FROM `sessions_st_mobile`
+                ) as t1
+            WHERE 
+                last_use BETWEEN CAST("{1}T00:00:00Z" as DateTime) 
+                and CAST("{0}T00:00:00Z" as DateTime)
+            ) as t2
+            LEFT JOIN`citizens_dir_mobile` using(citizen_id)
+        ) as citizens
+    RIGHT JOIN
+        (SELECT
+            flats_st.flat_uuid as flat_uuid,
+            call_blocked,
+            address_uuid,
+            blocked,
+            deleted  
+        FROM 
+            `flats_st_partner` as flats_st
+            LEFT JOIN `flats_dir_partner` using(flat_uuid)
+        WHERE 
+            deleted = 0 and report_date = CAST("{2}" AS Date)
+        ) AS flats 
+    using(flat_uuid)
+    Group by flats.flat_uuid as flat_uuid
+    ) AS to_avg
+

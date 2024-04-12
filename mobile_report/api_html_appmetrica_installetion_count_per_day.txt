@@ -1,0 +1,1 @@
+https://api.appmetrica.yandex.ru/stat/v1/data/bytime?lang=ru&request_domain=ru&filters=&id=2914312&date1={}&date2={}&group=day&metrics=ym%3Ats%3AadvInstallDevices&dimensions=ym%3Ats%3Apublisher&include_undefined=true&row_ids=%5B%5B%220%22%5D%5D&accuracy=1&proposedAccuracy=true

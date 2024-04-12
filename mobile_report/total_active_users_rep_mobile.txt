@@ -1,0 +1,19 @@
+SELECT
+    count(distinct citizens_st.citizen_id) as total_active_users
+FROM
+    (SELECT
+        citizens_dir.citizen_id as citizen_id
+    FROM 
+        `citizens_dir_mobile` as  citizens_dir
+        join `sessions_st_mobile` as sessions_st using(citizen_id)
+    WHERE 
+        DateTime::MakeDatetime(DateTime::ParseIso8601(citizens_dir.`created_at`)) 
+            < CAST("{0}T00:00:00Z" as DateTime)
+        and (DateTime::MakeDatetime(DateTime::ParseIso8601(`last_use`)) BETWEEN 
+        CAST("{1}T00:00:00Z" as DateTime) and CAST("{0}T00:00:00Z" as DateTime))
+    ) AS t1    
+JOIN `citizens_st_mobile` as citizens_st using(citizen_id)
+WHERE
+    citizens_st.state = "activated"
+    AND report_date = CAST("{2}" as DATE)
+LIMIT 10;

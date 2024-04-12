@@ -1,0 +1,1 @@
+https://api.appmetrica.yandex.ru/stat/v1/data?lang=ru&request_domain=ru&filters=&id=2914312&date1={}&date2={}&metrics=ym%3Au%3AactiveUsers%2Cnorm(ym%3Au%3AactiveUsers)%2Cym%3Au%3AnewUsers%2Cnorm(ym%3Au%3AnewUsers)%2Cym%3Au%3AnewUsersShare&dimensions=ym%3Au%3Adate&sort=-ym%3Au%3Adate&offset={}&limit={}&include_undefined=true&accuracy=1&proposedAccuracy=true
