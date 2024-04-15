@@ -21,6 +21,7 @@ def handler(event, context):
     BUCKET_NAME = os.getenv("BUCKET_NAME") #имя бакета
     TIME_ZONE = os.getenv("TIME_ZONE", "Europe/Moscow") #настройка функции
     TEMP_FILENAME = "/tmp/temp_file"
+    URL_ALERT = os.getenv("URL_ALERT") # Ссылка для алерта для отслеживания. 
    
     def get_now_datetime_str(): # получаем актуальное время
         time_zone = os.getenv("TIME_ZONE", "Europe/Moscow") # меняем таймзону на московскую
@@ -53,7 +54,6 @@ def handler(event, context):
         if response.status_code == 200:
             return response.json()["id"]
         return f' Code: {response},  text: {response.text}'
-
 
 
     def get_request(offset): # фунция возвращает ответ запроса. Максимум 1000 строк.
@@ -136,7 +136,7 @@ def handler(event, context):
     upload_dump_to_s3()
     remove_temp_files()
     
-    requests.get("https://healthchecks.sputnik.systems/ping/c2b0d992-50cb-4c2e-aee7-1f6c091f7150")
+    requests.get(URL_ALERT)
 
     return {
         'statusCode': 200,

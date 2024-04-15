@@ -1,0 +1,118 @@
+SELECT
+    month,
+    partner_uuid,
+    company_name,
+    partner_lk,
+    tin,
+    kpp,
+    address_uuid,
+    firts_blocked,
+    flats_count,
+    cast(firts_blocked as FLOAT)/flats_count as `percentage_of_blocked` 
+FROM
+    (SELECT
+        month,
+        partner_uuid,
+        company_name,
+        partner_lk,
+        tin,
+        kpp,
+        address_uuid,
+        coalesce(sum(If(`action` = "blocked" and rank_blocked_event = 1,1,null)),0) AS firts_blocked,
+        coalesce(sum(If(`action` = "unblocked" and rank_blocked_event = 1,1,null)),0) AS firts_unblocked, 
+        coalesce(sum(If(`action` = "blocked" and rank_blocked_event = 2,1,null)),0) AS second_blocked,
+        coalesce(sum(If(`action` = "unblocked" and rank_blocked_event = 2,1,null)),0) AS second_unblocked,
+        flats_count
+    FROM    
+        (SELECT
+            month,
+            report_date,
+            flat_uuid,
+            address_uuid,
+            installation_point_id,
+            partner_uuid,
+            blocked,
+            `action`,
+            RANK() OVER(PARTITION BY `action`,flat_uuid,month order by report_date) as rank_blocked_event,
+            company_name,
+            partner_lk,
+            tin,
+            kpp,
+            total_flats_count,
+            flats_count
+        FROM
+            (SELECT
+                month,
+                report_date,
+                flat_uuid,
+                address_uuid,
+                installation_point_id,
+                partner_uuid,
+                blocked,
+                FIRST_VALUE(total_flats_count) OVER (partition by partner_uuid,month ORDER BY report_date ASC) as total_flats_count,
+                `action`,
+                company_name,
+                partner_lk,
+                tin,
+                kpp,
+                flats_count
+            FROM
+                (SELECT
+                    month,
+                    report_date,
+                    flat_uuid,
+                    address_uuid,
+                    installation_point_id,
+                    partner_uuid,
+                    blocked,
+                    count(flat_uuid) over (partition by report_date,partner_uuid) as total_flats_count,
+                    CASE
+                        WHEN if(blocked = 1 and lag(blocked) over (partition by flat_uuid order by report_date) = 0, 1, 0) = 1 then "blocked"
+                        WHEN if(blocked = 0 and lag(blocked) over (partition by flat_uuid order by report_date) = 1, 1, 0) = 1 then "unblocked"
+                        ELSE null
+                    END as `action`,
+                    company_name,
+                    partner_lk,
+                    tin,
+                    kpp,
+                    flats_count
+                FROM
+                    (SELECT
+                        DateTime::MakeDate(DateTime::StartOfMonth(flats_st_partner.report_date)) as month,
+                        flats_st_partner.report_date as report_date,
+                        flats_st_partner.flat_uuid as flat_uuid,
+                        flats_dir_partner.address_uuid as address_uuid,
+                        entries.installation_point_id as installation_point_id ,
+                        companies_dir_partner.partner_uuid as partner_uuid,
+                        blocked,
+                        company_name,
+                        partner_lk,
+                        tin,
+                        kpp,
+                        flats_count
+                    FROM `flats_st_partner` AS flats_st_partner
+                    LEFT JOIN `flats_dir_partner` AS flats_dir_partner ON flats_st_partner.flat_uuid = flats_dir_partner.flat_uuid
+                    LEFT JOIN `entries_installation_points_dir_partner` AS entries ON flats_dir_partner.address_uuid = entries.address_uuid
+                    LEFT JOIN `companies_dir_partner` as companies_dir_partner on companies_dir_partner.partner_uuid = entries.partner_uuid
+                    WHERE flats_st_partner.report_date between cast('{1}' as date) and cast('{0}' as date)
+                                )
+                            )
+                        )
+                    )
+    GROUP BY 
+            month,
+            partner_uuid,
+            company_name,
+            partner_lk,
+            tin,
+            kpp,
+            address_uuid,
+            flats_count
+    )
+WHERE firts_blocked != 0
+            
+
+
+
+
+

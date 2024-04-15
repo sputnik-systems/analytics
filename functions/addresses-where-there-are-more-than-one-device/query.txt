@@ -1,0 +1,96 @@
+SELECT
+    report_date,
+    partner_lk,
+    company_name,
+    partner_uuid,
+    city,
+    sum(count_intercom_uuid) AS sum_count_intercom_uuid,
+    sum(if(monetization = "true",count_intercom_uuid,null)) AS sum_count_intercom_uuid_with_monetization,
+    sum(if(count_intercom_uuid>1,count_intercom_uuid,null)) AS sum_count_intercom_uuid_over_1,
+    
+    if(count(installation_point_id) = 0,
+        null,count(installation_point_id)) AS count_installation_point_id,
+    if(count(if(monetization = "true",installation_point_id,null)) = 0,
+        null,count(if(monetization = "true",installation_point_id,null))) AS count_installation_point_with_monetization,
+    if(count(if(count_intercom_uuid>1,installation_point_id,null)) = 0,
+        null,count(if(count_intercom_uuid>1,installation_point_id,null))) AS count_installation_point_id_over_1,
+    
+    sum(flats_count) AS sum_flats_count,
+    sum(if(count_intercom_uuid>1,flats_count,null)) AS sum_flats_count_over_1,
+    sum(if(monetization = "true", flats_count,null)) AS sum_flats_count_with_monetization,
+    sum(if(count_intercom_uuid>1 and monetization = "true",flats_count,null)) AS sum_flats_count_over_1_with_monetization,
+    sum(if(gate_installation_point_id is not null, flats_count,null)) AS sum_flats_count_with_gate,
+    sum(if(gate_installation_point_id is not null and count_intercom_uuid=1, flats_count,null)) AS sum_flats_count_with_gate_without_over_1,
+
+FROM
+    (SELECT
+        t_mane.report_date as report_date,
+        company_name,
+        partner_lk,
+        installation_point_id as installation_point_id,
+        flats_count,
+        t_mane.partner_uuid as partner_uuid,
+        city,
+        gate_installation_point_id,
+        monetization,
+        count_intercom_uuid 
+    FROM
+        
+        (SELECT
+            entries_st_mobile.report_date as report_date,
+            company_name,
+            partner_lk,
+            entries_installation_points_dir_partner.installation_point_id as installation_point_id,
+            flats_count as flats_count,
+            entries_installation_points_dir_partner.partner_uuid as partner_uuid,
+            city,
+            gate_installation_point_id,
+            entries_st_mobile.address_uuid as address_uuid,
+            monetization,
+            count_intercom_uuid
+        FROM entries_st_mobile
+
+        LEFT JOIN `entries_installation_points_dir_partner` 
+            ON `entries_st_mobile`.`address_uuid` = `entries_installation_points_dir_partner`.`address_uuid`
+            
+        LEFT JOIN 
+            (SELECT
+                report_date,
+                installation_point_id,
+                count(intercom_uuid) as count_intercom_uuid
+            FROM `intercoms_st_partner`
+            WHERE report_date = cast('{0}' as DATE)
+            GROUP BY installation_point_id,report_date
+            ) as intercoms_st_partner
+            ON `intercoms_st_partner`.`installation_point_id` = `entries_installation_points_dir_partner`.`installation_point_id`
+            AND intercoms_st_partner.`report_date` = entries_st_mobile.`report_date`
+        
+        LEFT JOIN `companies_dir_partner`
+            ON `entries_installation_points_dir_partner`.`partner_uuid` = `companies_dir_partner`.`partner_uuid`
+
+        LEFT JOIN
+            (SELECT
+                report_date,
+                parent_uuid,
+                count(installation_point_id) AS gate_installation_point_id
+            FROM `gates_st_partner` 
+            WHERE parent_uuid is not null
+                and report_date = cast('{0}' as DATE)
+            GROUP BY 
+                report_date as report_date, 
+                parent_uuid as parent_uuid
+            ) AS t_gate_intercom ON entries_st_mobile.report_date = t_gate_intercom.report_date
+                                and entries_installation_points_dir_partner.parent_uuid = t_gate_intercom.parent_uuid
+        WHERE entries_installation_points_dir_partner.installation_point_id != "" 
+            and entries_installation_points_dir_partner.installation_point_id not null
+            and entries_st_mobile.report_date = cast('{0}' as DATE)
+
+        ) as t_mane
+    )
+
+GROUP BY 
+    report_date,
+    partner_lk,
+    company_name,
+    city,
+    partner_uuid

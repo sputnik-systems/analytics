@@ -21,7 +21,9 @@ def handler(event, context):
     BUCKET_NAME = os.getenv("BUCKET_NAME") #имя бакета
     TIME_ZONE = os.getenv("TIME_ZONE", "Europe/Moscow") #настройка функции
     TEMP_FILENAME = "/tmp/temp_file"
+    URL_ALERT = os.getenv("URL_ALERT") # Ссылка для алерта для отслеживания. 
    
+    
     def get_now_datetime_str(): # получаем актуальное время
         time_zone = os.getenv("TIME_ZONE", "Europe/Moscow") # меняем таймзону на московскую
         now = datetime.datetime.now(pytz.timezone(time_zone))    
@@ -119,13 +121,14 @@ def handler(event, context):
         os.remove(TEMP_FILENAME)
 
 
-    key = f"{FOLDER}/{get_now_datetime_str()['key']}"
+    key = f"{FOLDER}/{get_now_datetime_str()['key_month']}"
     yesterday_data = f"{FOLDER}/{get_now_datetime_str()['yesterday_data']}"
     now = get_now_datetime_str()['now']
+    last_month_data = get_now_datetime_str()['last_month_data']
 
-    query_text = open('query.txt','r').read().format(yesterday_data)
+    query_text = open('query.txt','r').read().format(yesterday_data,last_month_data)
     query_name = f'{FOLDER} {now}' #имя, которое появляется в запросах
-    query_description = f'Ежеднеаный запрос - {yesterday_data}'#описание, которое появляется в запросах
+    query_description = f'Ежемесячный запрос - {yesterday_data}'#описание, которое появляется в запросах
 
     request_id = create_query()
     while str(get_request(0)) == '<Response [400]>':
@@ -136,7 +139,7 @@ def handler(event, context):
     upload_dump_to_s3()
     remove_temp_files()
     
-    requests.get("https://healthchecks.sputnik.systems/ping/c2b0d992-50cb-4c2e-aee7-1f6c091f7150")
+    requests.get(URL_ALERT)
 
     return {
         'statusCode': 200,

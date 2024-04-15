@@ -1,0 +1,35 @@
+SELECT
+    intercoms_st_asgard.`report_date` as report_date,
+    intercoms_st_asgard.`intercom_uuid` as intercom_uuid,
+    cameras_dir_asgard.`camera_uuid` as  camera_uuid,
+    `is_online`,
+    `software_version`,
+    intercoms_st_asgard.`partner_uuid` as partner_uuid,
+    `hardware_version`,
+    if(reconnects_and_daily_percentage.`onlinePercent`is null,0,reconnects_and_daily_percentage.`onlinePercent`) as `intercoms_onlinePercent`,
+    if(cameras_daily_percentage_online_st_asgard.`onlinePercent`is null,0,cameras_daily_percentage_online_st_asgard.`onlinePercent`) as `cameras_onlinePercent`,
+    if(`reconnects`is null,0,`reconnects`) as `reconnects`,
+    `company_name`,
+    `partner_lk`,
+    `tin`,
+    `kpp`
+FROM `intercoms_st_asgard`
+    LEFT JOIN `intercoms_dir_asgard` ON intercoms_st_asgard.`intercom_uuid` = intercoms_dir_asgard.`intercom_uuid`
+    LEFT JOIN 
+        (SELECT
+            intercoms_daily_percentage_online_st_asgard.`intercom_uuid` as `intercom_uuid`,
+            intercoms_daily_percentage_online_st_asgard.`report_date` as `report_date`,
+            `onlinePercent`,
+            if(`count`is null,0,`count`) as `reconnects`
+        FROM `intercoms_daily_percentage_online_st_asgard`
+        LEFT JOIN `reconnects_intercoms_st_asgard` ON reconnects_intercoms_st_asgard.`report_date` = intercoms_daily_percentage_online_st_asgard.`report_date` AND reconnects_intercoms_st_asgard.`intercom_uuid` = intercoms_daily_percentage_online_st_asgard.`intercom_uuid`
+        WHERE intercoms_daily_percentage_online_st_asgard.`report_date` >= cast('{0}' as DATE)) AS
+        reconnects_and_daily_percentage 
+            ON intercoms_st_asgard.`report_date` = reconnects_and_daily_percentage.`report_date`
+            AND intercoms_st_asgard.`intercom_uuid` = reconnects_and_daily_percentage.`intercom_uuid`
+    LEFT JOIN companies_dir_partner ON intercoms_st_asgard.`partner_uuid` = companies_dir_partner.`partner_uuid`
+    LEFT JOIN cameras_dir_asgard ON cameras_dir_asgard.`intercom_uuid` = intercoms_dir_asgard.`intercom_uuid`
+    LEFT JOIN cameras_daily_percentage_online_st_asgard 
+        ON cameras_dir_asgard.`camera_uuid` = cameras_daily_percentage_online_st_asgard.`camera_uuid` 
+        and intercoms_st_asgard.`report_date` = cameras_daily_percentage_online_st_asgard.`report_date`
+    WHERE intercoms_st_asgard.report_date = cast('{0}' as DATE)
