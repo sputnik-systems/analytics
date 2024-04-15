@@ -1,0 +1,27 @@
+SELECT
+    t1.`report_date` as `report_date`,
+    t1.`intercom_uuid` as `intercom_uuid` ,
+    `is_online`,
+    `partner_lk`,
+    `tin`,
+    `lat`,
+    `lon`,
+    `country`,
+    `region`,
+    `city`,
+    t5.`company_name` as `company_name`,
+    t2.`motherboard_id` as `serial_number`,
+    t4.`full_address` as `full_address`,
+    t4.`address_uuid` as `address_uuid`,
+    t3.`installation_point_id` as `installation_point_id`
+FROM `intercoms_st_asgard` as t1
+LEFT JOIN (SELECT * FROM `intercoms_dir_asgard` WHERE `intercom_uuid` is not null AND `intercom_uuid` !="") as t2 
+    on t1.`intercom_uuid` = t2.`intercom_uuid`
+LEFT JOIN (SELECT * FROM `intercoms_dir_partner` WHERE `intercom_uuid` is not null AND `intercom_uuid` !="") as t3 
+    on t1.`intercom_uuid` = t3.`intercom_uuid`
+LEFT JOIN (SELECT * FROM  `entries_installation_points_dir_partner` WHERE `installation_point_id` is not null AND `installation_point_id` !="") as t4  
+    ON t3.`installation_point_id` = t4.`installation_point_id`
+LEFT JOIN (SELECT * FROM  `companies_dir_partner` WHERE `partner_uuid` is not null AND  `partner_uuid` !="") as t5 ON t2.`partner_uuid` = t5.`partner_uuid`
+LEFT JOIN (SELECT * FROM  `companies_st_partner`WHERE `partner_uuid` is not null AND `partner_uuid` !="")
+    as t6 ON t5.`partner_uuid` = t6.`partner_uuid` AND t1.`report_date` = t6.`report_date`
+WHERE t1.`report_date` = cast("{}" as date)
