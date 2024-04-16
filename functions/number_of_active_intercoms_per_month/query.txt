@@ -1,0 +1,122 @@
+SELECT 
+    `report_date` + DateTime::IntervalFromDays(1) as report_date, 
+    `company_name`, 
+    `partner_lk`, 
+    `tin`, 
+    `status_PRO`, 
+    `enterprise_subs`, 
+    `partner_uuid`, 
+    `billing_pro`, 
+    `intercom_uuid_count`, 
+    `connected_intercoms`, 
+    `disconnected_intercoms`, 
+    `installation_point_id_count`, 
+    `installation_point_id_connected_count`, 
+    installation_point_id_count_lag, 
+    connected_intercoms_count_lag, 
+    disconnected_intercoms_count_lag, 
+    CAST(last_status_PRO AS Utf8) as last_status_PRO, 
+    last_enterprise_subs, 
+    last_billing_pro, 
+    last_intercom_uuid_count, 
+    last_connected_intercoms, 
+    last_disconnected_intercoms, 
+    CAST(IF((CAST(connected_intercoms AS DOUBLE) - CAST(connected_intercoms_count_lag AS DOUBLE)) <=0 ,'Нет','Да') AS Utf8) AS if_active, 
+    LAG(`intercom_uuid_count`) OVER (PARTITION BY `partner_lk` ORDER BY `report_date`) AS intercom_uuid_count_lag, 
+    CAST(CASE 
+        WHEN (`t1`.`last_enterprise_subs` = 1) THEN 'Enterprise' 
+        WHEN (`t1`.`last_status_PRO` = 1) THEN 'PRO' 
+        WHEN (IF(`t1`.`last_intercom_uuid_count` <= 10 AND `t1`.`last_connected_intercoms` = 0, 1, 0) = 1) THEN 'Спящий' 
+        WHEN (IF(`t1`.`last_connected_intercoms` = 0, 1, 0) = 1) THEN 'Не активный' 
+        ELSE 'Start' END AS Utf8) AS `last_status`, 
+    CAST(CASE 
+        WHEN (`t1`.`enterprise_subs` = 1) THEN 'Enterprise' 
+        WHEN (`t1`.`status_PRO` = 1) THEN 'PRO' 
+        WHEN (IF(`t1`.`intercom_uuid_count` <= 10 AND `t1`.`connected_intercoms` = 0, 1, 0) = 1) THEN 'Спящий' 
+        WHEN (IF(`t1`.`connected_intercoms` = 0, 1, 0) = 1) THEN 'Только склад' 
+        ELSE 'Start' END AS Utf8) AS `status`
+    FROM ( 
+        SELECT 
+            `report_date`, 
+            `company_name`, 
+            `partner_lk`, 
+            `tin`, 
+            `status_PRO`, 
+            `enterprise_subs`, 
+            `billing_pro`, 
+            `intercom_uuid_count`, 
+            `partner_uuid`, 
+            `connected_intercoms`, 
+            `disconnected_intercoms`, 
+            `installation_point_id_count`, 
+            `installation_point_id_connected_count`, 
+            LAG(`installation_point_id_count`) OVER(partition by partner_lk ORDER BY report_date) AS installation_point_id_count_lag, 
+            LAG(`connected_intercoms`) OVER(partition by partner_lk ORDER BY report_date) AS connected_intercoms_count_lag, 
+            LAG(`disconnected_intercoms`) OVER(partition by partner_lk ORDER BY report_date) AS disconnected_intercoms_count_lag, 
+            LAST_VALUE(`status_PRO`) OVER (PARTITION BY `partner_lk` ORDER BY `report_date` DESC) AS last_status_PRO, 
+            LAST_VALUE(`enterprise_subs`) OVER (PARTITION BY `partner_lk` ORDER BY `report_date` DESC) AS last_enterprise_subs, 
+            LAST_VALUE(`billing_pro`) OVER (PARTITION BY `partner_lk` ORDER BY `report_date` DESC) AS last_billing_pro, 
+            LAST_VALUE(`intercom_uuid_count`) OVER (PARTITION BY `partner_lk` ORDER BY `report_date` DESC) AS last_intercom_uuid_count, 
+            LAST_VALUE(`connected_intercoms`) OVER (PARTITION BY `partner_lk` ORDER BY `report_date` DESC) AS last_connected_intercoms, 
+            LAST_VALUE(`disconnected_intercoms`) OVER (PARTITION BY `partner_lk` ORDER BY `report_date` DESC) AS last_disconnected_intercoms 
+        FROM 
+            (SELECT 
+                `report_date`, 
+                `company_name`, 
+                `partner_lk`, 
+                `tin`, 
+                `pro_subs` as `status_PRO`, 
+                `partner_uuid`, 
+                `enterprise_subs`, 
+                `billing_pro`, 
+                COUNT(distinct intercoms.`intercom_uuid`) AS `intercom_uuid_count`, 
+                COUNT(DISTINCT IF((`intercoms`.`is_online` = 0 
+                    AND CAST(DateTime::ToMicroseconds(CAST(`intercoms`.`report_date` AS DATETIME) 
+                    - coalesce(`intercoms`.`disconnection_datetime`, CAST(`intercoms`.`report_date` AS DATETIME))) / 86400000000.0 AS DOUBLE) > 3 
+                    OR (`intercoms`.`is_online` = 0 AND `intercoms`.`disconnection_datetime` IS NULL AND `intercoms`.`connection_datetime` IS NULL)), `intercoms`.`intercom_uuid`, NULL)) AS `disconnected_intercoms`, 
+                COUNT(DISTINCT IF((`intercoms`.`is_online` = 1 OR (`intercoms`.`is_online` = 0 AND CAST(DateTime::ToMicroseconds(CAST(`intercoms`.`report_date` AS DATETIME) - coalesce(`intercoms`.`disconnection_datetime`, CAST(`intercoms`.`report_date` AS DATETIME))) / 86400000000.0 AS DOUBLE) <= 3 AND `intercoms`.`connection_datetime` IS NOT NULL)), `intercoms`.`intercom_uuid`, NULL)) AS `connected_intercoms`, 
+                COUNT(DISTINCT `intercoms`.`installation_point_id`) as `installation_point_id_count`, 
+                COUNT(DISTINCT IF((`intercoms`.`installation_point_id` IS NOT NULL) OR (`intercoms`.`disconnection_datetime` IS NOT NULL OR `intercoms`.`connection_datetime` IS NOT NULL),`intercoms`.`intercom_uuid`)) as `installation_point_id_connected_count` 
+            FROM 
+                (SELECT 
+                    t1.`report_date` as report_date, 
+                    t1.`intercom_uuid` as `intercom_uuid`, 
+                    t1.`is_online` as is_online, 
+                    MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_online`))) over (partition by t1.intercom_uuid ORDER by t1.report_date) as disconnection_datetime, 
+                    MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_offline`))) over (partition by t1.intercom_uuid ORDER by t1.report_date) as connection_datetime, 
+                    t2.`partner_uuid` as `partner_uuid`, 
+                    `installation_point_id` 
+                FROM `intercoms_st_asgard` as t1 
+                LEFT JOIN `dwh-asgard-intercoms` as t2 on t1.`intercom_uuid` = t2.`device_id` and t1.report_date = t2.report_date 
+                LEFT JOIN `intercoms_dir_partner`  as t3 on t1.`intercom_uuid` = t3.`intercom_uuid` 
+                ) as intercoms 
+                LEFT JOIN 
+                (SELECT 
+                    report_date as report_date, 
+                    companies_st.partner_uuid as partner_uuid, 
+                    pro_subs, 
+                    enterprise_subs, 
+                    billing_pro, 
+                    is_blocked, 
+                    company_name, 
+                    partner_lk, 
+                    tin 
+                FROM 
+                    `companies_st_partner` as companies_st 
+                    LEFT JOIN  `companies_dir_partner` using(partner_uuid) 
+                ) AS companies 
+                ON intercoms.`partner_uuid` = companies.`partner_uuid` AND intercoms.`report_date` = companies.`report_date` 
+            GROUP BY 
+                intercoms.`report_date` AS `report_date`, 
+                companies.`company_name` AS `company_name`, 
+                companies.`partner_lk` AS `partner_lk`, 
+                companies.`tin` AS `tin`, 
+                companies.`pro_subs` AS `pro_subs`, 
+                companies.`enterprise_subs` AS `enterprise_subs`, 
+                companies.`billing_pro` AS `billing_pro`, 
+                companies.`partner_uuid` AS `partner_uuid` 
+            ) 
+        WHERE 
+        `report_date` in (select `report_date` - DateTime::IntervalFromDays(1) FROM 
+            (SELECT distinct DateTime::MakeDate(DateTime::StartOfMonth(`report_date`+ DateTime::IntervalFromDays(1))) as report_date from bindings.`intercoms_st_asgard`))
+        ) AS `t1`

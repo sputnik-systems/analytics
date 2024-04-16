@@ -21,6 +21,7 @@ def handler(event, context):
     BUCKET_NAME = os.getenv("BUCKET_NAME") #имя бакета
     TIME_ZONE = os.getenv("TIME_ZONE", "Europe/Moscow") #настройка функции
     TEMP_FILENAME = "/tmp/temp_file"
+    URL_ALERT = os.getenv("URL_ALERT") # Ссылка для алерта для отслеживания.
    
     def get_now_datetime_str(): # получаем актуальное время
         time_zone = os.getenv("TIME_ZONE", "Europe/Moscow") # меняем таймзону на московскую
@@ -84,19 +85,23 @@ def handler(event, context):
         temp_file = open(TEMP_FILENAME, 'w')
         temp_file.write(special_str[:-1]+'\n')
 
+    def write_temp_file():
+        offset = 0
+        response = get_request(offset) #запрашиваем данные запроса
+        columns = [rows['name'] for rows in response.json()['columns']] #выделяем названия столбцов
+        special_str = ""
+        for j in columns:
+            special_str = f"{special_str}{str(j)},"
+        temp_file = open(TEMP_FILENAME, 'w', encoding='utf-8')
+        temp_file.write(special_str[:-1]+'\n')
         while response.status_code == 200 and len(response.json()['rows']) != 0:  #Цикл делает запросы по 10000, пока не кончатся данные
             response = get_request(offset)
             response_rows = response.json()['rows']
             rows = [[if_cell_is_list(cell) for cell in row] for row in response_rows]  #Преобразуются строки
             # Открывает созданный файл и добавляет в него строки
-            for i in rows:
-                special_str = ""
-                for j in i:
-                    if isinstance(j, str):
-                        special_str = f"{special_str}'{str(j).replace("'", "")}',"
-                    else:
-                        special_str = f"{special_str}{str(j).replace("'", "")},"
-                temp_file.write(special_str[:-1]+'\n') 
+            for row in rows:
+                special_str = ','.join("'{0}'".format(i.replace("'", ""))  if isinstance(i, str) else str(i) for i in row)
+                temp_file.write(special_str+'\n') 
             offset +=1000 # увеличивает смещение
 
     def get_s3_instance(): # функция создает соединение
@@ -120,7 +125,7 @@ def handler(event, context):
 
 
     key = f"{FOLDER}/{get_now_datetime_str()['key']}"
-    yesterday_data = f"{FOLDER}/{get_now_datetime_str()['yesterday_data']}"
+    yesterday_data = get_now_datetime_str()['yesterday_data']
     now = get_now_datetime_str()['now']
 
     query_text = open('query.txt','r').read().format(yesterday_data)
@@ -136,7 +141,7 @@ def handler(event, context):
     upload_dump_to_s3()
     remove_temp_files()
     
-    requests.get("https://healthchecks.sputnik.systems/ping/c2b0d992-50cb-4c2e-aee7-1f6c091f7150")
+    requests.get(URL_ALERT)
 
     return {
         'statusCode': 200,

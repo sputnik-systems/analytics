@@ -23,6 +23,7 @@ def handler(event, context):
     TEMP_FILENAME = "/tmp/temp_file"
     URL_ALERT = os.getenv("URL_ALERT") # Ссылка для алерта для отслеживания. 
    
+    
     def get_now_datetime_str(): # получаем актуальное время
         time_zone = os.getenv("TIME_ZONE", "Europe/Moscow") # меняем таймзону на московскую
         now = datetime.datetime.now(pytz.timezone(time_zone))    
@@ -54,7 +55,6 @@ def handler(event, context):
         if response.status_code == 200:
             return response.json()["id"]
         return f' Code: {response},  text: {response.text}'
-
 
     def get_request(offset): # фунция возвращает ответ запроса. Максимум 1000 строк.
         offset = offset
@@ -90,7 +90,7 @@ def handler(event, context):
             rows = [[if_cell_is_list(cell) for cell in row] for row in response_rows]  #Преобразуются строки
             # Открывает созданный файл и добавляет в него строки
             for row in rows:
-                special_str = ','.join("'{0}'".format(i.replace("'", "")) if isinstance(i, str) else str(i) for i in row)
+                special_str = ','.join("'{0}'".format(i.replace("'", ""))  if isinstance(i, str) else str(i) for i in row)
                 temp_file.write(special_str+'\n') 
             offset +=1000 # увеличивает смещение
 
@@ -114,13 +114,12 @@ def handler(event, context):
         os.remove(TEMP_FILENAME)
 
 
-    key = f"{FOLDER}/{get_now_datetime_str()['key']}"
-    yesterday_data = get_now_datetime_str()['yesterday_data']
+    key = "Number_of_active_intercoms_per_week/Number_of_active_intercoms_per_week.csv"
     now = get_now_datetime_str()['now']
 
-    query_text = open('query.txt','r').read().format(yesterday_data)
+    query_text = open('query.txt','r').read()
     query_name = f'{FOLDER} {now}' #имя, которое появляется в запросах
-    query_description = f'Ежеднеаный запрос - {yesterday_data}'#описание, которое появляется в запросах
+    query_description = f'Ежемесячный запрос - все месяца'#описание, которое появляется в запросах
 
     request_id = create_query()
     while str(get_request(0)) == '<Response [400]>':
@@ -136,5 +135,5 @@ def handler(event, context):
     return {
         'statusCode': 200,
         'body': 'файл выгружен',
-
+        
     }
