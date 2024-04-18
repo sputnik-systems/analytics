@@ -1,0 +1,68 @@
+SELECT
+    `report_date`,
+    `camera_serial`,
+    `motherboard_id`,
+    `camera_uuid`,
+    `installation_point_id`,
+    `intercom_uuid`,
+    `partner_uuid`,
+    `partner_lk`,
+    `company_name`,
+    `city`,
+    `full_address`,
+    `address_uuid`,
+    `status`,
+    `camera_dvr_depth`,
+    `archive_from_partner`,
+    CAST(`archive_from_partner_in_words` as UTF8) as archive_from_partner_in_words,
+    if(`included_at` > COALESCE(`disabled_at`, cast("2019-01-01" as date)),`included_by`,null) as included_by,
+    `included_at`
+FROM
+    (SELECT 
+        cameras_st_asgard.`report_date`+ DateTime::IntervalFromDays(1) as report_date,
+        `camera_serial`,
+        `motherboard_id`,
+        cameras_st_asgard.`camera_uuid` as `camera_uuid`,
+        cameras_dir_partner.`installation_point_id` as `installation_point_id`,
+        cameras_dir_partner.`intercom_uuid` as `intercom_uuid`,
+        cameras_dir_partner.`partner_uuid` as `partner_uuid`,
+        `partner_lk`,
+        `company_name`,
+        `city`,
+        `full_address`,
+        `address_uuid`,
+        CASE
+                WHEN (`enterprise_subs` = 1) THEN 'Enterprise' 
+                WHEN (`pro_subs` = 1) THEN 'PRO' 
+                ELSE 'Start' 
+        END AS `status`,
+        CASE
+            WHEN `archive_from_partner` = "1" THEN "Партнер"
+            WHEN `archive_from_partner` = "0" THEN "Житель"
+            ELSE null
+        END AS `archive_from_partner_in_words`,
+        cameras_st_asgard.`camera_dvr_depth` as camera_dvr_depth,
+        `archive_from_partner`,
+        `included_by`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(`included_at`)) as included_at,
+        `disabled_by`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(`disabled_at`)) as disabled_at
+    FROM `cameras_st_asgard` as cameras_st_asgard
+        LEFT JOIN `cameras_st_partner` as cameras_st_partner 
+                on cameras_st_asgard.camera_uuid = cameras_st_partner.camera_uuid
+                and cameras_st_partner.report_date = cameras_st_asgard.report_date
+        LEFT JOIN `cameras_dir_asgard` as cameras_dir_asgard on cameras_st_asgard.camera_uuid = cameras_dir_asgard.camera_uuid
+        LEFT JOIN `cameras_dir_partner` as cameras_dir_partner on cameras_dir_asgard.camera_uuid = cameras_dir_partner.camera_uuid
+        LEFT JOIN `intercoms_dir_asgard` as intercoms_dir_asgard on cameras_dir_partner.intercom_uuid = intercoms_dir_asgard.intercom_uuid
+        LEFT JOIN `intercoms_dir_partner` as intercoms_dir_partner on cameras_dir_partner.intercom_uuid = intercoms_dir_partner.intercom_uuid
+        LEFT JOIN `companies_dir_partner` as companies_dir on cameras_dir_partner.partner_uuid = companies_dir.partner_uuid
+        LEFT JOIN `companies_st_partner` as companies_st ON cameras_dir_partner.partner_uuid = companies_st.partner_uuid and companies_st.report_date = cameras_st_asgard.report_date
+        LEFT JOIN 
+            (SELECT *
+            FROM
+                `entries_installation_points_dir_partner` 
+            WHERE 
+                installation_point_id != "" and installation_point_id is not null
+                ) as entries_installation on  cameras_dir_partner.`installation_point_id` = entries_installation.`installation_point_id`
+    WHERE cameras_st_asgard.report_date = cast('{0}' as DATE)
+    )

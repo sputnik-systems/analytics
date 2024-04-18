@@ -1,0 +1,52 @@
+SELECT 
+    report_date, 
+    software_version, 
+    partner_uuid, 
+    hardware_version, 
+    company_name, 
+    partner_lk, 
+    tin, 
+    kpp, 
+    SUM(is_online) AS daily_online, 
+    AVG(onlinePercent) AS avg_onlinePercent, 
+    AVG(reconnects) AS avg_reconnects 
+FROM 
+    (SELECT 
+        intercoms_st_asgard.`report_date` as report_date, 
+        intercoms_st_asgard.`intercom_uuid` as intercom_uuid, 
+        `is_online`, 
+        `software_version`, 
+        intercoms_st_asgard.`partner_uuid` as partner_uuid, 
+        `hardware_version`, 
+        if(`onlinePercent`is null,0,`onlinePercent`) as `onlinePercent`, 
+        if(`reconnects`is null,0,`reconnects`) as `reconnects`, 
+        `company_name`, 
+        `partner_lk`, 
+        `tin`,
+        `kpp` 
+    FROM `intercoms_st_asgard` 
+    LEFT JOIN `intercoms_dir_asgard` ON intercoms_st_asgard.`intercom_uuid` = intercoms_dir_asgard.`intercom_uuid` 
+    LEFT JOIN 
+        (SELECT 
+            intercoms_daily_percentage_online_st_asgard.`intercom_uuid` as `intercom_uuid`, 
+            intercoms_daily_percentage_online_st_asgard.`report_date` as `report_date`, 
+            `onlinePercent`, 
+            if(`count`is null,0,`count`) as `reconnects` 
+        FROM `intercoms_daily_percentage_online_st_asgard` 
+        LEFT JOIN `reconnects_intercoms_st_asgard` ON reconnects_intercoms_st_asgard.`report_date` = intercoms_daily_percentage_online_st_asgard.`report_date` AND reconnects_intercoms_st_asgard.`intercom_uuid` = intercoms_daily_percentage_online_st_asgard.`intercom_uuid` 
+        WHERE intercoms_daily_percentage_online_st_asgard.`report_date` >= cast('2024-02-06' as DATE)) AS 
+        reconnects_and_daily_percentage 
+            ON intercoms_st_asgard.report_date = reconnects_and_daily_percentage.report_date 
+            AND intercoms_st_asgard.intercom_uuid = reconnects_and_daily_percentage.intercom_uuid 
+    LEFT JOIN companies_dir_partner ON intercoms_st_asgard.`partner_uuid` = companies_dir_partner.`partner_uuid` 
+WHERE intercoms_st_asgard.report_date = cast('{0}' as DATE) 
+    ) 
+GROUP BY 
+    report_date, 
+    software_version, 
+    partner_uuid, 
+    hardware_version, 
+    company_name, 
+    partner_lk, 
+    tin, 
+    kpp

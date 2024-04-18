@@ -1,0 +1,43 @@
+SELECT
+    month, 
+    report_date, 
+    partner_uuid, 
+    company_name, 
+    partner_lk, 
+    tin, 
+    kpp, 
+    address_uuid, 
+    flats_count, 
+    sum(blocked) as firts_blocked, 
+    cast(sum(blocked) as FLOAT)/flats_count as `percentage_of_blocked`, 
+    count(address_uuid) over(partition by partner_uuid,report_date) as address_uuid_count 
+FROM 
+    (SELECT 
+        DateTime::MakeDate(DateTime::StartOfMonth(flats_st_partner.report_date)) as month,
+        flats_st_partner.report_date as report_date,
+        flats_st_partner.flat_uuid as flat_uuid,
+        flats_dir_partner.address_uuid as address_uuid,
+        entries.installation_point_id as installation_point_id,
+        companies_dir_partner.partner_uuid as partner_uuid,
+        blocked,
+        company_name,
+        partner_lk,
+        tin,
+        kpp,
+        flats_count
+    FROM `flats_st_partner` AS flats_st_partner
+    LEFT JOIN `flats_dir_partner` AS flats_dir_partner ON flats_st_partner.flat_uuid = flats_dir_partner.flat_uuid
+    LEFT JOIN `entries_installation_points_dir_partner` AS entries ON flats_dir_partner.address_uuid = entries.address_uuid
+    LEFT JOIN `companies_dir_partner` as companies_dir_partner on companies_dir_partner.partner_uuid = entries.partner_uuid
+    WHERE flats_st_partner.report_date = cast('{0}' as date)
+    ) 
+GROUP BY 
+    month, 
+    report_date,
+    partner_uuid,
+    company_name,
+    partner_lk,
+    tin,
+    kpp,
+    address_uuid,
+    flats_count
