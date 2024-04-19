@@ -1,0 +1,63 @@
+    SELECT
+        flats_st_partner.report_date AS report_date,
+        flats_st_partner.flat_uuid AS flat_uuid,
+        call_blocked,
+        blocked,
+        deleted,
+        city,
+        country,
+        CAST(CASE
+            WHEN entries_st_mobile.`monetization` = 'True' THEN '1'
+            WHEN entries_st_mobile.`monetization` = 'False' THEN '0'
+            ELSE entries_st_mobile.`monetization`
+        END AS int) as `monetization`, -- необходимо будет заменить потом на новый признак из installation_point_st_partner
+        monetization_is_allowed
+    FROM
+            -- Основной подзапрос к которому присоединяются другие
+            (SELECT
+                `report_date` AS report_date,
+                flats_st_partner.`flat_uuid` AS flat_uuid,
+                `call_blocked`,
+                `blocked`,
+                `deleted`,
+                flats_dir_partner.`address_uuid` AS address_uuid
+            FROM `flats_st_partner`
+            LEFT JOIN `flats_dir_partner` ON flats_st_partner.`flat_uuid` = flats_dir_partner.`flat_uuid`
+            WHERE flats_st_partner.report_date = CAST('2024-04-17' as DATE) 
+                and year = cast('2024' as int) --колонки партиционирования для уменьшения объема считываемых данных
+                and month = cast('04' as int)
+            ) AS flats_st_partner
+
+        -- Подзапрос для monetization, потом надо будет заменить
+        LEFT JOIN 
+            (SELECT
+                `report_date`,
+                `address_uuid`,
+                `monetization`
+            FROM
+                `entries_st_mobile`
+            WHERE
+                report_date = CAST('2024-04-17' as DATE) 
+                and year = cast('2024' as int)
+                and month = cast('04' as int)
+            ) AS entries_st_mobile 
+                ON flats_st_partner.`address_uuid` = entries_st_mobile.`address_uuid` 
+                AND flats_st_partner.`report_date` = entries_st_mobile.`report_date`
+        
+        -- Подзапрос для monetization_is_allowed, city, country. Позже надо будет подтянуть отсюда monetization
+        LEFT JOIN 
+            (SELECT
+                report_date,
+                address_uuid,
+                monetization_is_allowed,
+                city,
+                country
+            FROM installation_point_st_partner
+            LEFT JOIN entries_installation_points_dir_partner
+            ON installation_point_st_partner.installation_point_id = entries_installation_points_dir_partner.installation_point_id
+            WHERE report_date = CAST('2024-04-17' as DATE) 
+                and year = cast('2024' as int)
+                and month = cast('04' as int)
+            ) AS installation_point_st_partner 
+                ON installation_point_st_partner.report_date = flats_st_partner.report_date 
+                and  installation_point_st_partner.address_uuid = flats_st_partner.address_uuid
