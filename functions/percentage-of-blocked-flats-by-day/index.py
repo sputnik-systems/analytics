@@ -98,8 +98,13 @@ def handler(event, context):
             rows = [[if_cell_is_list(cell) for cell in row] for row in response_rows]  #Преобразуются строки
             # Открывает созданный файл и добавляет в него строки
             for row in rows:
-                special_str = ','.join("'{0}'".format(i.replace("'", ""))  if isinstance(i, str) else str(i) for i in row)
-                temp_file.write(special_str+'\n') 
+                special_str = ''
+                for word in row:
+                    if isinstance(word, str):
+                        special_str += "'{0}',".format(word.replace("'", ""))
+                    else:
+                        special_str += "{0},".format(word)
+                temp_file.write(special_str[:-1]+'\n') 
             offset +=1000 # увеличивает смещение
 
     def get_s3_instance(): # функция создает соединение
