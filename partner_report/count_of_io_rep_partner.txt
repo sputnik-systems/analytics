@@ -1,0 +1,25 @@
+SELECT
+    COUNT(if(flat_range = 'io22',intercom_uuid,null)) AS count_io22,
+    COUNT(if(flat_range = 'io_pro',intercom_uuid,null)) AS count_io_pro,
+FROM
+    (SELECT
+        intercoms_st_partner.`report_date` as report_date,
+        intercoms_st_partner.`intercom_uuid` as intercom_uuid,
+        intercoms_st_partner.`partner_uuid` as partner_uuid,
+        intercoms_st_partner.`model_identifier` as flat_range,
+        `company_name`,
+        `partner_lk`,
+        `tin`,
+        `enterprise_subs`,
+        `pro_subs`,
+        CASE 
+            WHEN (`enterprise_subs` = 1) THEN 'Enterprise' 
+            WHEN (`pro_subs` = 1) THEN 'PRO' 
+            ELSE 'Start' 
+        END AS `status`
+    FROM `intercoms_st_partner` as intercoms_st_partner
+    LEFT JOIN `companies_dir_partner` as companies_dir_partner ON companies_dir_partner.partner_uuid = intercoms_st_partner.partner_uuid
+    LEFT JOIN `companies_st_partner` as companies_st_partner ON companies_st_partner.partner_uuid = companies_dir_partner.partner_uuid 
+                                                AND companies_st_partner.report_date = intercoms_st_partner.report_date
+    )
+WHERE report_date = CAST('{2}' as DATE)

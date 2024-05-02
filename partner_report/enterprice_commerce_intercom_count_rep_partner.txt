@@ -1,0 +1,42 @@
+    SELECT
+        `count_intercoms_Enterprise`,
+        `count_intercoms_Enterprise_not_paying`,
+        `count_connected_intercoms_Enterprise`
+    FROM
+        (SELECT
+            `report_date` , 
+            COUNT(distinct if( partner_uuid != 'ba308431-fd0c-4921-a605-9e21c52f8ac6', intercoms.`intercom_uuid`, null)) AS `count_intercoms_Enterprise`,
+            COUNT(distinct if( partner_uuid = 'ba308431-fd0c-4921-a605-9e21c52f8ac6', intercoms.`intercom_uuid`, null)) AS `count_intercoms_Enterprise_not_paying`,
+            COUNT(DISTINCT IF((`intercoms`.`is_online` = 1 
+                            OR `intercoms`.`is_online` = 0 
+                            AND CAST(DateTime::ToMicroseconds(CAST(`intercoms`.`report_date` AS DATETIME) 
+                            - coalesce(`intercoms`.`disconnection_datetime`, CAST(`intercoms`.`report_date` AS DATETIME))) / 86400000000.0 AS DOUBLE) <= 2 
+                            AND `intercoms`.`connection_datetime` IS NOT NULL), `intercoms`.`intercom_uuid`, NULL)) AS `count_connected_intercoms_Enterprise`,
+            FROM
+                (SELECT
+                    t1.`report_date` as report_date,
+                    t1.`intercom_uuid` as `intercom_uuid` ,
+                    t1.`is_online` as is_online,
+                    MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_online`))) over (partition by t1.intercom_uuid ORDER by t1.report_date) as disconnection_datetime,
+                    MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_offline`))) over (partition by t1.intercom_uuid ORDER by t1.report_date) as connection_datetime,
+                    t2.`partner_uuid` as `partner_uuid`,
+
+                FROM `intercoms_st_asgard` as t1
+                LEFT JOIN `dwh-asgard-intercoms` as t2 on t1.`intercom_uuid` = t2.`device_id` and t1.report_date = t2.report_date
+                WHERE t2.`partner_uuid`  in (
+                    "c4cea074-f4b6-47ba-af6c-97422bca530f",
+                    "7775bc0f-24e5-4afc-9054-e194c847049b",
+                    "f1f4d289-beb1-44ad-954b-42a8f02364e3",
+                    "d950900f-ea1a-4c6e-90d2-fe83ebf8feac",
+                    "7e8d1d57-bfe4-4775-82bd-92a671efc10c",
+                    "a5b615c3-d849-431b-9bd3-e32e0712c923",
+                    "32e110bb-41e6-4f7f-9e9b-8141ee3e31b7",
+                    "ba308431-fd0c-4921-a605-9e21c52f8ac6",
+                    "061a2bae-8f8f-4aa0-8c21-c30f9eb881e6",
+                    "fc8899b7-cf9a-4687-9627-623507e13772" /*Enterprise*/
+                    )         
+            ) as intercoms
+WHERE report_date = CAST('{2}' as DATE) 
+GROUP BY
+        intercoms.`report_date` AS `report_date`
+) AS t1

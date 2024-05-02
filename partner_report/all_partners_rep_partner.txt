@@ -1,0 +1,16 @@
+SELECT
+    count(companies_st_partner.partner_uuid) as all_partners_rep_partner,
+FROM 
+    (SELECT
+        `report_date`,
+        `partner_uuid`,
+        `is_blocked`,
+        `pro_subs`,
+        `enterprise_subs`,
+        `billing_pro`,
+        `balance`
+    FROM `companies_st_partner`
+    ) as companies_st_partner
+    left join companies_dir_partner ON companies_st_partner.partner_uuid = companies_dir_partner.partner_uuid
+WHERE report_date = cast("{2}" as DATE)
+LIMIT 10;

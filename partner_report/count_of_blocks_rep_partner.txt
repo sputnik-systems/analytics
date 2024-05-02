@@ -1,0 +1,44 @@
+SELECT 
+    min(count_of_blocks) as min_count_of_blocks,
+    max(count_of_blocks) as max_count_of_blocks,
+    Math::Round(avg(count_of_blocks))  as avg_count_of_blocks,
+    Math::Round(min(percentage_of_blocked)*100,-3)  as min_percentage_of_blocked,
+    Math::Round(max(percentage_of_blocked)*100,-3)  as max_percentage_of_blocked,
+    Math::Round(avg(percentage_of_blocked)*100,-3)  as avg_percentage_of_blocked
+FROM
+    (SELECT
+        month,
+        year,
+        month_date,
+        report_date,
+        count(distinct if(blocked = 1,flat_uuid,null)) as count_of_blocks,
+        count(distinct flat_uuid) as sum_flats_count,
+        cast(count(distinct if(blocked = 1,flat_uuid,null)) as FLOAT)/count(distinct flat_uuid) as percentage_of_blocked,
+        count(distinct installation_point_id) as installation_point_id_count
+    FROM
+        (SELECT
+            DateTime::GetDayOfMonth(flats_st_partner.report_date) as day,
+            DateTime::GetMonth(flats_st_partner.report_date) as month,
+            DateTime::GetYear(flats_st_partner.report_date) as year, 
+            DateTime::MakeDate(DateTime::StartOfMonth(flats_st_partner.report_date)) as month_date,
+            flats_st_partner.report_date as report_date,
+            flats_st_partner.flat_uuid as flat_uuid,
+            flats_dir_partner.address_uuid as address_uuid,
+            entries.installation_point_id as installation_point_id ,
+            companies_dir_partner.partner_uuid as partner_uuid,
+            blocked,
+            company_name,
+            partner_lk,
+            tin,
+            kpp
+        FROM `flats_st_partner` AS flats_st_partner
+        LEFT JOIN `flats_dir_partner` AS flats_dir_partner ON flats_st_partner.flat_uuid = flats_dir_partner.flat_uuid
+        LEFT JOIN `entries_installation_points_dir_partner` AS entries ON flats_dir_partner.address_uuid = entries.address_uuid
+        LEFT JOIN `companies_st_partner` as companies_st_partner ON companies_st_partner.partner_uuid = entries.partner_uuid 
+                                                                and flats_st_partner.report_date = companies_st_partner.report_date
+        LEFT JOIN `companies_dir_partner` as companies_dir_partner on companies_dir_partner.partner_uuid = entries.partner_uuid
+        WHERE flats_st_partner.report_date between cast('{0}' as Date) and cast('{2}' as Date) and pro_subs = 1 
+        )
+    group by report_date,month_date,month,year
+    order by report_date
+    )

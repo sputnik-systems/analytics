@@ -1,0 +1,179 @@
+SELECT
+    report_date,
+    COUNT(partner_uuid) AS number_of_clients,
+    COUNT(if(status = "Start",partner_uuid,NULL)) AS count_start,
+    COUNT(if(status = "PRO",partner_uuid,NULL)) AS count_PRO,
+    COUNT(if(is_sleaping = 1,partner_uuid,null)) AS count_sleaping,
+    COUNT(if(only_warehouse = 1,partner_uuid,null)) AS count_only_warehouse,
+
+    COUNT(if(connected_0_growth_intercom_0_sleaping = 1,partner_uuid,null)) AS connected_0_growth_intercom_0_sleaping,
+    COUNT(if(connected_0_growth_intercom_0_only_warehouse = 1,partner_uuid,null)) AS connected_0_growth_intercom_0_only_warehouse,
+
+    COUNT(if(connected_10_growth_intercom_less_0 = 1,partner_uuid,null)) AS connected_10_growth_intercom_less_0,
+    COUNT(if(connected_10_growth_intercom_greater_0 = 1,partner_uuid,null)) AS connected_10_growth_intercom_greater_0,
+    COUNT(if(connected_100_growth_intercom_less_0 = 1,partner_uuid,null)) AS connected_100_growth_intercom_less_0,
+    COUNT(if(connected_100_growth_intercom_greater_0 = 1,partner_uuid,null)) AS connected_100_growth_intercom_greater_0,
+    COUNT(if(connected_1000_growth_intercom_less_0 = 1,partner_uuid,null)) AS connected_1000_growth_intercom_less_0,
+    COUNT(if(connected_1000_growth_intercom_greater_0 = 1,partner_uuid,null)) AS connected_1000_growth_intercom_greater_0,
+    COUNT(if(connected_greater_1000_growth_intercom_less_0 = 1,partner_uuid,null)) AS connected_greater_1000_growth_intercom_less_0,
+    COUNT(if(connected_greater_1000_growth_intercom_greater_0 = 1,partner_uuid,null)) AS connected_greater_1000_growth_intercom_greater_0,
+
+FROM
+    (SELECT
+        `report_date`, 
+        `company_name`, 
+        `partner_lk`,
+        `partner_uuid`,
+        `tin`,
+        `pro_subs`,
+        `enterprise_subs`,
+        `billing_pro`,
+        `intercom_uuid_count`,
+        `connected_intercoms`,
+        `disconnected_intercoms`,
+        `installation_point_id_count`,
+        `installation_point_id_connected_count`,
+        `status`,
+        LAG(`intercom_uuid_count`) OVER (PARTITION BY `partner_lk` ORDER BY `report_date`) AS intercom_uuid_count_lag,
+        IF(`connected_intercoms` = 0 and `growth_intercom_uuid_count` <= 0 and `intercom_uuid_count` <= 10, 1, 0) AS connected_0_growth_intercom_0_sleaping,
+        IF(`connected_intercoms` = 0 and `growth_intercom_uuid_count` <= 0 and `intercom_uuid_count` > 10, 1, 0) AS connected_0_growth_intercom_0_only_warehouse,
+
+        IF(`connected_intercoms` > 0 and `connected_intercoms` <= 10 and `growth_intercom_uuid_count` <= 0, 1, 0) AS connected_10_growth_intercom_less_0,
+        IF(`connected_intercoms` > 0 and `connected_intercoms` <= 10 and `growth_intercom_uuid_count` > 0, 1, 0) AS connected_10_growth_intercom_greater_0,
+        IF(`connected_intercoms` > 10 and `connected_intercoms` <= 100 and `growth_intercom_uuid_count` <= 0, 1, 0) AS connected_100_growth_intercom_less_0,
+        IF(`connected_intercoms` > 10 and `connected_intercoms` <= 100 and `growth_intercom_uuid_count` > 0, 1, 0) AS connected_100_growth_intercom_greater_0,
+        IF(`connected_intercoms` > 100 and `connected_intercoms` <= 1000 and `growth_intercom_uuid_count` <= 0, 1, 0) AS connected_1000_growth_intercom_less_0,
+        IF(`connected_intercoms` > 100 and `connected_intercoms` <= 1000 and `growth_intercom_uuid_count` > 0, 1, 0) AS connected_1000_growth_intercom_greater_0,
+        IF(`connected_intercoms` > 1000 and `growth_intercom_uuid_count` <= 0, 1, 0) AS connected_greater_1000_growth_intercom_less_0,
+        IF(`connected_intercoms` > 1000 and `growth_intercom_uuid_count` > 0, 1, 0) AS connected_greater_1000_growth_intercom_greater_0,
+        IF(`intercom_uuid_count` <= 10 AND `connected_intercoms` = 0, 1, 0) AS is_sleaping,
+        IF(`connected_intercoms` = 0, 1, 0) AS only_warehouse
+    FROM
+        (SELECT
+            `report_date`, 
+            `company_name`, 
+            `partner_lk`,
+            `partner_uuid`,
+            `tin`,
+            `pro_subs`,
+            `enterprise_subs`,
+            `billing_pro`,
+            CASE 
+                WHEN (`enterprise_subs` = 1) THEN 'Enterprise' 
+                WHEN (`pro_subs` = 1) THEN 'PRO' 
+                ELSE 'Start' 
+            END AS `status`,
+            
+            `intercom_uuid_count`,
+            CAST(`intercom_uuid_count` as float) - lag(`intercom_uuid_count`) over (partition by `partner_uuid` order by `report_date`) as `growth_intercom_uuid_count`,
+            `connected_intercoms`,
+            CAST(`connected_intercoms` as float) - lag(`connected_intercoms`) over (partition by `partner_uuid` order by `report_date`) as `growth_connected_intercoms`,
+            `disconnected_intercoms`,
+            CAST(`disconnected_intercoms` as float) - lag(`disconnected_intercoms`) over (partition by `partner_uuid` order by `report_date`) as `growth_disconnected_intercoms`,
+            `installation_point_id_count`,
+            CAST(`installation_point_id_count` as float) - lag(`installation_point_id_count`) over (partition by `partner_uuid` order by `report_date`) as `growth_installation_point_id_count`,
+            `installation_point_id_connected_count`,
+            CAST(`installation_point_id_connected_count` as float) - lag(`installation_point_id_connected_count`) over (partition by `partner_uuid` order by `report_date`) as `growth_installation_point_id_connected_count`,
+
+        FROM
+            (SELECT
+                `report_date` , 
+                `company_name`, 
+                `partner_lk`,
+                `tin`,
+                `pro_subs`,
+                `enterprise_subs`,
+                `billing_pro`,
+                `partner_uuid`,
+                COUNT(distinct intercoms.`intercom_uuid`) AS `intercom_uuid_count`,
+                COUNT(DISTINCT IF((`intercoms`.`is_online` = 0 
+                    AND CAST(DateTime::ToMicroseconds(CAST(`intercoms`.`report_date` AS DATETIME) 
+                    - coalesce(`intercoms`.`disconnection_datetime`, CAST(`intercoms`.`report_date` AS DATETIME))) / 86400000000.0 AS DOUBLE) > 3
+                    OR `intercoms`.`is_online` = 0 AND `intercoms`.`disconnection_datetime` IS NULL AND `intercoms`.`connection_datetime` IS NULL), `intercoms`.`intercom_uuid`, NULL)) AS `disconnected_intercoms`,
+                COUNT(DISTINCT IF((`intercoms`.`is_online` = 1 OR (`intercoms`.`is_online` = 0 AND CAST(DateTime::ToMicroseconds(CAST(`intercoms`.`report_date` AS DATETIME) - coalesce(`intercoms`.`disconnection_datetime`, CAST(`intercoms`.`report_date` AS DATETIME))) / 86400000000.0 AS DOUBLE) <= 3 AND `intercoms`.`connection_datetime` IS NOT NULL)), `intercoms`.`intercom_uuid`, NULL)) AS `connected_intercoms`,
+                COUNT(DISTINCT `intercoms`.`installation_point_id`) as `installation_point_id_count`,
+                COUNT(DISTINCT IF((`intercoms`.`installation_point_id` IS NOT NULL) OR (`intercoms`.`disconnection_datetime` IS NOT NULL OR `intercoms`.`connection_datetime` IS NOT NULL),`intercoms`.`intercom_uuid`)) as `installation_point_id_connected_count`
+            FROM
+                (SELECT
+                        t1.`report_date`  as report_date,
+                        t1.`intercom_uuid` as intercom_uuid,
+                        t1.`is_online` as is_online,
+                        MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_online`))) over (partition by t1.intercom_uuid ORDER by t1.report_date) as disconnection_datetime,
+                        MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_offline`))) over (partition by t1.intercom_uuid ORDER by t1.report_date) as connection_datetime,
+                        t2.`partner_uuid` as `partner_uuid`,
+                        `installation_point_id`
+                    FROM `intercoms_st_asgard` as t1
+                    LEFT JOIN `dwh-asgard-intercoms` as t2 on t1.`intercom_uuid` = t2.`device_id` and t1.report_date = t2.report_date
+                    LEFT JOIN `intercoms_dir_partner`  as t3 on t1.`intercom_uuid` = t3.`intercom_uuid`
+
+                    ) as intercoms
+                JOIN
+                    (SELECT
+                        report_date  as report_date,
+                        companies_st.partner_uuid as partner_uuid,
+                        pro_subs,
+                        enterprise_subs,
+                        billing_pro,
+                        is_blocked,
+                        company_name,
+                        partner_lk,
+                        tin
+                    FROM
+                        `companies_st_partner` as companies_st
+                        LEFT JOIN `companies_dir_partner` using(partner_uuid)
+                    WHERE 
+
+                    companies_st.`partner_uuid` not in 
+                    ('b1782e4f-9198-49d1-b5aa-7bdba9c87d21',
+                    '01e62154-20f3-4da5-a604-898837d07026',
+                    '5ade3d03-bb22-4949-bdb3-4487bb74c614',
+                    '71158d5e-acf9-442f-97eb-2734e262a3c3',
+                    '6d02e1a5-cc82-4002-b0e3-0d8ee13b453c',
+                    '2e521201-02bf-47e9-8e5c-e1cb5e210b6e',
+                    '95924db0-03ba-4ce5-9bfb-24acd59932f3',
+                    '4b87ac6d-6478-4bb2-b630-3d06abb8ef28',
+                    'fecd4132-1d4e-410f-b17b-0c7c31d7350e',
+                    'd3efacc6-8c92-4bac-beb7-03a77b1bc6d3',
+                    '72269b49-e10c-44a1-b3f4-a588893cd5da',
+                    '3759e965-ef59-44dd-973d-9defb789e1e2',
+                    'b3b9b143-a78d-4ad8-bb9f-06613c5db6fd',
+                    '3d369790-9565-43b9-9646-3ed63be84e8c',
+                    '59e2b308-bfc1-467e-b677-8b70b3edcaf3',
+                    '76075a43-5b8f-4b67-ac2b-23fd82abc26c',
+                    '5ce291d3-9672-4858-99fb-c42ff14b16b0',
+                    '115b2856-5719-4ea1-8119-075788962eb0',
+                    'a2c3cb55-8369-46f7-b091-04ef226f46dc',
+                    '573e40f8-86dc-4228-9301-477bbb8c0ed3',
+                    '3bbd7565-a843-4b0f-96fc-232df48baf75',
+                    'e4be161c-bd52-464e-8120-2815befdd23c')
+                    and
+                    companies_st.`partner_uuid` not in (
+                    "c4cea074-f4b6-47ba-af6c-97422bca530f",
+                    "7775bc0f-24e5-4afc-9054-e194c847049b",
+                    "f1f4d289-beb1-44ad-954b-42a8f02364e3",
+                    "d950900f-ea1a-4c6e-90d2-fe83ebf8feac",
+                    "7e8d1d57-bfe4-4775-82bd-92a671efc10c",
+                    "a5b615c3-d849-431b-9bd3-e32e0712c923",
+                    "32e110bb-41e6-4f7f-9e9b-8141ee3e31b7",
+                    "ba308431-fd0c-4921-a605-9e21c52f8ac6",
+                    "061a2bae-8f8f-4aa0-8c21-c30f9eb881e6",
+                    "fc8899b7-cf9a-4687-9627-623507e13772" /*Enterprise*/
+                    )
+                    ) AS companies 
+                    ON intercoms.`partner_uuid` = companies.`partner_uuid` AND intercoms.`report_date` = companies.`report_date`      
+            GROUP BY    
+                intercoms.`report_date` AS `report_date`,
+                companies.`company_name` AS `company_name`, 
+                companies.`partner_lk` AS `partner_lk`,
+                companies.`partner_uuid` AS `partner_uuid`,
+                companies.`tin` AS `tin`,
+                companies.`pro_subs` AS `pro_subs`,
+                companies.`enterprise_subs` AS `enterprise_subs`,
+                companies.`billing_pro` AS `billing_pro` 
+            )
+        )
+    )
+WHERE report_date = CAST('{2}' as date)  
+GROUP BY report_date
+order by report_date desc
+limit 100

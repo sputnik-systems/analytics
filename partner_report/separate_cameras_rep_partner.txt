@@ -1,0 +1,45 @@
+SELECT
+    count(if (camera_with_intercom = 0,camera_uuid,null)) AS all_camera_without_intercom,
+    count(if (camera_with_intercom = 0 AND (installation_point_id !="" or installation_point_id is not null),camera_uuid,null)) AS instaleted_cameras_without_intercom,
+
+    count(if (camera_with_intercom = 0 AND status = 'Start' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_without_intercom_start,
+    count(if (camera_with_intercom = 0 AND status = 'PRO' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_without_intercom_pro,
+    count(if (camera_with_intercom = 0 AND status = 'Enterprise' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_without_intercom_enterprise,
+
+    
+    count(if (camera_with_intercom = 0 AND foreign_camera = 0 AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS instaleted_cameras_sputnic_without_intercom,
+    count(if (camera_with_intercom = 0 AND foreign_camera = 0 AND status = 'Start' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_sputnic_without_intercom_start,
+    count(if (camera_with_intercom = 0 AND foreign_camera = 0 AND status = 'PRO' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_sputnic_without_intercom_pro,
+    count(if (camera_with_intercom = 0 AND foreign_camera = 0 AND status = 'Enterprise' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_sputnic_without_intercom_enterprise,
+
+    count(if (camera_with_intercom = 0 AND foreign_camera = 1,camera_uuid,null)) AS foreign_camera_without_intercom,
+    count(if (camera_with_intercom = 0 AND foreign_camera = 1 AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS instaleted_cameras_foreign_without_intercom,
+    count(if (camera_with_intercom = 0 AND foreign_camera = 1 AND status = 'Start' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_foreign_without_intercom_start,
+    count(if (camera_with_intercom = 0 AND foreign_camera = 1 AND status = 'PRO' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_foreign_without_intercom_pro,
+    count(if (camera_with_intercom = 0 AND foreign_camera = 1 AND status = 'Enterprise' AND (installation_point_id!="" or installation_point_id is not null),camera_uuid,null)) AS all_camera_foreign_without_intercom_enterprise,
+
+FROM
+    (SELECT
+        cameras_st_asgard.`report_date` as  report_date,
+        cameras_st_asgard.`camera_uuid` as camera_uuid,
+        CASE 
+            WHEN (`enterprise_subs` = 1) THEN 'Enterprise' 
+            WHEN (`pro_subs` = 1) THEN 'PRO' 
+            ELSE 'Start' 
+        END AS status,
+        `camera_dvr_depth`,
+        `camera_is_permanent_stream`,
+        `camera_with_intercom`,
+        cameras_dir_asgard.`intercom_uuid` AS `intercom_uuid`,
+        `installation_point_id`,
+        cameras_st_asgard.`partner_uuid` as partner_uuid,
+        `foreign_camera`,
+    FROM `cameras_st_asgard` as cameras_st_asgard
+    left join `cameras_dir_partner` as cameras_dir_partner on cameras_st_asgard.camera_uuid = cameras_dir_partner.camera_uuid
+    left join `cameras_dir_asgard` as cameras_dir_asgard on cameras_st_asgard.camera_uuid = cameras_dir_asgard.camera_uuid
+    left join `companies_st_partner` as companies_st_partner 
+            ON companies_st_partner.partner_uuid = cameras_st_asgard.partner_uuid 
+            and companies_st_partner.report_date = cameras_st_asgard.report_date
+    WHERE cameras_st_asgard.`report_date` = cast("{2}" as DATE) 
+
+    ) as t1

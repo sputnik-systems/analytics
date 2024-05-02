@@ -1,0 +1,33 @@
+SELECT
+    COUNT(if(camera_dvr_depth = 3, camera_uuid, NULL)) AS arhive_3_enterprise,
+    COUNT(if(camera_dvr_depth = 5, camera_uuid, NULL)) AS arhive_5_enterprise,
+    COUNT(if(camera_dvr_depth = 7, camera_uuid, NULL)) AS arhive_7_enterprise,
+    COUNT(if(camera_dvr_depth = 14, camera_uuid, NULL)) AS arhive_14_enterprise,
+    COUNT(if(camera_dvr_depth = 30, camera_uuid, NULL)) AS arhive_30_enterprise,  
+FROM
+    (SELECT
+        `report_date`,
+        cameras_st_asgard.`camera_uuid` AS camera_uuid,
+        `camera_dvr_depth`,
+        `camera_is_permanent_stream`,
+        `camera_with_intercom`,
+        cameras_st_asgard.`partner_uuid` AS partner_uuid
+    FROM `cameras_st_asgard` AS cameras_st_asgard
+    LEFT JOIN `cameras_dir_partner` AS cameras_dir_partner ON cameras_st_asgard.camera_uuid = cameras_dir_partner.camera_uuid
+    ) as cameras
+    LEFT JOIN `companies_st_partner` as companies_st_partner ON companies_st_partner.partner_uuid = cameras.partner_uuid AND companies_st_partner.report_date = cameras.report_date
+WHERE cameras.report_date = CAST("{2}" AS DATE)
+                AND 
+                    cameras.`partner_uuid` in (
+                    "c4cea074-f4b6-47ba-af6c-97422bca530f",
+                    "7775bc0f-24e5-4afc-9054-e194c847049b",
+                    "f1f4d289-beb1-44ad-954b-42a8f02364e3",
+                    "d950900f-ea1a-4c6e-90d2-fe83ebf8feac",
+                    "7e8d1d57-bfe4-4775-82bd-92a671efc10c",
+                    "a5b615c3-d849-431b-9bd3-e32e0712c923",
+                    "32e110bb-41e6-4f7f-9e9b-8141ee3e31b7",
+                    "ba308431-fd0c-4921-a605-9e21c52f8ac6",
+                    "061a2bae-8f8f-4aa0-8c21-c30f9eb881e6",
+                    "fc8899b7-cf9a-4687-9627-623507e13772" /*Enterprise*/
+                    )
+LIMIT 10;

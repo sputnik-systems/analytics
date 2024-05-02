@@ -1,0 +1,51 @@
+SELECT
+    sum(if (`type` in ('card','direct_deposit'), `amount`, Null)) as accruals_card_and_direct_deposit,
+    sum(if (`type` = 'partner_program', `amount`, Null)) as accruals_partner_program
+FROM
+    (SELECT
+        `type_of_accruals`,
+        `report_date`,
+        `partner_uuid`,
+        `state`,
+        `type`,
+        `comment`,
+        `company_name`,
+        `partner_lk`,
+        `amount`,
+        `tin`,
+        `kpp`
+    FROM
+        (SELECT
+            CASE 
+                WHEN String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'начисление') THEN 'Начисление' 
+                WHEN String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'счет') THEN 'Счет' 
+                WHEN (String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'компенсация') 
+                    OR String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'неверерное пополение') 
+                    OR String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'списание') 
+                    OR String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'возмещение')
+                    OR String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'неверные списания') 
+                    OR String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'возврат')) THEN 'Компенсация' 
+                WHEN String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'скидка') THEN 'Скидка' 
+                WHEN String::Contains(Unicode::ToLower(CAST(`comment` AS UTF8)), 'бонус') THEN 'Бонус' 
+                ELSE 'Другое' 
+                END AS type_of_accruals,
+            `created_at` as report_date,
+            accruals_dir_partner.`partner_uuid` as partner_uuid,
+            `state`,
+            `type`,
+            `comment`,
+            `company_name`,
+            `partner_lk`,
+            `amount`,
+            `tin`,
+            `kpp`,
+        FROM `accruals_dir_partner` as accruals_dir_partner
+        left join `companies_dir_partner` as companies_dir_partner using(partner_uuid)
+        )
+    WHERE 
+        `state` = "success" 
+        and `report_date` between cast('{0}' as date) and cast('{2}' as date)
+        and `type_of_accruals` in ('Начисление','Счет')
+  
+    )
+

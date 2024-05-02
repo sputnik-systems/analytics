@@ -1,0 +1,8 @@
+SELECT
+    COUNT(distinct flats_st.`flat_uuid`) AS all_flats
+FROM
+    `flats_st_partner` as flats_st
+    LEFT JOIN `flats_dir_partner`  as flats_dir using(flat_uuid)
+WHERE deleted = 0 
+    and DateTime::MakeDatetime(DateTime::ParseIso8601(flats_dir.`created_at`)) 
+    < CAST("{1}T00:00:00Z" as DateTime) 

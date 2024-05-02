@@ -1,0 +1,4 @@
+SELECT
+    count(intercom_uuid) as all_intercoms
+FROM `intercoms_st_asgard` as t1
+WHERE `report_date` = cast("{2}" as DATE) 

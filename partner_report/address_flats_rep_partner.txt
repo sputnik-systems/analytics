@@ -1,0 +1,78 @@
+SELECT
+    SUM(flat_uuid_count) AS sum_flat_uuid,
+    SUM(distinct parent_uuid_count) as count_houses_uuid,
+    SUM(if(Status = 'PRO', flat_uuid_count, Null)) AS sum_flat_uuid_PRO,
+    SUM(if(Status = 'Start', flat_uuid_count, Null)) AS sum_flat_uuid_Start,
+    SUM(address_uuid_count) AS sum_address_uuid,
+    SUM(if(Status = 'PRO', address_uuid_count, Null)) AS sum_address_uuid_count_PRO,
+    SUM(if(Status = 'Start', address_uuid_count, Null)) AS sum_address_uuid_count_Start,
+    Math::Round(AVG(flat_uuid_count)) AS avg_flat_uuid,
+    Math::Round(AVG(if(Status = 'PRO', flat_uuid_count, Null))) AS avg_flat_uuid_PRO,
+    Math::Round(AVG(if(Status = 'Start', flat_uuid_count, Null))) AS avg_flat_uuid_Start,
+    Math::Round(AVG(address_uuid_count)) AS avg_address_uuid,
+    Math::Round(AVG(if(Status = 'PRO', address_uuid_count, Null))) AS avg_address_uuid_count_PRO,
+    Math::Round(AVG(if(Status = 'Start', address_uuid_count, Null))) AS avg_address_uuid_count_Start
+FROM
+    (SELECT
+        partner_uuid,
+        Status,
+        company_name,
+        partner_lk,
+        tin,
+        sum(flat_uuid_count) AS flat_uuid_count,
+        sum(address_uuid_count) as address_uuid_count,
+        count(parent_uuid) AS parent_uuid_count
+    FROM(
+        SELECT
+            flats_and_addries.partner_uuid as partner_uuid,
+            flat_uuid_count,
+            address_uuid_count,
+            parent_uuid,
+            CASE 
+                WHEN (`enterprise_subs` = 1) THEN 'Enterprise' 
+                WHEN (`pro_subs` = 1) THEN 'PRO' 
+                ELSE 'Start' 
+            END AS Status,
+            company_name,
+            partner_lk,
+            tin
+        FROM (SELECT
+                report_date,
+                partner_uuid,
+                parent_uuid,
+                count(distinct if(flats_st_partner.`flat_uuid` !="",flats_st_partner.`flat_uuid`,Null)) AS flat_uuid_count,
+                count(distinct if(flats_dir_partner.`address_uuid`!="",flats_dir_partner.`address_uuid`,Null)) AS address_uuid_count,
+            FROM `flats_st_partner` AS flats_st_partner
+            LEFT JOIN  `flats_dir_partner` AS flats_dir_partner ON flats_st_partner.flat_uuid = flats_dir_partner.flat_uuid
+            LEFT JOIN  `entries_installation_points_dir_partner` AS installation_points ON installation_points.address_uuid = flats_dir_partner.address_uuid
+            WHERE report_date = CAST("{2}" AS DATE) 
+                    and partner_uuid != "" 
+                 and
+                    `partner_uuid` not in (
+                    "b1782e4f-9198-49d1-b5aa-7bdba9c87d21",
+                    "c4cea074-f4b6-47ba-af6c-97422bca530f",
+                    "7775bc0f-24e5-4afc-9054-e194c847049b",
+                    "f1f4d289-beb1-44ad-954b-42a8f02364e3",
+                    "d950900f-ea1a-4c6e-90d2-fe83ebf8feac",
+                    "7e8d1d57-bfe4-4775-82bd-92a671efc10c",
+                    "a5b615c3-d849-431b-9bd3-e32e0712c923",
+                    "32e110bb-41e6-4f7f-9e9b-8141ee3e31b7",
+                    "ba308431-fd0c-4921-a605-9e21c52f8ac6",
+                    "061a2bae-8f8f-4aa0-8c21-c30f9eb881e6",
+                    "fc8899b7-cf9a-4687-9627-623507e13772" /*Enterprise*/
+                    )   
+
+            GROUP BY report_date as report_date, 
+                    installation_points.partner_uuid AS partner_uuid, 
+                    parent_uuid as parent_uuid
+            ) AS flats_and_addries 
+        LEFT JOIN `companies_st_partner` AS companies_st_partner ON companies_st_partner.partner_uuid = flats_and_addries.partner_uuid AND flats_and_addries.report_date = companies_st_partner.report_date
+        LEFT JOIN `companies_dir_partner` AS companies_dir_partner ON companies_dir_partner.partner_uuid = companies_st_partner.partner_uuid
+        ) AS t1
+    GROUP BY 
+        partner_uuid,
+        Status,
+        company_name,
+        partner_lk,
+        tin
+    ) AS t2

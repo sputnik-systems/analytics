@@ -1,0 +1,7 @@
+SELECT
+    Count(intercoms_st_asgard.intercom_uuid) as count_of_online_intercoms
+FROM `intercoms_st_asgard` as intercoms_st_asgard
+LEFT JOIN `intercoms_dir_asgard` using(`intercom_uuid`)
+WHERE `report_date` = CAST('{2}' AS DATE) and `is_online` = 1
+LIMIT 10;
+

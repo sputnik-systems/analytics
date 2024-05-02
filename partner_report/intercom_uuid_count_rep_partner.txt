@@ -1,0 +1,41 @@
+SELECT 
+    count(`intercom_uuid`) AS intercom_uuid_count,
+FROM    
+    (SELECT
+        t1.`report_date` as report_date,
+        t1.`intercom_uuid` as `intercom_uuid` ,
+        t1.`is_online` as is_online,
+        MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_online`))) over (partition by t1.intercom_uuid ORDER by t1.report_date) as disconnection_datetime,
+        MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_offline`))) over (partition by t1.intercom_uuid ORDER by t1.report_date) as connection_datetime,
+                    t2.`partner_uuid` as `partner_uuid`,
+        `installation_point_id`
+                FROM `intercoms_st_asgard` as t1
+                LEFT JOIN `dwh-asgard-intercoms` as t2 on t1.`intercom_uuid` = t2.`device_id` and t1.report_date = t2.report_date
+                LEFT JOIN `intercoms_dir_partner`  as t3 on t1.`intercom_uuid` = t3.`intercom_uuid`
+                WHERE
+                t1.`report_date` = CAST('{2}' as DATE) and 
+                t2.`partner_uuid` not in 
+                    ('b1782e4f-9198-49d1-b5aa-7bdba9c87d21',
+                    '01e62154-20f3-4da5-a604-898837d07026',
+                    '5ade3d03-bb22-4949-bdb3-4487bb74c614',
+                    '71158d5e-acf9-442f-97eb-2734e262a3c3',
+                    '6d02e1a5-cc82-4002-b0e3-0d8ee13b453c',
+                    '2e521201-02bf-47e9-8e5c-e1cb5e210b6e',
+                    
+                    '95924db0-03ba-4ce5-9bfb-24acd59932f3',
+                    '4b87ac6d-6478-4bb2-b630-3d06abb8ef28',
+                    'fecd4132-1d4e-410f-b17b-0c7c31d7350e',
+                    'd3efacc6-8c92-4bac-beb7-03a77b1bc6d3',
+                    '72269b49-e10c-44a1-b3f4-a588893cd5da',
+                    '3759e965-ef59-44dd-973d-9defb789e1e2',
+                    'b3b9b143-a78d-4ad8-bb9f-06613c5db6fd',
+                    '3d369790-9565-43b9-9646-3ed63be84e8c',
+                    '59e2b308-bfc1-467e-b677-8b70b3edcaf3',
+                    '76075a43-5b8f-4b67-ac2b-23fd82abc26c',
+                    '5ce291d3-9672-4858-99fb-c42ff14b16b0',
+                    '115b2856-5719-4ea1-8119-075788962eb0',
+                    'a2c3cb55-8369-46f7-b091-04ef226f46dc',
+                    '573e40f8-86dc-4228-9301-477bbb8c0ed3',
+                    '3bbd7565-a843-4b0f-96fc-232df48baf75',
+                    'e4be161c-bd52-464e-8120-2815befdd23c') /*Спутник*/               
+                ) as intercoms
