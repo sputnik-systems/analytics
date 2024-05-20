@@ -1,0 +1,39 @@
+SELECT
+    AVG(citizen_id_count) as app_in_flats
+FROM
+    (SELECT
+        flat_uuid,
+        COUNT(distinct citizens.citizen_id) AS citizen_id_count
+    FROM
+        (Select
+            citizens_st.citizen_id as citizen_id, 
+            report_date,
+            state,
+            flat_uuid
+        FROM 
+            `citizens_st_mobile` as citizens_st
+            LEFT join `citizens_dir_mobile` as citizens_dir using(citizen_id)
+        WHERE 
+            state = 'activated' and report_date = cast('{0}' as DATE)
+        ) AS citizens
+    RIGHT JOIN
+        (SELECT
+            flats_st_partner.flat_uuid as flat_uuid,
+            call_blocked,
+            flats_dir_partner.address_uuid as address_uuid,
+            blocked,
+            deleted  
+        FROM 
+            `flats_st_partner` 
+            LEFT JOIN `flats_dir_partner` ON flats_dir_partner.flat_uuid = flats_st_partner.flat_uuid
+            LEFT JOIN entries_installation_points_dir_partner ON  flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+            LEFT JOIN  installation_point_st_partner ON entries_installation_points_dir_partner.installation_point_id = installation_point_st_partner.installation_point_id
+                                                AND flats_st_partner.report_date = installation_point_st_partner.report_date
+        WHERE 
+            deleted = 0 and flats_st_partner.report_date = CAST("{0}" AS Date)
+            AND installation_point_st_partner.partner_uuid = "0e7236ac-b8bd-4ab0-8634-d165ad17190e"
+        ) AS flats 
+        using(flat_uuid)
+    Group by flats.flat_uuid as flat_uuid
+    ) AS to_avg
+

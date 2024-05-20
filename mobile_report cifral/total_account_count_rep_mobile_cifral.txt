@@ -1,0 +1,14 @@
+SELECT
+    count(distinct citizens_st_mobile.citizen_id) as total_account_count
+FROM 
+    `citizens_st_mobile`
+    LEFT JOIN  `citizens_dir_mobile` ON citizens_st_mobile.citizen_id = citizens_dir_mobile.citizen_id
+    LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.flat_uuid = citizens_dir_mobile.flat_uuid
+    LEFT JOIN  `entries_installation_points_dir_partner` ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+    LEFT JOIN `installation_point_st_partner` 
+        ON `installation_point_st_partner`.installation_point_id = entries_installation_points_dir_partner.installation_point_id
+        AND installation_point_st_partner.report_date = citizens_st_mobile.report_date
+WHERE 
+    DateTime::MakeDatetime(DateTime::ParseIso8601(citizens_dir_mobile.`created_at`)) < CAST("{1}T00:00:00Z" as DateTime)
+    and citizens_st_mobile.report_date = cast("{2}" as date)
+    and installation_point_st_partner.partner_uuid = "0e7236ac-b8bd-4ab0-8634-d165ad17190e"

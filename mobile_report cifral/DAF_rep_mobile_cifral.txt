@@ -1,0 +1,42 @@
+SELECT
+    AVG(DAF) as DAF,
+    AVG(stricted_DAF) as stricted_DAF,
+    AVG(freemonetization_DAF) as freemonetization_DAF,
+FROM
+    (SELECT
+        report_date,
+        COUNT(distinct flats.flat_uuid) as DAF,
+        COUNT(distinct if(monetization = 0, flats.flat_uuid, null)) AS stricted_DAF,
+        COUNT(distinct if(monetization = 1 or monetization is null, flats.flat_uuid, null)) AS freemonetization_DAF
+    FROM
+        (SELECT
+            sessions_st_mobile.citizen_id
+            citizen_id,
+            report_date,
+            DateTime::MakeDatetime(DateTime::ParseIso8601(`last_use`)) as last_use,
+            flat_uuid
+        FROM   `sessions_st_mobile`
+        LEFT JOIN `citizens_dir_mobile` using(citizen_id)
+        WHERE DateTime::MakeDatetime(DateTime::ParseIso8601(`last_use`)) 
+            BETWEEN CAST("{0}T00:00:00Z" as DateTime) and CAST("{1}T00:00:00Z" as DateTime)
+        ) as citizens
+    JOIN
+        (SELECT
+            flats_st_partner.flat_uuid as flat_uuid,
+            call_blocked,
+            flats_dir_partner.address_uuid,
+            blocked,
+            deleted,
+            monetization
+        FROM `flats_st_partner`
+        LEFT JOIN `flats_dir_partner` ON flats_st_partner.flat_uuid = flats_dir_partner.flat_uuid
+        LEFT JOIN entries_installation_points_dir_partner ON  flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+        LEFT JOIN  installation_point_st_partner ON entries_installation_points_dir_partner.installation_point_id = installation_point_st_partner.installation_point_id
+                                                AND flats_st_partner.report_date = installation_point_st_partner.report_date
+        WHERE deleted = 0 
+            and flats_st_partner.report_date = CAST("{2}" AS Date)
+            and installation_point_st_partner.partner_uuid = "0e7236ac-b8bd-4ab0-8634-d165ad17190e"
+        ) AS flats 
+    using(flat_uuid)
+    GROUP BY citizens.report_date as report_date
+    ) AS to_avg

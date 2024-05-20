@@ -1,0 +1,53 @@
+SELECT
+    COUNT(if((state= "activated" and created_at < CAST("{1}T00:00:00Z" as DateTime)), citizen_id)) as 
+        paying_users,
+
+    COUNT(if((state= "activated" and created_at < CAST("{1}T00:00:00Z" as DateTime) and plan = "standard_p1m"), citizen_id)) as 
+        paying_users_standart,
+
+    /*Аndroid*/ 
+
+    COUNT(distinct if((state= "activated" and created_at < CAST("{1}T00:00:00Z" as DateTime) and plan = "standard_p1m" AND subscribed_from = "yakassa" and  started_from != "ios"), citizen_id)) as 
+        paying_users_standart_yakassa,
+
+    /*IOS*/   
+
+    COUNT(distinct if((state= "activated" and created_at < CAST("{1}T00:00:00Z" as DateTime) and plan = "standard_p1m" and subscribed_from = "ios"), citizen_id)) as 
+        paying_users_standart_appstore,
+    
+    COUNT(if(state = "activated" AND created_at < CAST("{1}T00:00:00Z" as DateTime) and plan = "standard_p1m" AND started_from = "ios" AND subscribed_from = "yakassa" ,citizen_id,null)) AS paying_users_standart_ios_from_cart,
+
+
+    COUNT(distinct if(created_at BETWEEN cast("{0}T00:00:00Z" as DateTime) and cast("{1}T00:00:00Z" as DateTime),citizen_id)) as new_subscriptions,
+    COUNT(distinct if((renew_failed_at BETWEEN cast("{0}T00:00:00Z" as DateTime) and cast("{1}T00:00:00Z" as DateTime)) and renew_stopped_at is null, citizen_id)) 
+        as failed_subscriptions,
+
+    COUNT(distinct if((renew_stopped_at BETWEEN cast("{0}T00:00:00Z" as DateTime) and cast("{1}T00:00:00Z" as DateTime)), citizen_id)) 
+        as canceled_subscriptions,
+        
+    COUNT(distinct if(state= "activated" and created_at < CAST("{0}T00:00:00Z" as DateTime), citizen_id)) as renewed_subscriptions
+FROM
+    (SELECT
+        subscriptions_st_mobile.`report_date` as `report_date`,
+        subscriptions_st_mobile.`citizen_id` as `citizen_id`,
+        `state`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(subscriptions_st_mobile.`created_at`)) AS `created_at`,
+        `subscribed_from`,
+        `auto_renew_status`,
+        subscriptions_st_mobile.`activated_at` as `activated_at`,
+        `plan`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(`expires_date`)) AS `expires_date`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(`renew_stopped_at`)) AS `renew_stopped_at`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(`renew_failed_at`)) AS `renew_failed_at`,
+        `started_from`   
+    FROM `subscriptions_st_mobile`
+    LEFT JOIN `citizens_dir_mobile` ON subscriptions_st_mobile.citizen_id = citizens_dir_mobile.citizen_id
+    LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.flat_uuid = citizens_dir_mobile.flat_uuid
+    LEFT JOIN  `entries_installation_points_dir_partner` ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+    LEFT JOIN `installation_point_st_partner` ON `installation_point_st_partner`.installation_point_id = entries_installation_points_dir_partner.installation_point_id
+                                                AND installation_point_st_partner.report_date = subscriptions_st_mobile.report_date
+    WHERE subscriptions_st_mobile.report_date = CAST("{2}" as DATE)
+    and installation_point_st_partner.partner_uuid = "0e7236ac-b8bd-4ab0-8634-d165ad17190e"
+    ) AS t1
+group by report_date
+LIMIT 10;
