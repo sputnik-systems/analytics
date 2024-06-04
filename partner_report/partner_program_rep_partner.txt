@@ -1,0 +1,7 @@
+SELECT
+    sum(`amount`)
+FROM `accruals_dir_partner`
+LEFT JOIN `companies_dir_partner`  ON companies_dir_partner.partner_uuid = accruals_dir_partner.partner_uuid
+WHERE type = 'partner_program' 
+    and created_at BETWEEN CAST('{0}' as DATE) and CAST('{2}' as DATE)
+LIMIT 10;
