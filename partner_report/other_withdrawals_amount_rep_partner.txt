@@ -1,0 +1,21 @@
+SELECT
+    sum(`amount`) as other_withdrawals_amount
+FROM
+    (SELECT
+        state,
+        amount,
+        created_at,
+        CASE
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'компенсация' then 'компенсация'
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'скидка' then 'скидка'
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'бонус' then 'бонус'
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'ошибочное' then 'ошибка'
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'ошибка' then 'ошибка'
+            else Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1)))
+        END as service
+    FROM `accruals_dir_partner`
+    LEFT JOIN `companies_dir_partner`  ON companies_dir_partner.partner_uuid = accruals_dir_partner.partner_uuid
+    )
+WHERE service in ['компенсация','скидка','бонус','ошибка']
+    and state = "success" 
+    and created_at BETWEEN CAST('{0}' as DATE) and CAST('{2}' as DATE)

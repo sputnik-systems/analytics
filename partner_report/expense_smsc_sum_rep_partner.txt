@@ -1,0 +1,29 @@
+SELECT
+    SUM(`Цена`) as expense_smsc_sum,
+    SUM(IF(text_list_first = 'Спутник:', `Цена`)) as expense_smsc_sum_code, 
+    SUM(IF(text_list_first = 'Заявка', `Цена`)) as expense_smsc_sum_application, 
+    SUM(IF(text_list_first = 'Ваш' and text_list_second = 'пароль' , `Цена`)) as expense_smsc_sum_password, 
+    SUM(IF(text_list_first = 'Мы' and text_list_second = 'починили' , `Цена`)) as expense_smsc_sum_repair, 
+FROM
+    (SELECT
+        `Тип`,
+        `ID`,
+        `Субаккаунт`,
+        CAST('20'||SUBSTRING(cast(`Дата` as STRING), 6,2)||'-'|| SUBSTRING(cast(`Дата` as STRING), 3,2) ||'-'||
+        SUBSTRING(cast(`Дата` as STRING), 0,2) AS DATE) AS `Дата` ,
+        `Отправить`,
+        `Срок`,
+        `MCCMNC`,
+        `Оператор`,
+        `Текст`,
+        `Имя`,
+        `SMS`,
+        cast( Unicode::ReplaceLast(`Цена`,',','.') as double) as `Цена`,
+        `Статус`,
+        `Дата доставки`,
+        Unicode::SplitToList(CAST(`Текст` AS UTF8), ' '),
+        CAST(ListHead(ListSkip(Unicode::SplitToList(CAST(`Текст` AS UTF8), ' '), 1 - 1)) AS Utf8) AS `text_list_first`,
+        CAST(ListHead(ListSkip(Unicode::SplitToList(CAST(`Текст` AS UTF8), ' '), 2 - 1)) AS Utf8) AS `text_list_second`
+    FROM `expense_smsc`
+    )
+    WHERE `Дата` BETWEEN CAST('{0}' AS DATE) AND CAST('{2}' AS DATE)

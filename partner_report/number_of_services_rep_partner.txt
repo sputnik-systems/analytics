@@ -1,6 +1,5 @@
 SELECT
     cast(sum(if(service="pro" 
-
                 and partner_uuid not in(
                     '100f52fe-929d-4ea7-8963-bf3d57bf50e8', -- ИП Котов 149033
                     'bec90e3e-2118-4766-b513-554d49e3c4d2', -- ИП Захарова Ольга Bладимировна (Ваш домофон) 120350
@@ -23,58 +22,57 @@ SELECT
     cast(sum(if(service="archive_30",`count`))/count(distinct (DateTime::MakeDate(DateTime::ParseIso8601(created_at)))) as int) as archive_count_30,
     cast(sum(if(service="developer",`count`))/count(distinct (DateTime::MakeDate(DateTime::ParseIso8601(created_at)))) as int) as developer_count
 FROM
-    (SELECT
-        `created_at`,
-        `state`,
-        `service`,
-        `cost`,
-        `total`,
-        `count`,
-        `billing_account_id`,
-        `billing_orders_dir_partner`.`partner_uuid` AS `partner_uuid`,
-        `pro_subs`
-    FROM `billing_orders_dir_partner`
-    LEFT JOIN `companies_st_partner` as companies_st_partner 
-        ON companies_st_partner.partner_uuid = billing_orders_dir_partner.partner_uuid 
-        AND companies_st_partner.report_date = DateTime::MakeDate(DateTime::ParseIso8601(billing_orders_dir_partner.created_at))
-    WHERE state = "success" 
-    AND DateTime::MakeDate(DateTime::ParseIso8601(created_at)) between cast("{0}" AS DATE) and cast("{2}" AS DATE)
-    AND `billing_orders_dir_partner`.`partner_uuid` not in 
-            ('b1782e4f-9198-49d1-b5aa-7bdba9c87d21',
-            '01e62154-20f3-4da5-a604-898837d07026',
-            '5ade3d03-bb22-4949-bdb3-4487bb74c614',
-            '71158d5e-acf9-442f-97eb-2734e262a3c3',
-            '6d02e1a5-cc82-4002-b0e3-0d8ee13b453c',
-            '2e521201-02bf-47e9-8e5c-e1cb5e210b6e',
-            '95924db0-03ba-4ce5-9bfb-24acd59932f3',
-            '4b87ac6d-6478-4bb2-b630-3d06abb8ef28',
-            'fecd4132-1d4e-410f-b17b-0c7c31d7350e',
-            'd3efacc6-8c92-4bac-beb7-03a77b1bc6d3',
-            '72269b49-e10c-44a1-b3f4-a588893cd5da',
-            '3759e965-ef59-44dd-973d-9defb789e1e2',
-            'b3b9b143-a78d-4ad8-bb9f-06613c5db6fd',
-            '3d369790-9565-43b9-9646-3ed63be84e8c',
-            '59e2b308-bfc1-467e-b677-8b70b3edcaf3',
-            '76075a43-5b8f-4b67-ac2b-23fd82abc26c',
-            '5ce291d3-9672-4858-99fb-c42ff14b16b0',
-            '115b2856-5719-4ea1-8119-075788962eb0',
-            'a2c3cb55-8369-46f7-b091-04ef226f46dc',
-            '573e40f8-86dc-4228-9301-477bbb8c0ed3',
-            '3bbd7565-a843-4b0f-96fc-232df48baf75',
-            'e4be161c-bd52-464e-8120-2815befdd23c')
-            
+        
+            (SELECT
+                `created_at`,
+                `state`,
+                `service`,
+                `cost`,
+                `total`,
+                `count`,
+                `billing_account_id`,
+                `billing_orders_dir_partner`.`partner_uuid` AS `partner_uuid`,
+                `pro_subs`
+            FROM `billing_orders_dir_partner`
+            LEFT JOIN `companies_st_partner` as companies_st_partner 
+                ON companies_st_partner.partner_uuid = billing_orders_dir_partner.partner_uuid 
+                AND companies_st_partner.report_date = DateTime::MakeDate(DateTime::ParseIso8601(billing_orders_dir_partner.created_at))
+            WHERE state = "success" 
+            AND DateTime::MakeDate(DateTime::ParseIso8601(created_at)) between cast("{0}" AS DATE) and cast("{1}" AS DATE)
+            AND `billing_orders_dir_partner`.`partner_uuid` not in 
+                    ('b1782e4f-9198-49d1-b5aa-7bdba9c87d21',
+                    '01e62154-20f3-4da5-a604-898837d07026',
+                    '5ade3d03-bb22-4949-bdb3-4487bb74c614',
+                    '71158d5e-acf9-442f-97eb-2734e262a3c3',
+                    '6d02e1a5-cc82-4002-b0e3-0d8ee13b453c',
+                    '2e521201-02bf-47e9-8e5c-e1cb5e210b6e',
+                    '95924db0-03ba-4ce5-9bfb-24acd59932f3',
+                    '4b87ac6d-6478-4bb2-b630-3d06abb8ef28',
+                    'fecd4132-1d4e-410f-b17b-0c7c31d7350e',
+                    'd3efacc6-8c92-4bac-beb7-03a77b1bc6d3',
+                    '72269b49-e10c-44a1-b3f4-a588893cd5da',
+                    '3759e965-ef59-44dd-973d-9defb789e1e2',
+                    'b3b9b143-a78d-4ad8-bb9f-06613c5db6fd',
+                    '3d369790-9565-43b9-9646-3ed63be84e8c',
+                    '59e2b308-bfc1-467e-b677-8b70b3edcaf3',
+                    '76075a43-5b8f-4b67-ac2b-23fd82abc26c',
+                    '5ce291d3-9672-4858-99fb-c42ff14b16b0',
+                    '115b2856-5719-4ea1-8119-075788962eb0',
+                    'a2c3cb55-8369-46f7-b091-04ef226f46dc',
+                    '573e40f8-86dc-4228-9301-477bbb8c0ed3',
+                    '3bbd7565-a843-4b0f-96fc-232df48baf75',
+                    'e4be161c-bd52-464e-8120-2815befdd23c')
+                    
 
+                    AND `billing_orders_dir_partner`.`partner_uuid` not in (
+                    '0e7236ac-b8bd-4ab0-8634-d165ad17190e',/*цифрал сервис ук 120345*/
+                    'db61f873-dcf7-4678-aec1-6b93f54ddbb2', /*цифрал актобе 120377*/
+                    'e7e86c75-fc8b-4710-839d-56ad86f43211'/*Цифрал Тольятти 152762*/
+                    )
 
-            AND `billing_orders_dir_partner`.`partner_uuid` not in (
-            '0e7236ac-b8bd-4ab0-8634-d165ad17190e',/*цифрал сервис ук 120345*/
-            'db61f873-dcf7-4678-aec1-6b93f54ddbb2' /*цифрал актобе 120377*/
+                    and `billing_orders_dir_partner`.`partner_uuid` not in (
+                    'fadd874c-d976-4710-9502-332e8eb21f26', --Тест NikolayCorporation
+                    'af1dd075-8be1-4b9c-ac96-a329a41e115a', -- ООО Антей-Сервис
+                    'adeffb47-1707-4976-a4a6-e6eacf19b050', -- город Эксперт 120417
+                    )
             )
-
-            and `billing_orders_dir_partner`.`partner_uuid` not in (
-            'fadd874c-d976-4710-9502-332e8eb21f26', --Тест NikolayCorporation
-            'af1dd075-8be1-4b9c-ac96-a329a41e115a', -- ООО Антей-Сервис
-            'adeffb47-1707-4976-a4a6-e6eacf19b050', -- город Эксперт 120417
-            )
-
-    )
-

@@ -1,5 +1,8 @@
 SELECT
+    {3} as year,
+    {4} as month,
     report_date,
+
     COUNT(partner_uuid) AS number_of_clients,
     COUNT(if(status = "Start",partner_uuid,NULL)) AS count_start,
     COUNT(if(status = "PRO",partner_uuid,NULL)) AS count_PRO,
