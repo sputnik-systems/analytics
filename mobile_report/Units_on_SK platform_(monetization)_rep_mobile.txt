@@ -1,7 +1,7 @@
 SELECT
-    count(distinct if(installation_point_st_partner.report_date = cast('2024-04-30' as DATE), `address_uuid`)) as `Units on SK platform`,
-    count(distinct if(monetization = 0 and installation_point_st_partner.report_date = cast('2024-04-30' as DATE), `address_uuid`)) as `Units stricted monetization`,
-    count(distinct if(monetization = 1 and installation_point_st_partner.report_date = cast('2024-04-30' as DATE), `address_uuid`)) as `Units free monetization`
+    count(distinct if(installation_point_st_partner.report_date = cast('{2}' as DATE), `address_uuid`)) as `Units on SK platform`,
+    count(distinct if(monetization = 0 and installation_point_st_partner.report_date = cast('{2}' as DATE), `address_uuid`)) as `Units stricted monetization`,
+    count(distinct if(monetization = 1 and installation_point_st_partner.report_date = cast('{2}' as DATE), `address_uuid`)) as `Units free monetization`
 FROM `installation_point_st_partner`
 LEFT JOIN entries_installation_points_dir_partner ON  installation_point_st_partner.installation_point_id = entries_installation_points_dir_partner.installation_point_id
 LEFT JOIN intercoms_st_partner ON intercoms_st_partner.installation_point_id = installation_point_st_partner.installation_point_id

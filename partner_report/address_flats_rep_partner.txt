@@ -61,7 +61,6 @@ FROM
                     "061a2bae-8f8f-4aa0-8c21-c30f9eb881e6",
                     "fc8899b7-cf9a-4687-9627-623507e13772" /*Enterprise*/
                     )   
-
             GROUP BY report_date as report_date, 
                     installation_points.partner_uuid AS partner_uuid, 
                     parent_uuid as parent_uuid

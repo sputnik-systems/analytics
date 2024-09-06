@@ -66,6 +66,7 @@ WHERE cameras.report_date = CAST("{2}" AS DATE)
                     "fc8899b7-cf9a-4687-9627-623507e13772" /*Enterprise*/
                     )
                     AND cameras.`partner_uuid` not in (
-                    '0e7236ac-b8bd-4ab0-8634-d165ad17190e'/*цифрал сервис ук 120345*/
+                    '0e7236ac-b8bd-4ab0-8634-d165ad17190e',/*цифрал сервис ук 120345*/
+                    'e7e86c75-fc8b-4710-839d-56ad86f43211'/*Цифрал Тольятти 152762*/
                     )
 LIMIT 10;

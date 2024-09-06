@@ -1,0 +1,10 @@
+SELECT
+    Math::Round(sum(`Цена`)) AS expense_greensms_sum
+FROM
+    (SELECT
+        DateTime::MakeDate(DateTime::ParseIso8601( `Дата отправки`)) AS `report_date`,
+        cast( Unicode::ReplaceLast(`Цена`,',','.') as double) as `Цена`,
+    FROM
+    `expense_greensms`
+    WHERE DateTime::MakeDate(DateTime::ParseIso8601( `Дата отправки`)) BETWEEN CAST('{0}' AS DATE) AND CAST('{2}' AS DATE)
+    )
