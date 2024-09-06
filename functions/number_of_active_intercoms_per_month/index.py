@@ -16,6 +16,7 @@ def handler(event, context):
 
     FOLDER_ID = os.getenv("FOLDER_ID") # id каталога из которого береться запрос
     FOLDER = os.getenv("FOLDER") #имя папки в которую будет выкладываться
+    FILE_NAME = os.getenv("FILE_NAME")
     ACCESS_KEY = os.getenv("ACCESS_KEY") #aws_access_key_id для S3
     SECRET_KEY = os.getenv("SECRET_KEY") #aws_secret_access_key в s3
     BUCKET_NAME = os.getenv("BUCKET_NAME") #имя бакета
@@ -119,7 +120,7 @@ def handler(event, context):
         os.remove(TEMP_FILENAME)
 
 
-    key = "Number-of-active-intercoms-per-month/Number-of-active-intercoms-per-month.csv"
+    key = f"{FOLDER}/{FILE_NAME}.csv"
     now = get_now_datetime_str()['now']
 
     query_text = open('query.txt','r').read()
