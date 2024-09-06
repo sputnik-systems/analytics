@@ -1,19 +1,32 @@
 SELECT
-    count(distinct citizens_st.citizen_id) as total_active_users
-FROM
-    (SELECT
-        citizens_dir.citizen_id as citizen_id
-    FROM 
-        `citizens_dir_mobile` as  citizens_dir
-        join `sessions_st_mobile` as sessions_st using(citizen_id)
-    WHERE 
-        DateTime::MakeDatetime(DateTime::ParseIso8601(citizens_dir.`created_at`)) 
-            < CAST("{0}T00:00:00Z" as DateTime)
-        and (DateTime::MakeDatetime(DateTime::ParseIso8601(`last_use`)) BETWEEN 
-        CAST("{1}T00:00:00Z" as DateTime) and CAST("{0}T00:00:00Z" as DateTime))
-    ) AS t1    
-JOIN `citizens_st_mobile` as citizens_st using(citizen_id)
-WHERE
-    citizens_st.state = "activated"
-    AND report_date = CAST("{2}" as DATE)
-LIMIT 10;
+    count(DISTINCT citizen_id) AS total_active_users,
+    count(DISTINCT if(monetization = 1,citizen_id,null)) as total_active_users_monetization,
+    count(DISTINCT if(monetization = 1 and subscriptions_state = "activated",citizen_id,null)) as total_active_user_subscribed_monetization,
+    count(DISTINCT if(ble_available = "true",citizen_id)) AS total_active_users_ble_available,
+    count(DISTINCT if(ble_available = "true" and monetization = 1,citizen_id)) AS total_active_users_ble_available_monetization,
+    count(DISTINCT if(ble_available = "true" and monetization = 1 and subscriptions_state = "activated",citizen_id)) AS total_active_users_ble_available_subscribed_monetization
+FROM(
+    SELECT
+        sessions_st_mobile.citizen_id AS citizen_id,
+        sessions_st_mobile.report_date AS report_date,
+        installation_point_st_partner.monetization AS monetization,
+        subscriptions_st_mobile.state AS subscriptions_state,
+        entries_st_mobile.ble_available AS ble_available
+    FROM `sessions_st_mobile`
+    LEFT JOIN `subscriptions_st_mobile` ON subscriptions_st_mobile.citizen_id = sessions_st_mobile.citizen_id
+                                       AND subscriptions_st_mobile.report_date = sessions_st_mobile.report_date
+    LEFT JOIN  `citizens_st_mobile` ON citizens_st_mobile.citizen_id = sessions_st_mobile.citizen_id
+                                    AND citizens_st_mobile.report_date = sessions_st_mobile.report_date
+    LEFT JOIN `citizens_dir_mobile` ON citizens_dir_mobile.citizen_id = sessions_st_mobile.citizen_id
+    LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.flat_uuid = citizens_dir_mobile.flat_uuid
+    LEFT JOIN `entries_installation_points_dir_partner` ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+    LEFT JOIN `installation_point_st_partner` 
+                ON installation_point_st_partner.installation_point_id = entries_installation_points_dir_partner.installation_point_id
+                AND installation_point_st_partner.report_date = citizens_st_mobile.report_date
+    LEFT JOIN `entries_st_mobile`ON `entries_st_mobile`.`report_date` = sessions_st_mobile.`report_date` 
+                                AND`entries_st_mobile`.`address_uuid` = flats_dir_partner.`address_uuid`
+
+    WHERE DateTime::MakeDatetime(DateTime::ParseIso8601(`last_use`)) 
+        BETWEEN CAST("{1}T00:00:00Z" as DateTime) and CAST("{0}T00:00:00Z" as DateTime)
+        and  citizens_st_mobile.state = "activated"
+    )

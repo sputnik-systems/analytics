@@ -1,0 +1,33 @@
+SELECT
+    Math::Round(avg(citizen_id_count)) AS total_active_users_per_day,
+    Math::Round(avg(total_active_user_monetization)) AS total_active_user_monetization_per_day,
+    Math::Round(avg(total_active_user_subscribed_monetization)) AS total_active_user_subscribed_monetization_per_day
+FROM    
+    (SELECT
+        count(DISTINCT citizen_id) as citizen_id_count,
+        count(DISTINCT if(monetization = 1,citizen_id,null)) as total_active_user_monetization,
+        count(DISTINCT if(monetization = 1 and subscriptions_state = "activated",citizen_id,null)) as total_active_user_subscribed_monetization
+    FROM(
+        SELECT
+            sessions_st_mobile.citizen_id as citizen_id,
+            sessions_st_mobile.report_date as report_date,
+            installation_point_st_partner.monetization as monetization,
+            subscriptions_st_mobile.state as subscriptions_state
+        FROM `sessions_st_mobile`
+        LEFT JOIN `subscriptions_st_mobile` ON subscriptions_st_mobile.citizen_id = sessions_st_mobile.citizen_id
+                                       AND subscriptions_st_mobile.report_date = sessions_st_mobile.report_date
+        LEFT JOIN  `citizens_st_mobile` ON citizens_st_mobile.citizen_id = sessions_st_mobile.citizen_id
+                                    AND citizens_st_mobile.report_date = sessions_st_mobile.report_date
+        LEFT JOIN `citizens_dir_mobile` ON citizens_dir_mobile.citizen_id = sessions_st_mobile.citizen_id
+        LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.flat_uuid = citizens_dir_mobile.flat_uuid
+        LEFT JOIN `entries_installation_points_dir_partner` ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+        LEFT JOIN `installation_point_st_partner` 
+                    ON installation_point_st_partner.installation_point_id = entries_installation_points_dir_partner.installation_point_id
+                    AND installation_point_st_partner.report_date = citizens_st_mobile.report_date
+        WHERE DateTime::MakeDatetime(DateTime::ParseIso8601(`last_use`)) 
+            BETWEEN CAST("{1}T00:00:00Z" as DateTime) and CAST("{0}T00:00:00Z" as DateTime)
+            and  citizens_st_mobile.state = "activated"
+        )
+    group by report_date
+    )
+LIMIT 100

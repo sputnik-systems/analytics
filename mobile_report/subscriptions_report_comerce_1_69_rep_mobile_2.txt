@@ -1,0 +1,153 @@
+$subscribtions_amount_1 = SELECT  
+        distinct subscriptions_st_mobile.citizen_id
+    FROM `subscriptions_st_mobile` as subscriptions_st_mobile
+    LEFT JOIN `citizen_payments_dir_mobile`  
+            ON subscriptions_st_mobile.report_date = DateTime::MakeDate(DateTime::ParseIso8601(citizen_payments_dir_mobile.created_at))
+            AND subscriptions_st_mobile.citizen_id = citizen_payments_dir_mobile.citizen_id
+    WHERE subscriptions_st_mobile.report_date 
+        between cast("{0}" as date) and cast("{2}" as date)
+        AND subscriptions_st_mobile.state  ='activated'
+        AND subscriptions_st_mobile.report_date = DateTime::MakeDate(DateTime::ParseIso8601(`activated_at`))
+        AND `product_ids` != '["sputnikTieCard"]' 
+        AND amount = 1
+        AND subscriptions_st_mobile.citizen_id is not NULL
+        AND year = {6}
+        AND month = {5};
+
+$subscribtions_amount_1_last_month = SELECT  
+        distinct subscriptions_st_mobile.citizen_id
+    FROM `subscriptions_st_mobile` as subscriptions_st_mobile
+    LEFT JOIN `citizen_payments_dir_mobile`  
+            ON subscriptions_st_mobile.report_date = DateTime::MakeDate(DateTime::ParseIso8601(citizen_payments_dir_mobile.created_at))
+            AND subscriptions_st_mobile.citizen_id = citizen_payments_dir_mobile.citizen_id
+    WHERE subscriptions_st_mobile.report_date 
+        between cast("{3}" as date) and cast("{4}" as date)
+        AND subscriptions_st_mobile.state  ='activated'
+        AND subscriptions_st_mobile.report_date = DateTime::MakeDate(DateTime::ParseIso8601(`activated_at`))
+        AND `product_ids` != '["sputnikTieCard"]' 
+        AND amount = 1
+        AND subscriptions_st_mobile.citizen_id is not NULL
+        AND year = {8}
+        AND month = {7};
+
+$subscribtions_activated_last_month = SELECT  
+        distinct citizen_id
+    FROM `subscriptions_st_mobile` 
+    WHERE report_date = cast("{4}" as date)
+        AND subscriptions_st_mobile.state  ='activated'
+        AND year = {8}
+        AND month = {7};
+
+SELECT
+ COUNT(DISTINCT 
+        IF( state  ='activated'
+            , citizen_id)) AS active_subscriptions,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id IN $subscribtions_activated_last_month
+            , citizen_id)) AS active_subscriptions_extended,
+    
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id NOT IN $subscribtions_activated_last_month
+            , citizen_id)) AS active_subscriptions_new_last_month,
+
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id NOT IN $subscribtions_amount_1 
+            , citizen_id)) AS active_subscriptions_69,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id NOT IN $subscribtions_amount_1
+            AND citizen_id IN $subscribtions_activated_last_month
+            , citizen_id)) AS active_subscriptions_69_extended,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id NOT IN $subscribtions_amount_1
+            AND citizen_id IN $subscribtions_amount_1_last_month
+            , citizen_id)) AS active_subscriptions_69_extended_from_amount_1,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id IN $subscribtions_activated_last_month
+            AND citizen_id NOT IN $subscribtions_amount_1
+            AND citizen_id NOT IN $subscribtions_amount_1_last_month
+            , citizen_id)) AS active_subscriptions_69_extended_from_amount_69,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id NOT IN $subscribtions_amount_1
+            AND citizen_id NOT IN $subscribtions_activated_last_month
+            , citizen_id)) AS active_subscriptions_69_new_last_month,
+
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id IN $subscribtions_amount_1
+            , citizen_id)) AS active_subscriptions_1,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id IN $subscribtions_amount_1
+            AND citizen_id IN $subscribtions_activated_last_month
+            , citizen_id)) AS active_subscriptions_1_extended,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id IN $subscribtions_amount_1
+            AND citizen_id IN $subscribtions_amount_1_last_month
+            , citizen_id)) AS active_subscriptions_1_extended_from_amount_1,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id IN $subscribtions_activated_last_month
+            AND citizen_id IN $subscribtions_amount_1
+            AND citizen_id NOT IN $subscribtions_amount_1_last_month
+            , citizen_id)) AS active_subscriptions_1_extended_from_amount_69,
+
+    COUNT(DISTINCT 
+        IF(state  ='activated'
+            AND citizen_id IN $subscribtions_amount_1
+            AND citizen_id NOT IN $subscribtions_activated_last_month
+            , citizen_id)) AS active_subscriptions_1_new_last_month,
+            
+FROM  
+    (SELECT
+        subscriptions_st_mobile.`report_date` as `report_date`,
+        subscriptions_st_mobile.`citizen_id` as `citizen_id`,
+        `state`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(subscriptions_st_mobile.`created_at`)) AS `created_at`,
+        `subscribed_from`,
+        `auto_renew_status`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(subscriptions_st_mobile.`activated_at`)) as `activated_at`,
+        `plan`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(`expires_date`)) AS `expires_date`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(`renew_stopped_at`)) AS `renew_stopped_at`,
+        DateTime::MakeDatetime(DateTime::ParseIso8601(`renew_failed_at`)) AS `renew_failed_at`,
+        `started_from`,
+        subscriptions_st_mobile.year as year,
+        subscriptions_st_mobile.month as month,
+        if (subscriptions_st_mobile.`citizen_id` in (
+                        SELECT 
+                            `citizen_id`
+                        FROM `subscriptions_st_mobile`
+                        WHERE report_date = CAST("{2}" as DATE) 
+                        group by citizen_id
+                        HAVING COUNT(if(state= "activated", citizen_id)) > 1
+                    ) AND subscribed_from = 'ios', 1,null) AS `filter_ios`
+    FROM `subscriptions_st_mobile`
+    LEFT JOIN `citizens_dir_mobile` ON subscriptions_st_mobile.citizen_id = citizens_dir_mobile.citizen_id
+    LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.flat_uuid = citizens_dir_mobile.flat_uuid
+    LEFT JOIN  `entries_installation_points_dir_partner` ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+    LEFT JOIN `installation_point_st_partner` ON `installation_point_st_partner`.installation_point_id = entries_installation_points_dir_partner.installation_point_id
+                                                AND installation_point_st_partner.report_date = subscriptions_st_mobile.report_date
+    WHERE         
+        subscriptions_st_mobile.report_date = CAST("{2}" as DATE)
+        AND subscriptions_st_mobile.year = {6} 
+        AND subscriptions_st_mobile.month = {5}                                       
+    )
+    WHERE `filter_ios` is NULL
