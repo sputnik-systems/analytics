@@ -1,0 +1,59 @@
+SELECT
+    count(DISTINCT IF(days_since_unsubscribe > 0 and days_since_unsubscribe < 3 and state = "activated", citizen_id)) activated_after_unsubsribtion_less_3,
+    count(DISTINCT IF(days_since_unsubscribe >= 3 and state = "activated", citizen_id))  as activated_after_unsubsribtion_more_3 
+FROM
+    (SELECT
+        `report_date`,
+        `citizen_id`,
+        `state`,
+        `created_at`,
+        `started_from`,
+        `filter_ios`,
+        `failed_and_stopped_at`,
+        `renew_stopped_at`,
+        `renew_failed_at`,
+        DateTime::ToDays(`activated_at` - `failed_and_stopped_at`) as days_since_unsubscribe
+    FROM
+        (SELECT
+            `report_date`,
+            `citizen_id`,
+            `state`,
+            `created_at`,
+            `started_from`,
+            `filter_ios`,
+            `activated_at`,
+            `renew_stopped_at`,
+            `renew_failed_at`,
+            if(`renew_failed_at`>`renew_stopped_at`,`renew_failed_at`,`renew_stopped_at`) as failed_and_stopped_at
+        FROM
+            (SELECT
+                    subscriptions_st_mobile.`report_date` as `report_date`,
+                    subscriptions_st_mobile.`citizen_id` as `citizen_id`,
+                    `state`,
+                    DateTime::MakeDatetime(DateTime::ParseIso8601(subscriptions_st_mobile.`created_at`)) AS `created_at`,
+                    `subscribed_from`,
+                    `auto_renew_status`,
+                    DateTime::MakeDatetime(DateTime::ParseIso8601(subscriptions_st_mobile.`activated_at`)) as `activated_at`,
+                    `plan`,
+                    DateTime::MakeDatetime(DateTime::ParseIso8601(`expires_date`)) AS `expires_date`,
+                    DateTime::MakeDatetime(DateTime::ParseIso8601(`renew_stopped_at`)) AS `renew_stopped_at`,
+                    DateTime::MakeDatetime(DateTime::ParseIso8601(`renew_failed_at`)) AS `renew_failed_at`,
+                    `started_from`,
+                    if (subscriptions_st_mobile.`citizen_id` in (
+                                    SELECT 
+                                        `citizen_id`
+                                    FROM `subscriptions_st_mobile`
+                                    WHERE report_date = CAST("{2}" as DATE) 
+                                    group by citizen_id
+                                    HAVING COUNT(if(state= "activated", citizen_id)) > 1
+                                ) AND subscribed_from = 'ios', 1,null) AS `filter_ios`
+                FROM `subscriptions_st_mobile`
+                LEFT JOIN `citizens_dir_mobile` ON subscriptions_st_mobile.citizen_id = citizens_dir_mobile.citizen_id
+                LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.flat_uuid = citizens_dir_mobile.flat_uuid
+                LEFT JOIN  `entries_installation_points_dir_partner` ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+                LEFT JOIN `installation_point_st_partner` ON `installation_point_st_partner`.installation_point_id = entries_installation_points_dir_partner.installation_point_id AND installation_point_st_partner.report_date = subscriptions_st_mobile.report_date
+                )
+                WHERE report_date = CAST("{2}" as DATE) and `filter_ios` is NULL
+        )
+    )
+limit 100

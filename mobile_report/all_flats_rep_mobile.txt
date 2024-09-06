@@ -1,21 +1,17 @@
 SELECT
     COUNT(distinct flats_st_partner.`flat_uuid`) AS all_flats,
-    COUNT(distinct if(`subsc_restrict` = 'freemonetization',flats_st_partner.`flat_uuid`,null)) AS freemonetization_flats,
-    COUNT(distinct if(`subsc_restrict` = 'stricted',flats_st_partner.`flat_uuid`,null)) AS stricted_flats,
-    COUNT(distinct if(`subsc_restrict` is null,flats_st_partner.`flat_uuid`,null)) AS subsc_restrict_is_null_flats
+    COUNT(distinct if(`monetization` = 1, flats_st_partner.`flat_uuid`,null)) AS freemonetization_flats,
+    COUNT(distinct if(`monetization` = 0, flats_st_partner.`flat_uuid`,null)) AS stricted_flats,
+    COUNT(distinct if(`monetization` is null,flats_st_partner.`flat_uuid`,null)) AS subsc_restrict_is_null_flats
 FROM
     `flats_st_partner` 
     LEFT JOIN `flats_dir_partner`  ON `flats_st_partner`.`flat_uuid` = `flats_dir_partner`.`flat_uuid`
-    LEFT JOIN  
-        (SELECT 
-            `report_date`,
-            `address_uuid`,
-            `subsc_restrict` 
-        FROM `dwh-asgard-entries`
-        WHERE report_date = CAST('{2}' as DATE)
-        ) AS `dwh-asgard-entries` 
-            ON `flats_dir_partner`.`address_uuid` = `dwh-asgard-entries`.`address_uuid`
+    LEFT JOIN entries_installation_points_dir_partner ON  flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+    LEFT JOIN  installation_point_st_partner ON entries_installation_points_dir_partner.installation_point_id = installation_point_st_partner.installation_point_id
+                                        AND flats_st_partner.report_date = installation_point_st_partner.report_date
 WHERE deleted = 0 
     AND DateTime::MakeDatetime(DateTime::ParseIso8601(flats_dir_partner.`created_at`)) 
         < CAST("{1}T00:00:00Z" as DateTime)
     and `flats_st_partner`.`report_date` = CAST('{2}' as DATE)
+    
+

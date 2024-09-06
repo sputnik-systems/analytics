@@ -18,16 +18,18 @@ FROM
         ) AS citizens
     RIGHT JOIN
         (SELECT
-            flats_st.flat_uuid as flat_uuid,
+            flats_st_partner.flat_uuid as flat_uuid,
             call_blocked,
-            address_uuid,
+            flats_dir_partner.address_uuid as address_uuid,
             blocked,
             deleted  
-        FROM 
-            `flats_st_partner` as flats_st
-            LEFT JOIN `flats_dir_partner` using(flat_uuid)
+        FROM `flats_st_partner` 
+        LEFT JOIN `flats_dir_partner` ON flats_dir_partner.flat_uuid = flats_st_partner.flat_uuid
+        LEFT JOIN entries_installation_points_dir_partner ON  flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+        LEFT JOIN  installation_point_st_partner ON entries_installation_points_dir_partner.installation_point_id = installation_point_st_partner.installation_point_id
+                                                AND flats_st_partner.report_date = installation_point_st_partner.report_date
         WHERE 
-            deleted = 0 and report_date = CAST("{0}" AS Date)
+            deleted = 0 and flats_st_partner.report_date = CAST("{0}" AS Date)
         ) AS flats 
         using(flat_uuid)
     Group by flats.flat_uuid as flat_uuid
