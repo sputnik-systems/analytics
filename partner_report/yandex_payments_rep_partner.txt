@@ -1,0 +1,6 @@
+SELECT
+    `service_name`,
+    SUM(`cost`) + SUM(`credit`)
+FROM `yandex_payments`
+WHERE `date` BETWEEN CAST('{0}' as date) AND CAST('{2}' as date)
+GROUP BY service_name
