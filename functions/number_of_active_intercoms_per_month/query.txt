@@ -34,7 +34,7 @@ SELECT
         WHEN (`t1`.`status_PRO` = 1) THEN 'PRO' 
         WHEN (IF(`t1`.`intercom_uuid_count` <= 10 AND `t1`.`connected_intercoms` = 0, 1, 0) = 1) THEN 'Спящий' 
         WHEN (IF(`t1`.`connected_intercoms` = 0, 1, 0) = 1) THEN 'Только склад' 
-        ELSE 'Start' END AS Utf8) AS `status`
+        ELSE 'Start' END  AS Utf8) AS `status`
     FROM ( 
         SELECT 
             `report_date`, 
@@ -118,5 +118,5 @@ SELECT
             ) 
         WHERE 
         `report_date` in (select `report_date` - DateTime::IntervalFromDays(1) FROM 
-            (SELECT distinct DateTime::MakeDate(DateTime::StartOfMonth(`report_date`+ DateTime::IntervalFromDays(1))) as report_date from bindings.`intercoms_st_asgard`))
+            (SELECT distinct DateTime::MakeDate(DateTime::StartOfMonth(`report_date`+ DateTime::IntervalFromDays(1))) as report_date from `intercoms_st_asgard`))
         ) AS `t1`
