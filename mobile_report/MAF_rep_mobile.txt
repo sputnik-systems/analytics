@@ -1,45 +1,40 @@
 SELECT
     COUNT(distinct flats.flat_uuid) AS MAF,
-    COUNT(distinct if(subsc_restrict = 'stricted', flats.flat_uuid, null)) AS stricted_MAF,
-    COUNT(distinct if(subsc_restrict = 'freemonetization' or subsc_restrict is null, flats.flat_uuid, null)) AS freemonetization_MAF
+    COUNT(distinct if(monetization = 0, flats.flat_uuid, null)) AS stricted_MAF,
+    COUNT(distinct if(monetization = 1 or monetization is null, flats.flat_uuid, null)) AS freemonetization_MAF
 FROM
     (SELECT
-        flats_st.`flat_uuid` AS flat_uuid,
-        `subsc_restrict`,
-        created_at,
-        flats_dir.address_uuid as address_uuid
-    FROM
-        `flats_st_partner` AS flats_st
-        LEFT JOIN  `flats_dir_partner` AS flats_dir ON flats_st.flat_uuid = flats_dir.flat_uuid
-        LEFT JOIN (SELECT
-                        address_uuid,
-                        `subsc_restrict`
-                    FROM
-                        `dwh-asgard-entries`
-                    WHERE report_date = CAST("{2}" as DATE) /*дата отчета*/
-                    ) AS `dwh-asgard-entries` ON flats_dir.address_uuid = `dwh-asgard-entries`.address_uuid
+            flats_st_partner.flat_uuid as flat_uuid,
+            call_blocked,
+            flats_dir_partner.address_uuid,
+            blocked,
+            deleted,
+            monetization
+        FROM `flats_st_partner`
+        LEFT JOIN `flats_dir_partner` ON flats_st_partner.flat_uuid = flats_dir_partner.flat_uuid
+        LEFT JOIN entries_installation_points_dir_partner ON  flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+        LEFT JOIN  installation_point_st_partner ON entries_installation_points_dir_partner.installation_point_id = installation_point_st_partner.installation_point_id
+                                                AND flats_st_partner.report_date = installation_point_st_partner.report_date
     WHERE 
         deleted = 0 
-        AND DateTime::MakeDatetime(DateTime::ParseIso8601(flats_dir.`created_at`)) 
+        AND DateTime::MakeDatetime(DateTime::ParseIso8601(flats_dir_partner.`created_at`)) 
         < CAST("{1}T00:00:00Z" as DateTime) /*дата отчета*/
-        AND flats_st.report_date = CAST("{2}" as DATE) /*дата отчета-1*/ 
+        AND flats_st_partner.report_date = CAST("{2}" as DATE) /*дата отчета-1*/ 
     ) AS flats 
     JOIN
     (SELECT
             flat_uuid,
-            citizens_dir.citizen_id as citizen_id
+            sessions_st_mobile.citizen_id as citizen_id
         FROM 
-            `sessions_st_mobile` as sessions_st
-            left join `citizens_st_mobile` as citizens_st ON sessions_st.citizen_id = citizens_st.citizen_id AND sessions_st.report_date = citizens_st.report_date
-            left join `citizens_dir_mobile` as citizens_dir ON citizens_dir.citizen_id = sessions_st.citizen_id 
+            `sessions_st_mobile` 
+            left join `citizens_st_mobile`  ON sessions_st_mobile.citizen_id = citizens_st_mobile.citizen_id AND sessions_st_mobile.report_date = citizens_st_mobile.report_date
+            left join `citizens_dir_mobile`  ON citizens_dir_mobile.citizen_id = sessions_st_mobile.citizen_id 
         WHERE 
-            sessions_st.report_date BETWEEN CAST("{0}" as DATE) and CAST("{2}" as DATE)
+            sessions_st_mobile.report_date BETWEEN CAST("{0}" as DATE) and CAST("{2}" as DATE)
             AND
-            DateTime::MakeDatetime(DateTime::ParseIso8601(citizens_dir.`created_at`)) 
+            DateTime::MakeDatetime(DateTime::ParseIso8601(citizens_dir_mobile.`created_at`)) 
             < CAST("{1}T00:00:00Z" as DateTime) /*дата отчета*/
             AND (DateTime::MakeDatetime(DateTime::ParseIso8601(`last_use`)) BETWEEN 
             CAST("{0}T00:00:00Z" as DateTime) AND CAST("{1}T00:00:00Z" as DateTime)) /*интервал месяц*/
-            AND citizens_st.state = "activated"
-        ) AS citizens  
-
-    using(flat_uuid)
+            AND citizens_st_mobile.state = "activated"
+        ) AS citizens  using(flat_uuid)

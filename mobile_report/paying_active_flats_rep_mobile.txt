@@ -1,6 +1,12 @@
 SELECT
-    count(distinct citizen_id) as paying_active_flats
+    count(distinct citizen_payments_st_mobile.citizen_id) as paying_active_flats
 FROM `citizen_payments_st_mobile`
+    LEFT JOIN `citizens_dir_mobile` ON citizen_payments_st_mobile.citizen_id = citizens_dir_mobile.citizen_id
+    LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.flat_uuid = citizens_dir_mobile.flat_uuid
+    LEFT JOIN  `entries_installation_points_dir_partner` ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+    LEFT JOIN `installation_point_st_partner` ON `installation_point_st_partner`.installation_point_id = entries_installation_points_dir_partner.installation_point_id
+                                                AND installation_point_st_partner.report_date = citizen_payments_st_mobile.report_date
 WHERE state = "success" and
-      DateTime::MakeDatetime(DateTime::ParseIso8601(`created_at`)) between 
+      DateTime::MakeDatetime(DateTime::ParseIso8601(`citizen_payments_st_mobile.created_at`)) between 
       CAST("{0}T00:00:00Z" as DateTime) and CAST("{1}T00:00:00Z" as DateTime)
+LIMIT 10;

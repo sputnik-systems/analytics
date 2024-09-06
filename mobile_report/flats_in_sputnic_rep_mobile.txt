@@ -14,14 +14,16 @@ FROM
         ) AS citizens
     JOIN
         (SELECT
-            flats_st.`flat_uuid` AS flat_uuid
+            flats_st_partner.`flat_uuid` AS flat_uuid
         FROM
-            `flats_st_partner` as flats_st
-            LEFT JOIN `flats_dir_partner`  as flats_dir using(flat_uuid)
+            `flats_st_partner` 
+            LEFT JOIN `flats_dir_partner` ON flats_dir_partner.flat_uuid = flats_st_partner.flat_uuid
+            LEFT JOIN entries_installation_points_dir_partner ON  flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+            LEFT JOIN  installation_point_st_partner ON entries_installation_points_dir_partner.installation_point_id = installation_point_st_partner.installation_point_id
+                                                AND flats_st_partner.report_date = installation_point_st_partner.report_date
         WHERE deleted = 0 
-            and DateTime::MakeDatetime(DateTime::ParseIso8601(flats_dir.`created_at`)) 
+            and DateTime::MakeDatetime(DateTime::ParseIso8601(flats_dir_partner.`created_at`)) 
             < CAST("{1}T00:00:00Z" as DateTime) 
-            AND report_date = CAST("{2}" as DATE)
+            AND flats_st_partner.report_date = CAST("{2}" as DATE)
         ) AS flats
     USING(flat_uuid)
-
