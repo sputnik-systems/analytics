@@ -1,0 +1,108 @@
+SELECT
+    CAST('{0}' AS DATE) AS report_date,
+    `company_name`,
+    `city`,
+    `tin`,
+    `partner_lk`,
+    sum(activated_citizen_id) as activated_citizen_id_count,
+    sum(flat_uuid) as flat_uuid_count,
+    sum(subscribed_citizen_id) as subscribed_flat_uuid_count,
+    sum(citizen_id_in_flat_with_subscriptions) as citizen_id_in_flat_with_subscriptions_count,
+    sum(payments_amount) as payments_count
+FROM
+        (SELECT
+            citizens_st_mobile.report_date AS report_date,
+            city,
+            partner_uuid,
+            COUNT(DISTINCT IF(citizens_st_mobile.`state` = 'activated', citizens_st_mobile.citizen_id)) as activated_citizen_id,
+            COUNT(DISTINCT IF(subscriptions_st_mobile.`state` = 'activated', subscriptions_st_mobile.citizen_id)) as subscribed_citizen_id,
+            COUNT(DISTINCT IF(citizens_st_mobile.`state` = 'activated', citizens_dir_mobile.flat_uuid)) as flat_uuid
+        FROM
+            `citizens_st_mobile` 
+            LEFT JOIN `citizens_dir_mobile` ON citizens_st_mobile.`citizen_id` = citizens_dir_mobile.`citizen_id`
+            LEFT JOIN `subscriptions_st_mobile` ON citizens_st_mobile.`citizen_id` = subscriptions_st_mobile.`citizen_id`
+                                                AND citizens_st_mobile.`report_date` = subscriptions_st_mobile.`report_date`
+            LEFT JOIN `entries_installation_points_dir_partner` ON citizens_dir_mobile.`address_uuid` = entries_installation_points_dir_partner.`address_uuid`
+            LEFT JOIN `installation_point_st_partner` 
+                ON entries_installation_points_dir_partner.`installation_point_id` = installation_point_st_partner.`installation_point_id`
+                AND installation_point_st_partner.`report_date` = citizens_st_mobile.`report_date`
+        WHERE  
+            citizens_st_mobile.`report_date` = cast('{0}' AS DATE)
+        GROUP BY installation_point_st_partner.partner_uuid AS partner_uuid,
+                entries_installation_points_dir_partner.city AS city,
+                citizens_st_mobile.report_date AS report_date
+        ) AS citizens_and_subscriptions 
+
+    FULL OUTER JOIN 
+        (SELECT
+            city,
+            partner_uuid,
+            sum(amount) AS payments_amount
+        FROM `citizen_payments_st_mobile`
+        LEFT JOIN `citizens_dir_mobile` ON `citizen_payments_st_mobile`.`citizen_id` = `citizens_dir_mobile`.`citizen_id`
+        LEFT JOIN `entries_installation_points_dir_partner` ON citizens_dir_mobile.`address_uuid` = entries_installation_points_dir_partner.`address_uuid`
+        LEFT JOIN `installation_point_st_partner` 
+            ON entries_installation_points_dir_partner.`installation_point_id` = installation_point_st_partner.`installation_point_id` 
+            AND installation_point_st_partner.`report_date` = citizen_payments_st_mobile.`report_date`
+        WHERE citizen_payments_st_mobile.report_date BETWEEN CAST('{1}' AS DATE) and CAST('{0}' AS DATE)
+        AND `state` = 'success'
+        GROUP BY installation_point_st_partner.partner_uuid AS partner_uuid,
+                 entries_installation_points_dir_partner.city AS city
+                 
+        ) AS payments ON payments.partner_uuid = citizens_and_subscriptions.partner_uuid
+                      AND payments.city = citizens_and_subscriptions.city
+
+
+
+    LEFT JOIN 
+        (SELECT
+            distinct
+            company_name,
+            partner_lk,
+            companies_st_partner.partner_uuid AS partner_uuid,
+            kpp,
+            tin,
+            pro_subs,
+            enterprise_test,
+            enterprise_subs,
+            enterprise_not_paid
+        FROM `companies_st_partner` 
+        LEFT JOIN `companies_dir_partner` ON companies_dir_partner.`partner_uuid` = companies_st_partner.`partner_uuid`
+        WHERE is_blocked = 0
+        and report_date = cast('{0}' AS DATE)
+        ) AS companies ON companies.partner_uuid = citizens_and_subscriptions.partner_uuid
+
+    LEFT JOIN 
+        (SELECT
+            city,
+            partner_uuid,
+            COUNT(distinct citizens_st_mobile.citizen_id) as citizen_id_in_flat_with_subscriptions
+        FROM 
+            `citizens_st_mobile` 
+            LEFT JOIN `citizens_dir_mobile` ON citizens_st_mobile.`citizen_id` = citizens_dir_mobile.`citizen_id`
+            LEFT JOIN `entries_installation_points_dir_partner` ON citizens_dir_mobile.`address_uuid` = entries_installation_points_dir_partner.`address_uuid`
+            LEFT JOIN `installation_point_st_partner` 
+                ON entries_installation_points_dir_partner.`installation_point_id` = installation_point_st_partner.`installation_point_id`
+                AND installation_point_st_partner.`report_date` = citizens_st_mobile.`report_date`
+        WHERE  
+            flat_uuid in (SELECT
+                            distinct `flat_uuid`
+                        FROM `citizens_st_mobile`
+                        LEFT JOIN `subscriptions_st_mobile` ON citizens_st_mobile.`citizen_id` = subscriptions_st_mobile.`citizen_id`
+                                                            AND citizens_st_mobile.`report_date` = subscriptions_st_mobile.`report_date`
+                        LEFT JOIN `citizens_dir_mobile` ON citizens_st_mobile.`citizen_id` = citizens_dir_mobile.`citizen_id`                                 
+                        WHERE citizens_st_mobile.`report_date` = cast('{0}' AS DATE)
+                        and  subscriptions_st_mobile.`state` = 'activated')
+            AND citizens_st_mobile.`report_date` = cast('{0}' AS DATE)
+            AND `state` = 'activated'
+        GROUP BY installation_point_st_partner.partner_uuid AS partner_uuid,
+                entries_installation_points_dir_partner.city AS city
+        ) AS citizen_id_in_flat_with_subscriptions_table
+        ON citizen_id_in_flat_with_subscriptions_table.partner_uuid = citizens_and_subscriptions.partner_uuid
+        AND citizen_id_in_flat_with_subscriptions_table.city = citizens_and_subscriptions.city
+GROUP BY 
+    companies.`company_name` AS `company_name`,
+    citizens_and_subscriptions.`city` AS `city`,
+    companies.`tin` AS `tin`,
+    companies.`partner_lk` AS `partner_lk`
+
