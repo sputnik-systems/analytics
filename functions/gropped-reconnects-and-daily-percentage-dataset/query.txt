@@ -9,7 +9,9 @@ SELECT
     kpp, 
     SUM(is_online) AS daily_online, 
     AVG(onlinePercent) AS avg_onlinePercent, 
-    AVG(reconnects) AS avg_reconnects 
+    AVG(reconnects) AS avg_reconnects,
+    COUNT(intercom_uuid) AS intercom_count,
+    COUNT(if(onlinePercent!=0,onlinePercent,Null)) as if_onlinePercent_not_0_count
 FROM 
     (SELECT 
         intercoms_st_asgard.`report_date` as report_date, 
