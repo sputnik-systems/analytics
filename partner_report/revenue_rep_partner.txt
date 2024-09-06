@@ -64,7 +64,8 @@ FROM
        '3bbd7565-a843-4b0f-96fc-232df48baf75',
        'e4be161c-bd52-464e-8120-2815befdd23c',
         '0e7236ac-b8bd-4ab0-8634-d165ad17190e',/*цифрал сервис ук 120345*/
-        'db61f873-dcf7-4678-aec1-6b93f54ddbb2' /*цифрал актобе 120377*/
+        'db61f873-dcf7-4678-aec1-6b93f54ddbb2', /*цифрал актобе 120377*/
+        'e7e86c75-fc8b-4710-839d-56ad86f43211'/*Цифрал Тольятти 152762*/
        )
 
        and `billing_orders_dir_partner`.`partner_uuid` not in (
