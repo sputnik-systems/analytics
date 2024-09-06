@@ -1,5 +1,6 @@
 SELECT
-    count(distinct citizens_st_mobile.citizen_id) as total_activated_account
+    count(distinct citizens_st_mobile.citizen_id) as total_activated_account,
+    COUNT(DISTINCT IF(monetization=1,citizens_st_mobile.citizen_id)) as total_activated_account_monetization
 FROM
     `citizens_st_mobile`
     LEFT JOIN `citizens_dir_mobile` ON citizens_st_mobile.citizen_id = citizens_dir_mobile.citizen_id
