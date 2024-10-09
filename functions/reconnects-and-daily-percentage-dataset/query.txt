@@ -33,3 +33,6 @@ FROM `intercoms_st_asgard`
         ON cameras_dir_asgard.`camera_uuid` = cameras_daily_percentage_online_st_asgard.`camera_uuid` 
         and intercoms_st_asgard.`report_date` = cameras_daily_percentage_online_st_asgard.`report_date`
     WHERE intercoms_st_asgard.report_date = cast('{0}' as DATE)
+
+
+    

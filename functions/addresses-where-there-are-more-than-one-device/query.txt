@@ -5,22 +5,25 @@ SELECT
     partner_uuid,
     city,
     sum(count_intercom_uuid) AS sum_count_intercom_uuid,
-    sum(if(monetization = "true",count_intercom_uuid,null)) AS sum_count_intercom_uuid_with_monetization,
+    sum(if(monetization = 1,count_intercom_uuid,null)) AS sum_count_intercom_uuid_with_monetization,
+    sum(if(monetization_is_allowed = 1,count_intercom_uuid,null)) AS sum_count_intercom_uuid_with_allowed_monetization,
     sum(if(count_intercom_uuid>1,count_intercom_uuid,null)) AS sum_count_intercom_uuid_over_1,
-    
-    if(count(installation_point_id) = 0,
-        null,count(installation_point_id)) AS count_installation_point_id,
-    if(count(if(monetization = "true",installation_point_id,null)) = 0,
-        null,count(if(monetization = "true",installation_point_id,null))) AS count_installation_point_with_monetization,
-    if(count(if(count_intercom_uuid>1,installation_point_id,null)) = 0,
-        null,count(if(count_intercom_uuid>1,installation_point_id,null))) AS count_installation_point_id_over_1,
-    
+
+    sum(if(count_intercom_uuid>0, installation_point_id, null)) AS count_installation_point_id,
+    sum(if(count_intercom_uuid>0 and monetization = 1, installation_point_id, null)) AS count_installation_point_with_monetization,
+    sum(if(count_intercom_uuid>0 and monetization_is_allowed = 1, installation_point_id, null)) AS count_installation_point_with_allowed_monetization,
+    sum(if(count_intercom_uuid>1, installation_point_id, null)) AS count_installation_point_id_over_1,
+
     sum(flats_count) AS sum_flats_count,
+    sum(if(count_intercom_uuid>0,flats_count,null)) AS sum_flats_count_with_intercom,
     sum(if(count_intercom_uuid>1,flats_count,null)) AS sum_flats_count_over_1,
-    sum(if(monetization = "true", flats_count,null)) AS sum_flats_count_with_monetization,
-    sum(if(count_intercom_uuid>1 and monetization = "true",flats_count,null)) AS sum_flats_count_over_1_with_monetization,
+    sum(if(monetization = 1, flats_count,null)) AS sum_flats_count_with_monetization,
+    sum(if(monetization_is_allowed = 1, flats_count,null)) AS sum_flats_count_with_allowed_monetization,
+    sum(if(count_intercom_uuid>1 and monetization = 1,flats_count,null)) AS sum_flats_count_over_1_with_monetization,
+    sum(if(count_intercom_uuid>1 and monetization_is_allowed = 1,flats_count,null)) AS sum_flats_count_over_1_with_allowed_monetization,
+
     sum(if(gate_installation_point_id is not null, flats_count,null)) AS sum_flats_count_with_gate,
-    sum(if(gate_installation_point_id is not null and count_intercom_uuid=1, flats_count,null)) AS sum_flats_count_with_gate_without_over_1,
+    sum(if(gate_installation_point_id is not null and count_intercom_uuid=1, flats_count,null)) AS sum_flats_count_with_gate_without_over_1
 
 FROM
     (SELECT
