@@ -5,6 +5,16 @@ SELECT
     COUNT(distinct if((state= "activated" and created_at < CAST("{1}T00:00:00Z" as DateTime) and plan = "standard_p1m"), citizen_id)) as 
         paying_users_standart,
 
+    COUNT(distinct if((state= "activated" and created_at < CAST("{1}T00:00:00Z" as DateTime) and pro_subs = 1), citizen_id)) as 
+        paying_users_partner_pro,
+
+    COUNT(distinct if((state= "activated" and created_at < CAST("{1}T00:00:00Z" as DateTime) 
+        and pro_subs = 0 
+        and (enterprise_subs = 0 or enterprise_subs is null) 
+        and (enterprise_not_paid = 0 or enterprise_not_paid is null)  
+        and (enterprise_test = 0 or enterprise_test is null)), citizen_id)) as 
+        paying_users_partner_start,
+
     /*Аndroid*/ 
 
     COUNT(distinct if((state= "activated" and created_at < CAST("{1}T00:00:00Z" as DateTime) and plan != "standard_p1m" AND subscribed_from = "yakassa" and  started_from != "ios"), citizen_id)) as 
@@ -63,25 +73,36 @@ FROM
         DateTime::MakeDatetime(DateTime::ParseIso8601(`renew_stopped_at`)) AS `renew_stopped_at`,
         DateTime::MakeDatetime(DateTime::ParseIso8601(`renew_failed_at`)) AS `renew_failed_at`,
         `started_from`,
+        pro_subs,
+        enterprise_subs,
+        enterprise_not_paid,
+        enterprise_test,
         
         --фильтр от задвоенных подписок на ios
         if (subscriptions_st_mobile.`citizen_id` in (SELECT`citizen_id` FROM
                                 (SELECT
                                         *
                                     FROM `subscriptions_st_mobile`
-                                    WHERE report_date = CAST("{2}" as DATE) 
+                                    WHERE report_date = CAST("{2}" as DATE)
+                                    and subscriptions_st_mobile.year = {3} and subscriptions_st_mobile.month = {4} 
                                 )
                                 group by citizen_id
                                 HAVING COUNT(if(state= "activated", citizen_id)) > 1
                             ) AND subscribed_from = 'ios', 1,null) AS `filter_ios`
                             
     FROM `subscriptions_st_mobile`
-    LEFT JOIN `citizens_dir_mobile` ON subscriptions_st_mobile.citizen_id = citizens_dir_mobile.citizen_id
-    LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.flat_uuid = citizens_dir_mobile.flat_uuid
-    LEFT JOIN  `entries_installation_points_dir_partner` ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
-    LEFT JOIN `installation_point_st_partner` ON `installation_point_st_partner`.installation_point_id = entries_installation_points_dir_partner.installation_point_id
-                                                AND installation_point_st_partner.report_date = subscriptions_st_mobile.report_date
+    LEFT JOIN `citizens_dir_mobile` ON subscriptions_st_mobile.`citizen_id` = citizens_dir_mobile.`citizen_id`
+    LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.`flat_uuid` = citizens_dir_mobile.`flat_uuid`
+    LEFT JOIN  `entries_installation_points_dir_partner` 
+            ON flats_dir_partner.`address_uuid` = entries_installation_points_dir_partner.`address_uuid`
+    LEFT JOIN `installation_point_st_partner` 
+            ON `installation_point_st_partner`.`installation_point_id` = entries_installation_points_dir_partner.`installation_point_id`
+            AND installation_point_st_partner.`report_date` = subscriptions_st_mobile.`report_date`
+    LEFT JOIN `companies_st_partner` ON installation_point_st_partner.`partner_uuid`= companies_st_partner.`partner_uuid`
+                                    AND  companies_st_partner.`report_date` = subscriptions_st_mobile.`report_date`
+
     WHERE subscriptions_st_mobile.report_date = CAST("{2}" as DATE)
+        and subscriptions_st_mobile.year = {3} and subscriptions_st_mobile.month = {4}
     )
 WHERE filter_ios is NULL
 group by report_date

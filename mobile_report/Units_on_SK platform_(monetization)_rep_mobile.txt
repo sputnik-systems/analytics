@@ -1,9 +1,20 @@
 SELECT
-    count(distinct if(installation_point_st_partner.report_date = cast('{2}' as DATE), `address_uuid`)) as `Units on SK platform`,
-    count(distinct if(monetization = 0 and installation_point_st_partner.report_date = cast('{2}' as DATE), `address_uuid`)) as `Units stricted monetization`,
-    count(distinct if(monetization = 1 and installation_point_st_partner.report_date = cast('{2}' as DATE), `address_uuid`)) as `Units free monetization`
+    count(distinct if(intercom_uuid is not NULL, `address_uuid`)) as `Units on SK platform`,
+    count(distinct if(monetization = 0 and intercom_uuid is not NULL, `address_uuid`)) as `Units stricted monetization`,
+    count(distinct if(monetization = 1 and intercom_uuid is not NULL, `address_uuid`)) as `Units free monetization`,
+    count(distinct if(monetization = 1 and intercom_uuid is not NULL  and pro_subs = 1, `address_uuid`)) as `Units_free_monetization_pro`,
+    count(distinct if(monetization = 1 
+                    and intercom_uuid is not NULL 
+                    and pro_subs = 1
+                    and (enterprise_subs = 0 or enterprise_subs is null) 
+                    and (enterprise_not_paid = 0 or enterprise_not_paid is null)  
+                    and (enterprise_test = 0 or enterprise_test is null)
+                    , `address_uuid`)) as `Units_free_monetization_start`
+
 FROM `installation_point_st_partner`
 LEFT JOIN entries_installation_points_dir_partner ON  installation_point_st_partner.installation_point_id = entries_installation_points_dir_partner.installation_point_id
 LEFT JOIN intercoms_st_partner ON intercoms_st_partner.installation_point_id = installation_point_st_partner.installation_point_id
                                AND intercoms_st_partner.report_date = installation_point_st_partner.report_date
-WHERE intercom_uuid is not NULL
+LEFT JOIN `companies_st_partner` ON installation_point_st_partner.`partner_uuid`= companies_st_partner.`partner_uuid`
+                            AND  companies_st_partner.`report_date` = installation_point_st_partner.`report_date`
+WHERE installation_point_st_partner.report_date = cast('{2}' as DATE)
