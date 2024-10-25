@@ -1,86 +1,229 @@
 SELECT
     report_date,
     citizen_id,
-    state AS subscription_state,
+    subscription_state,
+    CAST(subscription_id AS Utf8) AS subscription_id,
+    subscription_activated_date,
+    subscription_deactivated_date,
+    `created_at`,
+    `activated_at`,
+    `subscribed_from`,
+    `started_from`,
+    `auto_renew_status`,
+    `plan`,
+    `expires_date`,
+    `renew_stopped_at`,
+    `renew_failed_at`,
+    `amount`,
+    `amount_last_month`
+FROM
+
+(SELECT
+    report_date,
+    citizen_id,
+    subscription_state,
     subscription_id,
     subscription_activated_date,
-    subscription_deactivated_date
-FROM    
+    subscription_deactivated_date,
+    `created_at`,
+    `activated_at`,
+    `subscribed_from`,
+    `started_from`,
+    `auto_renew_status`,
+    `plan`,
+    `expires_date`,
+    `renew_stopped_at`,
+    `renew_failed_at`,
+    `amount`,
+   LAST_VALUE(amount_activated_at) IGNORE NULLS OVER (PARTITION BY subscription_id ORDER BY report_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS amount_last_month
+FROM
     (SELECT
-        DISTINCT
+        distinct 
         report_date,
         citizen_id,
-        state,
+        state AS subscription_state,
         subscription_id,
-        LAST_VALUE(COALESCE(subscription_activated_report_date_first,subscription_activated_report_date)) IGNORE NULLS OVER (PARTITION BY subscription_id ORDER BY report_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS subscription_activated_date,
-        LAST_VALUE(subscription_deactivated_report_date) IGNORE NULLS OVER (PARTITION BY subscription_id ORDER BY report_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS subscription_deactivated_date
-    FROM
+        subscription_activated_date,
+        subscription_deactivated_date,
+        `created_at`,
+        `activated_at`,
+        `subscribed_from`,
+        `started_from`,
+        `auto_renew_status`,
+        `plan`,
+        `expires_date`,
+        `renew_stopped_at`,
+        `renew_failed_at`,
+        `amount`,
+        CASE
+            WHEN report_date = DateTime::MakeDate(`activated_at`) THEN LAG(amount) OVER (PARTITION BY subscription_id order by report_date)
+            ELSE NULL
+        END AS amount_activated_at
+    FROM    
         (SELECT
+            DISTINCT
             report_date,
             citizen_id,
             state,
-            subscription_id_first,
-            subscription_id_new,
-            count_citizen_id,
-            LAST_VALUE(COALESCE(subscription_id_first,subscription_id_new)) IGNORE NULLS OVER (PARTITION BY citizen_id ORDER BY report_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS subscription_id,
-            subscription_activated_report_date_first,
-            subscription_activated_report_date,
-            subscription_deactivated_report_date
+            subscription_id,
+            LAST_VALUE(COALESCE(subscription_activated_report_date_first,subscription_activated_report_date)) IGNORE NULLS OVER (PARTITION BY subscription_id ORDER BY report_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS subscription_activated_date,
+            LAST_VALUE(subscription_deactivated_report_date) IGNORE NULLS OVER (PARTITION BY subscription_id ORDER BY report_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS subscription_deactivated_date,
+            `created_at`,
+            `activated_at`,
+            `subscribed_from`,
+            `started_from`,
+            `auto_renew_status`,
+            `plan`,
+            `expires_date`,
+            `renew_stopped_at`,
+            `renew_failed_at`,
+            `amount`,
+
         FROM
             (SELECT
                 report_date,
                 citizen_id,
                 state,
-                IF(count_citizen_id = 1, CAST(CAST(`citizen_id` AS String)||'_'|| CAST(`report_date` AS String) AS Utf8)) AS subscription_id_first,
-                IF(count_citizen_id = 1 AND state != 'deactivated', report_date) AS subscription_activated_report_date_first,
-                
-                CASE 
-                    WHEN LAG(state) OVER (PARTITION BY citizen_id ORDER BY report_date) = 'deactivated' 
-                        AND state = 'activated' 
-                    THEN CAST(`citizen_id` AS Utf8)||'_'|| CAST(`report_date` AS Utf8)
-                    ELSE Null
-                END AS subscription_id_new,
+                subscription_id_first,
+                subscription_id_new,
+                count_citizen_id,
+                LAST_VALUE(COALESCE(subscription_id_first,subscription_id_new)) IGNORE NULLS OVER (PARTITION BY citizen_id ORDER BY report_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS subscription_id,
+                subscription_activated_report_date_first,
+                subscription_activated_report_date,
+                subscription_deactivated_report_date,
+                `activated_at`,
+                `created_at`,
+                `subscribed_from`,
+                `started_from`,
+                `auto_renew_status`,
+                `plan`,
+                `expires_date`,
+                `renew_stopped_at`,
+                `renew_failed_at`,
+                `amount`
 
-                CASE 
-                    WHEN LAG(state) OVER (PARTITION BY citizen_id ORDER BY report_date) = 'activated' 
-                        AND state = 'deactivated'  
-                    THEN report_date
-                    ELSE Null
-                END AS subscription_deactivated_report_date,
-                
-                CASE 
-                    WHEN LAG(state) OVER (PARTITION BY citizen_id ORDER BY report_date) = 'deactivated' 
-                        AND state = 'activated' 
-                    THEN report_date
-                    ELSE Null
-                END AS subscription_activated_report_date,
-
-
-                count_citizen_id
             FROM
                 (SELECT
-                    subscriptions_st_mobile.`report_date` AS report_date,
-                    subscriptions_st_mobile.`citizen_id` AS citizen_id,
-                    subscriptions_st_mobile.`state` AS `state`,
-                    subscriptions_st_mobile.`created_at` AS created_at,
-                    `subscribed_from`,
-                    `auto_renew_status`,
+                    report_date,
+                    citizen_id,
+                    state,
+                    IF(count_citizen_id = 1 ,CAST(COALESCE(CAST(`citizen_id` AS Utf8),"_") AS Utf8)
+                                            ||'_'|| CAST(`report_date` AS Utf8) 
+                                            ||'_'|| CAST(COALESCE(`subscribed_from` ,"_") AS Utf8)
+                                            ||'_'|| CAST(COALESCE(`started_from` ,"_") AS Utf8)
+                                            ||'_'|| CAST(COALESCE(CAST(`amount` AS String) ,"_") AS Utf8)
+                    ) AS subscription_id_first,
+                    IF(count_citizen_id = 1 AND state != 'deactivated', report_date) AS subscription_activated_report_date_first,
+                    
+                    CASE 
+                        WHEN LAG(state) OVER (PARTITION BY citizen_id ORDER BY report_date) = 'deactivated' 
+                            AND state != 'deactivated'
+                        THEN CAST(COALESCE(CAST(`citizen_id` AS Utf8),"_") AS Utf8)
+                                            ||'_'|| CAST(`report_date` AS Utf8) 
+                                            ||'_'|| CAST(COALESCE(`subscribed_from` ,"_") AS Utf8)
+                                            ||'_'|| CAST(COALESCE(`started_from` ,"_") AS Utf8)
+                                            ||'_'|| CAST(COALESCE(CAST(`amount` AS String) ,"_") AS Utf8)
+                        ELSE Null
+                    END AS subscription_id_new,
+
+                    CASE 
+                        WHEN LAG(state) OVER (PARTITION BY citizen_id ORDER BY report_date) != 'deactivated'
+                            AND state = 'deactivated'  
+                        THEN report_date
+                        ELSE Null
+                    END AS subscription_deactivated_report_date,
+                    
+                    CASE 
+                        WHEN LAG(state) OVER (PARTITION BY citizen_id ORDER BY report_date) = 'deactivated' 
+                            AND state != 'deactivated' 
+                        THEN report_date
+                        ELSE Null
+                    END AS subscription_activated_report_date,
+                    count_citizen_id,
                     `activated_at`,
+                    `created_at`,
+                    `subscribed_from`,
+                    `started_from`,
+                    `auto_renew_status`,
                     `plan`,
                     `expires_date`,
                     `renew_stopped_at`,
-                    `renew_failed_at`,
-                    `started_from`,
-                    `year`,
-                    `month`,
-                    ROW_NUMBER() OVER (PARTITION BY citizen_id ORDER BY report_date) as count_citizen_id
+                    `renew_failed_at`,     
+                    `amount`
+                FROM
+                    (SELECT
+                        subscription.`report_date` AS `report_date`,
+                        subscription.`citizen_id` AS `citizen_id`,
+                        subscription.`state` AS `state`,
+                        subscription.`created_at` AS `created_at`,
+                        subscription.`subscribed_from` AS `subscribed_from`,
+                        subscription.`auto_renew_status` AS `auto_renew_status`,
+                        subscription.`activated_at` AS `activated_at`,
+                        subscription.`plan` AS `plan`,
+                        subscription.`expires_date` AS `expires_date`,
+                        subscription.`renew_stopped_at` AS `renew_stopped_at`,
+                        subscription.`renew_failed_at` AS `renew_failed_at`,
+                        subscription.`from` AS `from`,
+                        `amount`,
+                        ROW_NUMBER() OVER (PARTITION BY subscription.`citizen_id` ORDER BY subscription.`report_date`) as count_citizen_id,
+                        subscription.`started_from` AS `started_from`
+                    FROM
+                        (SELECT  
+                            `report_date`,
+                            `citizen_id`,
+                            `state`,
+                            `subscribed_from`,
+                            `started_from`,
+                            `auto_renew_status`,
+                            DateTime::MakeDatetime(DateTime::StartOf(DateTime::MakeDatetime(DateTime::ParseIso8601(`activated_at`)), Interval("PT1H"))) as `activated_at`,
+                            `created_at`,
+                            `plan`,
+                            `expires_date`,
+                            `renew_stopped_at`,
+                            `renew_failed_at`,
+                            CASE
+                                WHEN subscribed_from = 'yakassa' THEN 'yookassa'
+                                WHEN subscribed_from = 'ios' THEN 'appstore'
+                                ELSE NULL
+                            END AS `from`,
+                            `year`,
+                            `month`
+                        FROM `subscriptions_st_mobile`
+                        WHERE plan = 'standard_p1m'
+                            {1}
+                        ) as subscription
 
-                FROM `subscriptions_st_mobile`
-                order by citizen_id,report_date
+                        LEFT JOIN
+                        (SELECT
+                            *
+                        FROM
+                        (SELECT
+                            `report_date`,
+                            `citizen_id`,
+                            `payment_id`,
+                            `created_at`,
+                            `state`,
+                            `amount`,
+                            DateTime::MakeDatetime(DateTime::StartOf(DateTime::MakeDatetime(DateTime::ParseIso8601(`paid_at`)), Interval("PT1H"))) as `paid_at`,
+                            `refunded_at`,
+                            `refunded_amount`,
+                            `from`,
+                            `product_ids`,
+                            ROW_NUMBER() OVER (PARTITION BY report_date, citizen_id ,DateTime::MakeDatetime(DateTime::StartOf(DateTime::MakeDatetime(DateTime::ParseIso8601(`paid_at`)), Interval("PT1H"))) ORDER BY amount DESC) AS `rank_filter`
+                        FROM `citizen_payments_st_mobile`
+                        WHERE product_ids = '[\"standard\"]'
+
+                        order by report_date
+                        ) WHERE rank_filter = 1 
+                        
+                        ) AS citizen_payments_st_mobile ON subscription.`from` = citizen_payments_st_mobile.`from`
+                                                            and subscription.`citizen_id` = citizen_payments_st_mobile.`citizen_id`
+                                                            and subscription.`activated_at` = citizen_payments_st_mobile.`paid_at`
+                    )
                 )
             )
+        order by citizen_id,report_date
         )
-    order by citizen_id,report_date
     )
+)
 WHERE report_date = CAST('{0}' AS DATE)
-order by citizen_id,subscription_activated_date
