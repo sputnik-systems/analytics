@@ -7,14 +7,10 @@ SELECT
     archive_count_3_commercial,
     pro_commercial_avtograd_count,
     archive_3_pro_commercial_avtograd_count,
-    pro_actobe_commercial,
-    archive_3_pro_actobe_commercial,
     safe_city_and_security_sector_pro,
     safe_city_and_security_sector_arhive,
     pro_dominant,
     archive_3_dominant,
-    pro_commercial_actobe_count,
-    archive_count_3_actobe_commerial,
     count_safe_city_and_security_sector_pro,
     count_safe_city_and_security_sector_arhive,
     pro_dominant_count,
@@ -23,11 +19,12 @@ SELECT
     `ООО ПКФ ИНСИТ`,
     `R1 (АО ЭРТХ)`,
     `АО ЭРТХ (Цифрал Сервис)`,
-    billings_enterprise,
     `АО ЭРТХ (Цифрал Сервис)_count`,
     `R1 (АО ЭРТХ)_count`,
     `ООО ПКФ ИНСИТ_count`,
-    billings_enterprise_count
+    `billings_enterprise`,
+    `billings_enterprise_count`
+
 
 FROM 
     (SELECT
@@ -36,24 +33,11 @@ FROM
         sum(if(`ЛК` = 120345, `Направлено УПД архивы`)) AS archive_3_pro_commercial,
         sum(if(`ЛК` = 152762, `Направлено УПД PRO`)) AS pro_commercial_avtograd,
         sum(if(`ЛК` = 152762, `Направлено УПД архивы`)) AS archive_3_pro_commercial_avtograd,
+        
         sum(if(`ЛК` = 120345, `Количество услуг PRO`)) AS PRO_count_commercial,
         sum(if(`ЛК` = 120345, `Количество архивов`)) AS archive_count_3_commercial,
         sum(if(`ЛК` = 152762, `Количество услуг PRO`)) AS pro_commercial_avtograd_count,
         sum(if(`ЛК` = 152762, `Количество архивов`)) AS archive_3_pro_commercial_avtograd_count,
-        
-        0 AS pro_actobe_commercial,
-        95982 AS archive_3_pro_actobe_commercial,
-        80960 AS safe_city_and_security_sector_pro,
-        442050 AS safe_city_and_security_sector_arhive,
-        85840 AS pro_dominant,
-        96570 AS archive_3_dominant,
-
-        0 AS pro_commercial_actobe_count,
-        924 AS archive_count_3_actobe_commerial,
-        1012 AS count_safe_city_and_security_sector_pro,
-        842 AS count_safe_city_and_security_sector_arhive,
-        1073 as pro_dominant_count,
-        1073 as archive_3_dominant_count
 
     FROM `report_commercial_software_pro`
     WHERE `Дата` = cast('{2}' AS DATE)
@@ -63,18 +47,40 @@ FROM
     LEFT JOIN
     (SELECT
         `Дата`,
-        sum(`Направлено УПД`) + 6628 AS revenue_enterprise,
+        sum(`Направлено УПД`)AS revenue_enterprise,
         sum(if(`Название компании` = 'ООО ПКФ ИНСИТ', `Направлено УПД`)) AS `ООО ПКФ ИНСИТ`,
         sum(if(`Название компании` = 'R1 (АО ЭРТХ)', `Направлено УПД`)) AS `R1 (АО ЭРТХ)`,
         sum(if(`Название компании` = 'АО ЭРТХ (Цифрал Сервис)', `Направлено УПД`)) AS `АО ЭРТХ (Цифрал Сервис)`,
-        6628 AS billings_enterprise,
+        sum(if(`Название компании` = 'Биллинги (Партнер)', `Направлено УПД`)) AS `billings_enterprise`,
+  
         sum(if(`Название компании` = 'ООО ПКФ ИНСИТ', `Количество услуг`)) AS `АО ЭРТХ (Цифрал Сервис)_count`,
         sum(if(`Название компании` = 'R1 (АО ЭРТХ)', `Количество услуг`)) AS `R1 (АО ЭРТХ)_count`,
         sum(if(`Название компании` = 'АО ЭРТХ (Цифрал Сервис)', `Количество услуг`)) AS `ООО ПКФ ИНСИТ_count`,
-        83 AS billings_enterprise_count,
+        sum(if(`Название компании` = 'Биллинги (Партнер)', `Количество услуг`)) AS `billings_enterprise_count`
     FROM `report_commercial_software_enterprise`
     WHERE `Дата` = cast('{2}' AS DATE)
     GROUP BY `Дата`
-    ) as  report_commercial_software_enterprise 
+    ) as  report_commercial_software_enterprise   
         ON report_commercial_software_enterprise.`Дата` = report_commercial_software_pro.`Дата`
+
+    LEFT JOIN
+    (SELECT
+        `Дата`,
+        sum(if(`ЛК` = 124068, `Направлено УПД PRO`)) AS safe_city_and_security_sector_pro,
+        sum(if(`ЛК` = 124068, `Направлено УПД архивы`)) AS safe_city_and_security_sector_arhive,
+        sum(if(`ЛК` = 144724, `Направлено УПД PRO`)) AS pro_dominant,
+        sum(if(`ЛК` = 144724, `Направлено УПД архивы`)) AS archive_3_dominant,
+
+        sum(if(`ЛК` = 124068, `Количество услуг PRO`)) AS count_safe_city_and_security_sector_pro,
+        sum(if(`ЛК` = 124068, `Количество архивов`)) AS count_safe_city_and_security_sector_arhive,
+        sum(if(`ЛК` = 144724, `Количество услуг PRO`)) AS archive_3_dominant_count,
+        sum(if(`ЛК` = 144724, `Количество архивов`)) AS pro_dominant_count,
+        
+    FROM `report_commercial_software_other`
+    WHERE `Дата` = cast('{2}' AS DATE)
+    GROUP BY `Дата`
+    ) AS report_commercial_software_other 
+         ON report_commercial_software_other.`Дата` = report_commercial_software_pro.`Дата`
+
+   
 LIMIT 1000;

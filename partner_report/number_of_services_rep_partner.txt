@@ -8,7 +8,8 @@ SELECT
                     'af1dd075-8be1-4b9c-ac96-a329a41e115a', -- ООО Антей-Сервис 128278
                     'b204dc6b-9617-438b-b3ec-f6158296e924', --  ТИЛЛЕ СЕРГЕЙ ИП 124638
                     '608a1acb-1192-489e-9aa1-3f73492d4f79', -- ООО "Интронекс Сетевые Решения" 128958
-                    '95291d13-cb09-4eef-ae5f-dce597214b03' -- ИП Поздняков А.В.
+                    '95291d13-cb09-4eef-ae5f-dce597214b03', -- ИП Поздняков А.В.
+                    'db61f873-dcf7-4678-aec1-6b93f54ddbb2' /*цифрал актобе 120377*/
                 ),`count`))/count(distinct (DateTime::MakeDate(DateTime::ParseIso8601(created_at)))) as int) as pro_count,
     cast(sum(if(service="archive_3_pro",`count`))/count(distinct (DateTime::MakeDate(DateTime::ParseIso8601(created_at)))) as int) as archive_count_3_pro,
     cast(sum(if(service="archive_5_pro",`count`))/count(distinct (DateTime::MakeDate(DateTime::ParseIso8601(created_at)))) as int) as archive_count_5_pro,
@@ -38,7 +39,7 @@ FROM
                 ON companies_st_partner.partner_uuid = billing_orders_dir_partner.partner_uuid 
                 AND companies_st_partner.report_date = DateTime::MakeDate(DateTime::ParseIso8601(billing_orders_dir_partner.created_at))
             WHERE state = "success" 
-            AND DateTime::MakeDate(DateTime::ParseIso8601(created_at)) between cast("{0}" AS DATE) and cast("{1}" AS DATE)
+            AND DateTime::MakeDate(DateTime::ParseIso8601(created_at)) between cast("{0}" AS DATE) and cast("{2}" AS DATE)
             AND `billing_orders_dir_partner`.`partner_uuid` not in 
                     ('b1782e4f-9198-49d1-b5aa-7bdba9c87d21',
                     '01e62154-20f3-4da5-a604-898837d07026',
@@ -66,7 +67,7 @@ FROM
 
                     AND `billing_orders_dir_partner`.`partner_uuid` not in (
                     '0e7236ac-b8bd-4ab0-8634-d165ad17190e',/*цифрал сервис ук 120345*/
-                    'db61f873-dcf7-4678-aec1-6b93f54ddbb2', /*цифрал актобе 120377*/
+                    -- 'db61f873-dcf7-4678-aec1-6b93f54ddbb2', /*цифрал актобе 120377*/
                     'e7e86c75-fc8b-4710-839d-56ad86f43211'/*Цифрал Тольятти 152762*/
                     )
 

@@ -1,3 +1,6 @@
+$date = CAST('{2}' as date);
+
+
 SELECT
     COUNT(DISTINCT `intercom_uuid`) as `intercom_uuid_count`,
     COUNT(DISTINCT `installation_point_id_count`) AS installation_point_id_connected_count,
@@ -96,13 +99,16 @@ FROM
                     intercoms_st_asgard.`is_online` as is_online,
                     MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_online`))) over (partition by intercoms_st_asgard.intercom_uuid ORDER by intercoms_st_asgard.report_date) as disconnection_datetime,
                     MAX(DateTime::MakeDatetime(DateTime::ParseIso8601(`last_offline`))) over (partition by intercoms_st_asgard.intercom_uuid ORDER by intercoms_st_asgard.report_date) as connection_datetime,
-                    `dwh-asgard-intercoms`.`partner_uuid` as `partner_uuid`,
+                    intercoms_st_asgard.`partner_uuid` as `partner_uuid`,
                     intercoms_st_partner.`installation_point_id` as installation_point_id
-                FROM `intercoms_st_asgard`
-                LEFT JOIN `dwh-asgard-intercoms`  ON intercoms_st_asgard.`intercom_uuid` =`dwh-asgard-intercoms`.`device_id` 
-                                                  AND intercoms_st_asgard.`report_date` = `dwh-asgard-intercoms`.`report_date`
-                LEFT JOIN `intercoms_st_partner`  ON intercoms_st_asgard.`intercom_uuid` = intercoms_st_partner.`intercom_uuid` 
-                                                AND intercoms_st_asgard.`report_date` = intercoms_st_partner.`report_date`
+                FROM (SELECT * FROM `intercoms_st_asgard` 
+                        WHERE year = DateTime::GetYear($date)
+                        AND month = DateTime::GetMonth($date)) as `intercoms_st_asgard`
+                LEFT JOIN (SELECT * FROM `intercoms_st_partner` 
+                        WHERE year = DateTime::GetYear($date)
+                        AND month = DateTime::GetMonth($date)) as `intercoms_st_partner`
+                    ON intercoms_st_asgard.`intercom_uuid` = intercoms_st_partner.`intercom_uuid` 
+                    AND intercoms_st_asgard.`report_date` = intercoms_st_partner.`report_date`
                     ) as intercoms
                 LEFT JOIN
                     (SELECT
@@ -118,12 +124,14 @@ FROM
                         `enterprise_not_paid`,
                         `enterprise_test`
                     FROM
-                        `companies_st_partner` as companies_st
+                        (SELECT * FROM `companies_st_partner` 
+                            WHERE year = DateTime::GetYear($date)
+                            AND month = DateTime::GetMonth($date)) AS companies_st
                         LEFT JOIN `companies_dir_partner` using(partner_uuid)
                     ) AS companies 
                     ON intercoms.`partner_uuid` = companies.`partner_uuid` AND intercoms.`report_date` = companies.`report_date`      
             )
-        WHERE report_date = CAST('{2}' as date)  
+        WHERE report_date = $date   
         and `partner_uuid` not in 
                 ('b1782e4f-9198-49d1-b5aa-7bdba9c87d21',
                 '01e62154-20f3-4da5-a604-898837d07026',

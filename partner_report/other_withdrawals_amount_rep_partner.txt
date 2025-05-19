@@ -6,16 +6,21 @@ FROM
         amount,
         created_at,
         CASE
-            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'компенсация' then 'компенсация'
-            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'скидка' then 'скидка'
-            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'бонус' then 'бонус'
-            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'ошибочное' then 'ошибка'
-            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1))) = 'ошибка' then 'ошибка'
-            else Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(`comment` AS UTF8), ' '), 1 - 1)))
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(Unicode::ReplaceAll(`comment`,'.',' ') AS UTF8), ' '), 1 - 1))) = 'компенсация' then 'компенсация'
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(Unicode::ReplaceAll(`comment`,'.',' ') AS UTF8), ' '), 1 - 1)))  = 'скидка' then 'скидка'
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(Unicode::ReplaceAll(`comment`,'.',' ') AS UTF8), ' '), 1 - 1)))  = 'бонус' then 'бонус'
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(Unicode::ReplaceAll(`comment`,'.',' ') AS UTF8), ' '), 1 - 1)))  = 'ошибочное' then 'ошибка'
+            when Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(Unicode::ReplaceAll(`comment`,'.',' ') AS UTF8), ' '), 1 - 1)))  = 'ошибка' then 'ошибка'
+            else Unicode::ToLower(ListHead(ListSkip(Unicode::SplitToList(CAST(Unicode::ReplaceAll(`comment`,'.',' ') AS UTF8), ' '), 1 - 1))) 
+        
         END as service
     FROM `accruals_dir_partner`
     LEFT JOIN `companies_dir_partner`  ON companies_dir_partner.partner_uuid = accruals_dir_partner.partner_uuid
+    WHERE  (created_at != DATE('2024-12-17') and amount != 845270)
     )
 WHERE service in ['компенсация','скидка','бонус','ошибка']
-    and state = "success" 
     and created_at BETWEEN CAST('{0}' as DATE) and CAST('{2}' as DATE)
+    and (created_at,amount) not in ((DATE('2024-12-17'), 845270))   -- ВЭД
+    and (created_at,amount) not in ((DATE('2024-11-07'), 500000)) -- компенсация Бастиону
+    and (created_at,amount) not in ((DATE('2025-01-05'), 50000)) -- компенсация
+    and (created_at,amount) not in ((DATE('2024-12-30'), 78954)) -- Компенсация ТОО РИТМ

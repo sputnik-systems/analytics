@@ -4,10 +4,10 @@ SELECT
     report_date,
 
     COUNT(partner_uuid) AS number_of_clients,
-    COUNT(if(status = "Start",partner_uuid,NULL)) AS count_start,
-    COUNT(if(status = "PRO",partner_uuid,NULL)) AS count_PRO,
-    COUNT(if(is_sleaping = 1,partner_uuid,null)) AS count_sleaping,
-    COUNT(if(only_warehouse = 1,partner_uuid,null)) AS count_only_warehouse,
+    COUNT(if(is_sleaping != 1 and only_warehouse != 1 and status = "Start",partner_uuid,NULL)) AS count_start,
+    COUNT(if(is_sleaping != 1 and only_warehouse != 1 and status = "PRO",partner_uuid,NULL)) AS count_PRO,
+    COUNT(if(is_sleaping = 1, partner_uuid,null)) AS count_sleaping,
+    COUNT(if(only_warehouse = 1 AND is_sleaping != 1, partner_uuid,null)) AS count_only_warehouse,
 
     COUNT(if(connected_0_growth_intercom_0_sleaping = 1,partner_uuid,null)) AS connected_0_growth_intercom_0_sleaping,
     COUNT(if(connected_0_growth_intercom_0_only_warehouse = 1,partner_uuid,null)) AS connected_0_growth_intercom_0_only_warehouse,
