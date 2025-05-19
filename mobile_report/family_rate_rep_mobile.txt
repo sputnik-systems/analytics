@@ -1,0 +1,13 @@
+SELECT
+    `family_rate_rep_mobile_sum`,
+    `family_rate_rep_mobile`
+FROM 
+    (SELECT
+        `Дата`,
+        sum(if(`ЛК` = 148303, `Направлено УПД`)) AS family_rate_rep_mobile_sum,
+        sum(if(`ЛК` = 148303, `Количество услуг`)) AS family_rate_rep_mobile
+    FROM `report_commercial_software_family`
+    WHERE `Дата` = cast('{2}' AS DATE)
+    GROUP BY `Дата`
+    ) AS report_commercial_software_family  
+LIMIT 1000;

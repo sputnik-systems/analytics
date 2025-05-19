@@ -3,8 +3,10 @@ SELECT
     {3} as `Месяц`,
     {4} as `Год`,
 
-    ((`appstore_count_69` * 69 + `appstore_count_499` * 499 + `appstore_count_2390` * 2390 + `appstore_count_1` * 1) - `refunded_amount_appstore`)  as IOS_PL,
-
+    ((`appstore_count_85` * 85 + `appstore_count_69` * 69 + `appstore_count_499` * 499 + `appstore_count_2390` * 2390 + `appstore_count_1` * 1) - `refunded_amount_appstore`)  as IOS_PL,
+	
+    `appstore_count_85`,
+    `appstore_count_85_refunded`,
     `appstore_count_69`,
     `appstore_count_69_refunded`,
     `appstore_count_499`,
@@ -15,8 +17,10 @@ SELECT
     `appstore_count_1_refunded`,
     `refunded_amount_appstore`,
 
-    ((`yookassa_count_69` * 69 + `yookassa_count_35` * 35 + `yookassa_count_1` * 1 + `yookassa_count_499` * 499 + `yookassa_count_249` * 249 +`yookassa_count_2390` * 2390) - `refunded_amount_yookassa`) as Android_PL,
-
+    ((`yookassa_count_85` * 85 + `yookassa_count_69` * 69 + `yookassa_count_35` * 35 + `yookassa_count_1` * 1 + `yookassa_count_499` * 499 + `yookassa_count_249` * 249 +`yookassa_count_2390` * 2390) - `refunded_amount_yookassa`) as Android_PL,
+	
+    `yookassa_count_85`,
+    `yookassa_count_85_refunded`,
     `yookassa_count_69`, 
     `yookassa_count_69_refunded`,
     `yookassa_count_35`, 
@@ -33,32 +37,37 @@ SELECT
     `refunded_amount_yookassa`
 FROM    
     (SELECT
+
         min(citizen_payments_st_mobile.report_date) as report_date,
-        count(if(`from` = "appstore" and amount = 69 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_69,
-        count(if(`from` = "appstore" and amount = 69 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_69_refunded,
-        count(if(`from` = "appstore" and amount = 499 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_499,
-        count(if(`from` = "appstore" and amount = 499 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_499_refunded,
-        count(if(`from` = "appstore" and amount = 2390 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_2390,
-        count(if(`from` = "appstore" and amount = 2390 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_2390_refunded,
-        count(if(`from` = "appstore" and amount = 1 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_1,
-        count(if(`from` = "appstore" and amount = 1 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_1_refunded,
+	    count( if(`from` = "appstore" and amount = 85 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_85,
+        count( if(`from` = "appstore" and amount = 85 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_85_refunded,
+        count( if(`from` = "appstore" and amount = 69 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_69,
+        count( if(`from` = "appstore" and amount = 69 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_69_refunded,
+        count( if(`from` = "appstore" and amount = 499 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_499,
+        count( if(`from` = "appstore" and amount = 499 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_499_refunded,
+        count( if(`from` = "appstore" and amount = 2390 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_2390,
+        count( if(`from` = "appstore" and amount = 2390 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_2390_refunded,
+        count( if(`from` = "appstore" and amount = 1 and state = "success", citizen_payments_st_mobile.citizen_id)) as appstore_count_1,
+        count( if(`from` = "appstore" and amount = 1 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as appstore_count_1_refunded,
 
-        sum(if(`from` = "appstore",`refunded_amount`)) as refunded_amount_appstore,   
-    
-        count(if(`from` = "yookassa" and amount = 69 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_69, 
-        count(if(`from` = "yookassa" and amount = 69 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_69_refunded,
-        count(if(`from` = "yookassa" and amount = 35 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_35, 
-        count(if(`from` = "yookassa" and amount = 35 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_35_refunded,
-        count(if(`from` = "yookassa" and amount = 1 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_1, 
-        count(if(`from` = "yookassa" and amount = 1 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_1_refunded, 
-        count(if(`from` = "yookassa" and amount = 499 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_499, 
-        count(if(`from` = "yookassa" and amount = 499 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_499_refunded,
-        count(if(`from` = "yookassa" and amount = 249 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_249, 
-        count(if(`from` = "yookassa" and amount = 249 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_249_refunded,  
-        count(if(`from` = "yookassa" and amount = 2390 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_2390, 
-        count(if(`from` = "yookassa" and amount = 2390 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_2390_refunded,  
+        COALESCE(sum(if(`from` = "appstore",`refunded_amount`)),0) as refunded_amount_appstore,
 
-        sum(if(`from` = "yookassa",refunded_amount)) as refunded_amount_yookassa,
+	count( if(`from` = "yookassa" and amount = 85 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_85,
+        count( if(`from` = "yookassa" and amount = 85 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_85_refunded,    
+        count( if(`from` = "yookassa" and amount = 69 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_69, 
+        count( if(`from` = "yookassa" and amount = 69 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_69_refunded,
+        count( if(`from` = "yookassa" and amount = 35 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_35, 
+        count( if(`from` = "yookassa" and amount = 35 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_35_refunded,
+        count( if(`from` = "yookassa" and amount = 1 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_1, 
+        count( if(`from` = "yookassa" and amount = 1 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_1_refunded, 
+        count( if(`from` = "yookassa" and amount = 499 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_499, 
+        count( if(`from` = "yookassa" and amount = 499 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_499_refunded,
+        count( if(`from` = "yookassa" and amount = 249 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_249, 
+        count( if(`from` = "yookassa" and amount = 249 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_249_refunded,  
+        count( if(`from` = "yookassa" and amount = 2390 and state = "success", citizen_payments_st_mobile.citizen_id)) as yookassa_count_2390, 
+        count( if(`from` = "yookassa" and amount = 2390 and state = "refunded", citizen_payments_st_mobile.citizen_id)) as yookassa_count_2390_refunded,  
+
+        COALESCE(sum(if(`from` = "yookassa",refunded_amount)),0) as refunded_amount_yookassa,
 
         max(citizen_payments_st_mobile.`report_date`) as max_report_date,
         min(citizen_payments_st_mobile.`report_date`) as min_report_date

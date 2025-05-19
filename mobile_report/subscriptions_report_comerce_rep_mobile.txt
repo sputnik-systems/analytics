@@ -90,19 +90,18 @@ FROM
                                 HAVING COUNT(if(state= "activated", citizen_id)) > 1
                             ) AND subscribed_from = 'ios', 1,null) AS `filter_ios`
                             
-    FROM `subscriptions_st_mobile`
+    FROM (SELECT * FROM`subscriptions_st_mobile` WHERE year=cast({3} as int32) and month = cast({4} as int32)) AS `subscriptions_st_mobile`
     LEFT JOIN `citizens_dir_mobile` ON subscriptions_st_mobile.`citizen_id` = citizens_dir_mobile.`citizen_id`
     LEFT JOIN `flats_dir_partner`  ON flats_dir_partner.`flat_uuid` = citizens_dir_mobile.`flat_uuid`
     LEFT JOIN  `entries_installation_points_dir_partner` 
             ON flats_dir_partner.`address_uuid` = entries_installation_points_dir_partner.`address_uuid`
-    LEFT JOIN `installation_point_st_partner` 
+    LEFT JOIN (SELECT * FROM `installation_point_st_partner`WHERE year=cast({3} as int32) and month = cast({4} as int32)) AS `installation_point_st_partner`
             ON `installation_point_st_partner`.`installation_point_id` = entries_installation_points_dir_partner.`installation_point_id`
             AND installation_point_st_partner.`report_date` = subscriptions_st_mobile.`report_date`
-    LEFT JOIN `companies_st_partner` ON installation_point_st_partner.`partner_uuid`= companies_st_partner.`partner_uuid`
+    LEFT JOIN (SELECT * FROM `companies_st_partner` WHERE year=cast({3} as int32) and month = cast({4} as int32)) AS companies_st_partner
+    ON installation_point_st_partner.`partner_uuid`= companies_st_partner.`partner_uuid`
                                     AND  companies_st_partner.`report_date` = subscriptions_st_mobile.`report_date`
-
     WHERE subscriptions_st_mobile.report_date = CAST("{2}" as DATE)
-        and subscriptions_st_mobile.year = {3} and subscriptions_st_mobile.month = {4}
     )
 WHERE filter_ios is NULL
 group by report_date
