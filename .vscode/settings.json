@@ -1,0 +1,18 @@
+{
+    "sqltools.connections": [
+        {
+            "server": "http://rc1a-eflrt968scbm232q.mdb.yandexcloud.net",
+            "port": 8443,
+            "database": "db1",
+            "useJWT": false,
+            "requestTimeout": 30000,
+            "enableTls": false,
+            "previewLimit": 50,
+            "password": "kas834719",
+            "username": "Boris",
+            "tls": {},
+            "driver": "ClickHouse",
+            "name": "Clickhouse"
+        }
+    ]
+}
