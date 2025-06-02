@@ -26,6 +26,8 @@ from ClickHouse_client import ClickHouse_client
 ch = ClickHouse_client()
 ```
 
+___
+
 ## Show all tables
 
 ```python
@@ -35,17 +37,10 @@ query_text = """--sql
 ch.query_run(query_text)
 ```
 
-## uk_addresses_partner
+____
 
-```bash vscode={"languageId": "powershell"}
-jupytext --sync adding_tables.ipynb 
-```
+## [[uk_addresses_partner]] 
 
-<!-- #region vscode={"languageId": "powershell"} -->
-[[uk_addresses_partner]],
-[[uk_addresses_partner]],
-[[uk_addresses_partner]] 
-<!-- #endregion -->
 
 ```python
 query_text = """--sql
@@ -87,7 +82,21 @@ query_text = """--sql
 ch.query_run(query_text)
 ```
 
-## users_st_partner
+```python
+query_text = """--sql
+    SELECT
+        *
+    FROM db1.uk_addresses_partner_ch
+    LIMIT 2
+    """
+
+ch.query_run(query_text)
+```
+
+___
+
+## [[users_st_partner]]
+
 
 ```python
 query_text = """--sql
@@ -131,19 +140,13 @@ query_text = """--sql
 ch.query_run(query_text)
 ```
 
-```python
-query_text = """--sql
-   SELECT * FROM db1.users_st_partner_ch
-   WHERE partner_uuid != ''
-   LIMIT 10
-    """
+___
 
-ch.query_run(query_text)
-```
-
-## uk_addresses_st_partner
+## [[uk_addresses_st_partner]]
 
 ```python
+# creating a table from s3
+
 query_text = """--sql
     CREATE TABLE db1.uk_addresses_st_partner
     (
@@ -158,6 +161,8 @@ ch.query_run(query_text)
 ```
 
 ```python
+# creating a table for materialized view
+
 query_text = """--sql
     CREATE TABLE db1.uk_addresses_st_partner_ch
     (
@@ -173,6 +178,8 @@ ch.query_run(query_text)
 ```
 
 ```python
+# creating a materialized view
+
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.uk_addresses_st_partner_mv
     REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.uk_addresses_st_partner_ch AS
@@ -184,11 +191,121 @@ query_text = """--sql
 ch.query_run(query_text)
 ```
 
+___
+
+## [[uk_dir_partner]]
+
+```python
+# creating a table from s3
+
+query_text = """--sql
+    CREATE TABLE db1.uk_dir_partner
+    (
+        `id` Int32,
+        `name`  String,
+        `partner_uuid_uk` String,
+        `created_at` String
+    )
+    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/uk_dir_partner/uk_dir_partner.csv','CSVWithNames')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+# creating a table for materialized view
+
+query_text = """--sql
+    CREATE TABLE db1.uk_dir_partner_ch
+    (
+        `id` Int32,
+        `name`  String,
+        `partner_uuid_uk` String,
+        `created_at` String
+    )
+    ENGINE = MergeTree()
+    ORDER BY partner_uuid_uk
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+# creating a materialized view
+
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.uk_dir_partner_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.uk_dir_partner_ch AS
+    SELECT
+        *
+    FROM db1.uk_dir_partner
+    """
+
+ch.query_run(query_text)
+```
+
+___
+
+## [[uk_st_partner]]
+
+
+
+```python
+# creating a table from s3
+
+query_text = """--sql
+    CREATE TABLE db1.uk_st_partner
+    (
+        `partner_uuid` String,
+        `business_partner_uuid`  String,
+        `updated_at` DateTime,
+        `partner_uk_email` String,
+        `report_date` Date
+    )
+    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/uk_st_partner/year=*/month=*/*.csv','CSVWithNames')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+# creating a table for materialized view
+
+query_text = """--sql
+    CREATE TABLE db1.uk_st_partner_ch
+    (
+        `partner_uuid` String,
+        `business_partner_uuid` String,
+        `updated_at` DateTime,
+        `partner_uk_email` String,
+        `report_date` Date
+    )
+    ENGINE = MergeTree()
+    ORDER BY partner_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+# creating a materialized view
+
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.uk_st_partner_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.uk_st_partner_ch AS
+    SELECT
+        *
+    FROM db1.uk_st_partner
+    """
+
+ch.query_run(query_text)
+```
+
 ```python
 query_text = """--sql
-   SELECT * FROM db1.uk_addresses_st_partner_ch
-   WHERE partner_uuid_uk != ''
-   LIMIT 10
+    SELECT
+        *
+    FROM db1.uk_st_partner_ch
     """
 
 ch.query_run(query_text)
