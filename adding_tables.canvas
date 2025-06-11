@@ -1,0 +1,9 @@
+{
+	"nodes":[
+		{"id":"Clickhouse/citizens_st_mobile.md","type":"file","file":"Clickhouse/citizens_st_mobile.md","x":1000,"y":0,"width":600,"height":500},
+		{"id":"Clickhouse/adding_tables.md","type":"file","file":"Clickhouse/adding_tables.md","x":160,"y":0,"width":500,"height":500,"color":"1"}
+	],
+	"edges":[
+		{"id":"Clickhouse/adding_tables.md-Clickhouse/citizens_st_mobile.md","fromNode":"Clickhouse/adding_tables.md","fromSide":"right","toNode":"Clickhouse/citizens_st_mobile.md","toSide":"left"}
+	]
+}

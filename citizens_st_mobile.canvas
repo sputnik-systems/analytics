@@ -1,0 +1,11 @@
+{
+	"nodes":[
+		{"id":"Clickhouse/citizens_st_mobile.md","width":500,"height":500,"y":0,"x":0,"type":"file","file":"Clickhouse/citizens_st_mobile.md","color":"1"},
+		{"id":"Clickhouse/test.md","width":500,"height":500,"x":1000,"y":0,"type":"file","file":"Clickhouse/test.md"},
+		{"id":"Clickhouse/adding_tables.md","width":500,"height":500,"x":-1000,"y":0,"type":"file","file":"Clickhouse/adding_tables.md"}
+	],
+	"edges":[
+		{"id":"Clickhouse/citizens_st_mobile.md-Clickhouse/test.md","fromSide":"right","toSide":"left","fromNode":"Clickhouse/citizens_st_mobile.md","toNode":"Clickhouse/test.md"},
+		{"id":"Clickhouse/citizens_st_mobile.md-Clickhouse/adding_tables.md","fromSide":"right","toSide":"left","fromNode":"Clickhouse/adding_tables.md","toNode":"Clickhouse/citizens_st_mobile.md"}
+	]
+}

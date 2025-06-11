@@ -14,7 +14,7 @@
               "type": "markdown",
               "state": {
                 "file": "Clickhouse/adding_tables.md",
-                "mode": "preview",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
@@ -165,13 +165,29 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
   "active": "464d621bd86c65e5",
   "lastOpenFiles": [
-    "Clickhouse/image.png",
+    "Clickhouse/citizens_st_mobile.md",
+    "Clickhouse/test.md",
     "Clickhouse/adding_tables.md",
-    "Clickhouse/adding_tables.ipynb"
+    "Clickhouse/__pycache__/clickhouse_cient.cpython-312.pyc",
+    "Clickhouse/clickhouse_cient.py",
+    "Clickhouse/clickhouse_client/build/lib/clickhouse_client/clickhouse_client.py",
+    "Clickhouse/clickhouse_client.py",
+    "Clickhouse/clickhouse_client/clickhouse_client/__pycache__/clickhouse_client.cpython-312.pyc",
+    "Clickhouse/clickhouse_client/clickhouse_client/__pycache__/__init__.cpython-312.pyc",
+    "Clickhouse/clickhouse_client/clickhouse_client/__pycache__",
+    "Clickhouse/clickhouse_client/build/bdist.linux-x86_64/wheel/clickhouse_client-0.1.dist-info/WHEEL",
+    "Clickhouse/clickhouse_client/build/bdist.linux-x86_64/wheel/clickhouse_client-0.1.dist-info/METADATA",
+    "Clickhouse/clickhouse_client/build/bdist.linux-x86_64/wheel/clickhouse_client-0.1.dist-info",
+    "citizens_st_mobile.canvas",
+    "Clickhouse/device-history-by-company-and-city-clickhouse/device-history-by-company-and-city-clickhouse.md",
+    "adding_tables.canvas",
+    "Untitled.canvas",
+    "Clickhouse/image.png"
   ]
 }

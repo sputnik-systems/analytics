@@ -23,8 +23,8 @@ import pytz
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
-
-from ClickHouse_client import ClickHouse_client
+# import clickhouse_client
+from clickhouse_client import ClickHouse_client
 ch = ClickHouse_client()
 ```
 
@@ -33,7 +33,7 @@ ___
 
 ```python
 query_text = """
-    DROP TABLE db1.flussonic_stats_st_asgard
+    DROP TABLE db1.hex_metrics_parquet_asgard_ch
     """
 ch.query_run(query_text)
 ```
@@ -59,6 +59,10 @@ query_text = """--sql
     SHOW TABLES FROM db1
 """
 ch.query_run(query_text)
+```
+
+```python
+
 ```
 
 ____
@@ -2248,3 +2252,568 @@ limit 100
 
 ch.query_run(query_text)
 ```
+
+____
+
+## [[cameras_daily_percentage_online_st_asgard]]
+
+
+```python
+# creating a table from s3
+
+query_text = """--sql 
+   CREATE TABLE db1.cameras_daily_percentage_online_st_asgard
+(
+    `report_date` Date,
+    `camera_uuid` String,
+    `onlinePercent` Int16
+)
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/cameras_daily_percentage_online_st_asgard/year=*/month=*/*.csv','CSVWithNames')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.cameras_daily_percentage_online_st_asgard_ch
+(
+    `report_date` Date,
+    `camera_uuid` String,
+    `onlinePercent` Int16
+)
+    ENGINE = MergeTree()
+    ORDER BY camera_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.cameras_daily_percentage_online_st_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.cameras_daily_percentage_online_st_asgard_ch AS
+    SELECT
+        *
+    FROM db1.cameras_daily_percentage_online_st_asgard
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.cameras_daily_percentage_online_st_asgard_ch
+limit 100
+
+"""
+
+ch.query_run(query_text)
+```
+
+____
+
+## [[reconnects_intercoms_st_asgard]]
+
+
+```python
+# creating a table from s3
+
+query_text = """--sql 
+   CREATE TABLE db1.reconnects_intercoms_st_asgard
+(
+    `report_date` Date,
+    `intercom_uuid` String,
+    `count` Int16
+)
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/reconnects_intercoms_st_asgard/year=*/month=*/*.csv','CSVWithNames')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.reconnects_intercoms_st_asgard_ch
+(
+    `report_date` Date,
+    `intercom_uuid` String,
+    `count` Int16
+)
+    ENGINE = MergeTree()
+    ORDER BY intercom_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.reconnects_intercoms_st_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.reconnects_intercoms_st_asgard_ch AS
+    SELECT
+        *
+    FROM db1.reconnects_intercoms_st_asgard
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.reconnects_intercoms_st_asgard_ch
+limit 100
+
+"""
+
+ch.query_run(query_text)
+```
+
+____
+
+## [[intercoms_daily_percentage_online_st_asgard]]
+
+
+```python
+# creating a table from s3
+
+query_text = """--sql 
+   CREATE TABLE db1.intercoms_daily_percentage_online_st_asgard
+(
+    `report_date` Date,
+    `intercom_uuid` String,
+    `onlinePercent` Int16
+)
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/intercoms_daily_percentage_online_st_asgard/year=*/month=*/*.csv','CSVWithNames')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.intercoms_daily_percentage_online_st_asgard_ch
+(
+    `report_date` Date,
+    `intercom_uuid` String,
+    `onlinePercent` Int16
+)
+    ENGINE = MergeTree()
+    ORDER BY intercom_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.intercoms_daily_percentage_online_st_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.intercoms_daily_percentage_online_st_asgard_ch AS
+    SELECT
+        *
+    FROM db1.intercoms_daily_percentage_online_st_asgard
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.intercoms_daily_percentage_online_st_asgard_ch
+ORDER BY report_date DESC
+limit 100
+
+"""
+
+ch.query_run(query_text)
+```
+
+
+
+
+____
+
+## [[opendoor_types_mobile_st_asgard]]
+
+
+```python
+# creating a table from s3
+
+query_text = """--sql 
+   CREATE TABLE db1.opendoor_types_mobile_st_asgard
+(
+    `report_date` Date,
+    `opendoor_type` String,
+    `count` Int16
+)
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/opendoor_types_mobile_st_asgard/year=*/month=*/*.csv','CSVWithNames')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.opendoor_types_mobile_st_asgard_ch
+(
+    `report_date` Date,
+    `opendoor_type` String,
+    `count` Int16
+)
+    ENGINE = MergeTree()
+    ORDER BY opendoor_type
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.opendoor_types_mobile_st_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.opendoor_types_mobile_st_asgard_ch AS
+    SELECT
+        *
+    FROM db1.opendoor_types_mobile_st_asgard
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.opendoor_types_mobile_st_asgard_ch
+ORDER BY report_date DESC
+limit 100
+
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    DISTINCT
+    opendoor_type
+FROM db1.opendoor_types_mobile_st_asgard_ch
+ORDER BY report_date DESC
+limit 100
+
+"""
+
+ch.query_run(query_text)
+```
+
+____
+
+## [[hex_metrics_parquet_asgard]]
+
+
+```python
+# creating a table from s3
+
+query_text = """--sql 
+   CREATE TABLE db1.hex_metrics_parquet_asgard
+(
+    `report_date` Date,
+    `intercom_uuid` String,
+    `key_hex` String,
+    `count` Int64
+)
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/hex_metrics_parquet_asgard/year=*/month=*/*.parquet','Parquet')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.hex_metrics_parquet_asgard_ch
+(
+    `report_date` Date,
+    `intercom_uuid` String,
+    `key_hex` String,
+    `count` Int64
+)
+    ENGINE = MergeTree()
+    ORDER BY intercom_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.hex_metrics_parquet_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.hex_metrics_parquet_asgard_ch AS
+    SELECT
+        *
+    FROM db1.hex_metrics_parquet_asgard
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.hex_metrics_parquet_asgard_ch
+WHERE report_date = '2025-03-01'
+ORDER BY report_date DESC
+limit 100
+
+"""
+
+ch.query_run(query_text)
+```
+
+____
+
+## [[metrics_all_intercoms_asgard]]
+
+
+```python
+# creating a table from s3
+
+query_text = """--sql 
+   CREATE TABLE db1.metrics_all_intercoms_asgard
+(
+    `report_date` Date,
+    `uuid` String,
+    `call_stop_type_finish_handset` Int32,
+    `ring_type_ring_cloud` Int32,
+    `talk_open_door_type_analog` Int32,
+    `call_stop_type_cancel_cloud` Int32,
+    `key_state_valid` Int32,
+    `ring_cluster_error_type_entrance_offline` Int32,
+    `connection` Int32,
+    `ring_type_ring_info` Int32,
+    `ring_error_type_cancel` Int32,
+    `call_success_true` Int32,
+    `digital_key_success_false` Int32,
+    `key_state_invalid` Int32,
+    `ring_cluster_error_type_wrong_flat` Int32,
+    `ring_error_type_cancel_handset` Int32,
+    `talk_type_sip` Int32,
+    `call_stop_type_cancel_button` Int32,
+    `call_success_false` Int32,
+    `open_door_type_api` Int32,
+    `call_stop_type_speak_timeout` Int32,
+    `ring_type_analog` Int32,
+    `talk_type_analog`  Int32,
+    `digital_key_success_true` Int32,
+    `open_door_type_analog` Int32,
+    `ring_type_sip` Int32,
+    `talk_type_flat` Int32,
+    `key_state_auth_err` Int32,
+    `open_door_type_DTMF` Int32,
+    `ring_cluster` Int32,
+    `talk_open_door_type_api` Int32
+)
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/metrics_all_intercoms_asgard/year=*/month=*/*.csv','CSVWithNames')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.metrics_all_intercoms_asgard_ch
+(
+    `report_date` Date,
+    `uuid` String,
+    `call_stop_type_finish_handset` Int32,
+    `ring_type_ring_cloud` Int32,
+    `talk_open_door_type_analog` Int32,
+    `call_stop_type_cancel_cloud` Int32,
+    `key_state_valid` Int32,
+    `ring_cluster_error_type_entrance_offline` Int32,
+    `connection` Int32,
+    `ring_type_ring_info` Int32,
+    `ring_error_type_cancel` Int32,
+    `call_success_true` Int32,
+    `digital_key_success_false` Int32,
+    `key_state_invalid` Int32,
+    `ring_cluster_error_type_wrong_flat` Int32,
+    `ring_error_type_cancel_handset` Int32,
+    `talk_type_sip` Int32,
+    `call_stop_type_cancel_button` Int32,
+    `call_success_false` Int32,
+    `open_door_type_api` Int32,
+    `call_stop_type_speak_timeout` Int32,
+    `ring_type_analog` Int32,
+    `talk_type_analog`  Int32,
+    `digital_key_success_true` Int32,
+    `open_door_type_analog` Int32,
+    `ring_type_sip` Int32,
+    `talk_type_flat` Int32,
+    `key_state_auth_err` Int32,
+    `open_door_type_DTMF` Int32,
+    `ring_cluster` Int32,
+    `talk_open_door_type_api` Int32
+)
+    ENGINE = MergeTree()
+    ORDER BY uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.metrics_all_intercoms_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.metrics_all_intercoms_asgard_ch AS
+    SELECT
+        *
+    FROM db1.metrics_all_intercoms_asgard
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.metrics_all_intercoms_asgard_ch
+WHERE report_date = '2025-03-01'
+ORDER BY report_date DESC
+limit 100
+
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+
+```
+
+____
+
+## [[metrics_asgard]]
+
+
+```python
+# creating a table from s3
+
+query_text = """--sql 
+   CREATE TABLE db1.metrics_asgard
+(
+    `report_date` Date,
+    `uuid` String,
+    `call_stop_type_finish_handset` Int32,
+    `ring_type_ring_cloud` Int32,
+    `talk_open_door_type_analog` Int32,
+    `call_stop_type_cancel_cloud` Int32,
+    `key_state_valid` Int32,
+    `ring_cluster_error_type_entrance_offline` Int32,
+    `connection` Int32,
+    `ring_type_ring_info` Int32,
+    `ring_error_type_cancel` Int32,
+    `call_success_true` Int32,
+    `digital_key_success_false` Int32,
+    `key_state_invalid` Int32,
+    `ring_cluster_error_type_wrong_flat` Int32,
+    `ring_error_type_cancel_handset` Int32,
+    `talk_type_sip` Int32,
+    `call_stop_type_cancel_button` Int32,
+    `call_success_false` Int32,
+    `open_door_type_api` Int32,
+    `call_stop_type_speak_timeout` Int32,
+    `ring_type_analog` Int32,
+    `talk_type_analog`  Int32,
+    `digital_key_success_true` Int32,
+    `open_door_type_analog` Int32,
+    `ring_type_sip` Int32,
+    `talk_type_flat` Int32,
+    `key_state_auth_err` Int32,
+    `open_door_type_DTMF` Int32,
+    `ring_cluster` Int32,
+    `talk_open_door_type_api` Int32
+)
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/metrics_asgard/year=*/month=*/*.csv','CSVWithNames')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.metrics_asgard_ch
+(
+    `report_date` Date,
+    `uuid` String,
+    `call_stop_type_finish_handset` Int32,
+    `ring_type_ring_cloud` Int32,
+    `talk_open_door_type_analog` Int32,
+    `call_stop_type_cancel_cloud` Int32,
+    `key_state_valid` Int32,
+    `ring_cluster_error_type_entrance_offline` Int32,
+    `connection` Int32,
+    `ring_type_ring_info` Int32,
+    `ring_error_type_cancel` Int32,
+    `call_success_true` Int32,
+    `digital_key_success_false` Int32,
+    `key_state_invalid` Int32,
+    `ring_cluster_error_type_wrong_flat` Int32,
+    `ring_error_type_cancel_handset` Int32,
+    `talk_type_sip` Int32,
+    `call_stop_type_cancel_button` Int32,
+    `call_success_false` Int32,
+    `open_door_type_api` Int32,
+    `call_stop_type_speak_timeout` Int32,
+    `ring_type_analog` Int32,
+    `talk_type_analog`  Int32,
+    `digital_key_success_true` Int32,
+    `open_door_type_analog` Int32,
+    `ring_type_sip` Int32,
+    `talk_type_flat` Int32,
+    `key_state_auth_err` Int32,
+    `open_door_type_DTMF` Int32,
+    `ring_cluster` Int32,
+    `talk_open_door_type_api` Int32
+)
+    ENGINE = MergeTree()
+    ORDER BY uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.metrics_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.metrics_asgard_ch AS
+    SELECT
+        *
+    FROM db1.metrics_asgard
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.metrics_asgard_ch
+WHERE report_date = '2025-03-01'
+ORDER BY report_date DESC
+limit 100
+
+"""
+
+ch.query_run(query_text)
+```
+
+
