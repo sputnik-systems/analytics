@@ -53,7 +53,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "billing_",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -74,7 +74,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -171,19 +172,23 @@
   },
   "active": "464d621bd86c65e5",
   "lastOpenFiles": [
+    "Clickhouse/сameras_by_companies/сameras_by_companies.md",
+    "Clickhouse/сameras_by_companies/сameras_by_companies.ipynb",
+    "Clickhouse/сameras_by_companies/сameras_by_companiess.ipynb",
+    "Clickhouse/сameras_by_companies/сameras_by_companys.md",
+    "Clickhouse/сameras_by_companies/сameras_by_companys.ipynb",
+    "Clickhouse/сameras_by_companies",
+    "Clickhouse/сameras_by_company/сameras_by_companys.md",
+    "Clickhouse/сameras_by_company/сameras_by_company.md",
+    "Clickhouse/сameras_by_company/сameras_by_companys.ipynb",
+    "Clickhouse/adding_tables.md",
     "Clickhouse/citizens_st_mobile.md",
     "Clickhouse/test.md",
-    "Clickhouse/adding_tables.md",
     "Clickhouse/__pycache__/clickhouse_cient.cpython-312.pyc",
     "Clickhouse/clickhouse_cient.py",
     "Clickhouse/clickhouse_client/build/lib/clickhouse_client/clickhouse_client.py",
     "Clickhouse/clickhouse_client.py",
     "Clickhouse/clickhouse_client/clickhouse_client/__pycache__/clickhouse_client.cpython-312.pyc",
-    "Clickhouse/clickhouse_client/clickhouse_client/__pycache__/__init__.cpython-312.pyc",
-    "Clickhouse/clickhouse_client/clickhouse_client/__pycache__",
-    "Clickhouse/clickhouse_client/build/bdist.linux-x86_64/wheel/clickhouse_client-0.1.dist-info/WHEEL",
-    "Clickhouse/clickhouse_client/build/bdist.linux-x86_64/wheel/clickhouse_client-0.1.dist-info/METADATA",
-    "Clickhouse/clickhouse_client/build/bdist.linux-x86_64/wheel/clickhouse_client-0.1.dist-info",
     "citizens_st_mobile.canvas",
     "Clickhouse/device-history-by-company-and-city-clickhouse/device-history-by-company-and-city-clickhouse.md",
     "adding_tables.canvas",

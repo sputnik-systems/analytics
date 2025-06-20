@@ -13,7 +13,7 @@ jupyter:
     name: python3
 ---
 
-device-history-by-company-and-city-clickhouse
+# Start
 
 ```python
 import clickhouse_connect
@@ -28,16 +28,132 @@ import sys
 sys.path.append('/home/boris/Documents/Work/analytics/Clickhouse')
 from clickhouse_client import ClickHouse_client
 ch = ClickHouse_client()
+pd.set_option('display.max_rows', 1000)
+```
+
+# t_device_history_by_companys_and_citys_ch
+
+
+## main
+
+```python
+query_text = """--sql
+CREATE TABLE db1.t_device_history_by_companys_and_citys_ch 
+(
+    report_date Date,
+	partner_uuid  String,
+	installation_point_id UInt32,
+	camera_uuid String,
+	intercom_uuid String,
+    first_appearance UInt32,
+    motherboard_id String,
+	camera_serial String,
+    partner_uuid_change UInt32,
+    installation_point_removing UInt32,
+    installation_point_installation UInt32,
+    installation_point_first_installing UInt32,
+    installation_pont_changing UInt32,
+)
+ENGINE = MergeTree()
+ORDER BY partner_uuid
+"""
+ch.query_run(query_text)
 ```
 
 ```python
 query_text = """--sql
--- Соединяем добавляем данные из справочников
-SELECT 
-    *
-FROM db1.intercoms_st_asgard_ch AS intercoms_st_asgard_ch
-						
-limit 10
+CREATE MATERIALIZED VIEW db1.t_device_history_by_companys_and_citys_mv 
+	REFRESH EVERY 1 DAY OFFSET 5 HOUR 5 MINUTE TO db1.t_device_history_by_companys_and_citys_ch AS
+--таблицы с устройствами от Асгарда имеют информацию в том числе до появления первой точки установки. Но там есть лишние устройства и в целом бывают проблемы.
+WITH asgard_t AS (
+	SELECT
+		report_date,
+		cameras_dir_asgard_ch.intercom_uuid AS intercom_uuid,
+		motherboard_id,
+		camera_serial,
+		cameras_st_asgard_ch.camera_uuid AS camera_uuid,
+		cameras_st_asgard_ch.partner_uuid AS partner_uuid,
+		lagInFrame(cameras_st_asgard_ch.partner_uuid) OVER (PARTITION BY camera_uuid ORDER BY report_date) AS lag_partner_uuid,
+		ROW_NUMBER() OVER (PARTITION by camera_uuid order by report_date) as n_row
+	FROM db1.cameras_st_asgard_ch as cameras_st_asgard_ch
+	LEFT JOIN db1.cameras_dir_asgard_ch as cameras_dir_asgard_ch 
+		ON cameras_st_asgard_ch.camera_uuid = cameras_dir_asgard_ch.camera_uuid
+	LEFT JOIN db1.intercoms_dir_asgard_ch AS intercoms_dir_asgard_ch 
+		ON intercoms_dir_asgard_ch.intercom_uuid = cameras_dir_asgard_ch.intercom_uuid
+	WHERE partner_uuid !='b1782e4f-9198-49d1-b5aa-7bdba9c87d21'
+),
+-- таблицы по партнеру обладают информацией по точкам установки, и данные по партнерам у них точнее
+partner_t AS (
+SELECT
+	report_date,
+	partner_uuid,
+	installation_point_id,
+	intercom_uuid,
+	camera_uuid,
+	lag_installation_point_id,
+	lagInFrame(last_installation_point_id,1) OVER (PARTITION BY camera_uuid ORDER BY report_date) AS last_installation_point_id
+FROM
+	(SELECT
+		report_date,
+		partner_uuid,
+		installation_point_id,
+		intercom_uuid,
+		camera_uuid,
+		lagInFrame(installation_point_id) OVER (PARTITION BY camera_uuid ORDER BY report_date) AS lag_installation_point_id,
+		last_value(if(installation_point_id = 0,Null,installation_point_id)) ignore nulls OVER (PARTITION BY camera_uuid  ORDER BY `report_date` ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS last_installation_point_id
+	FROM db1.cameras_st_partner_ch)
+)
+SELECT
+	report_date,
+	asgard_t.partner_uuid AS partner_uuid,
+	installation_point_id,
+	camera_uuid,
+	asgard_t.intercom_uuid AS intercom_uuid,
+	motherboard_id,
+	camera_serial,
+	IF(n_row = 1,1,0) AS first_appearance,
+	IF(n_row != 1 AND COALESCE(lag_partner_uuid,'') != COALESCE(asgard_t.partner_uuid,'') AND lag_partner_uuid != '',1,0) AS partner_uuid_change,
+	IF(n_row != 1 AND lag_installation_point_id != 0 AND installation_point_id = 0,1,0) AS installation_point_removing,
+	IF(n_row != 1 AND last_installation_point_id is Null AND installation_point_id !=0,1,0) AS installation_point_first_installing,
+	IF(n_row != 1 AND 
+			lag_installation_point_id = 0 AND
+			installation_point_id != 0 AND
+			installation_point_id = COALESCE(last_installation_point_id,0),1,0) AS installation_point_installation,
+	IF(n_row != 1 AND (
+				(
+				lag_installation_point_id = 0 AND
+				last_installation_point_id is NOT Null AND
+				installation_point_id != 0 AND
+				installation_point_id != COALESCE(last_installation_point_id,0)
+				)
+				OR
+				(
+				last_installation_point_id is NOT Null AND
+				lag_installation_point_id != 0 AND
+				lag_installation_point_id != installation_point_id
+				)
+				),1,0) AS installation_pont_changing
+FROM asgard_t 
+LEFT JOIN partner_t 
+		ON asgard_t.camera_uuid = partner_t.camera_uuid
+		AND asgard_t.report_date = partner_t.report_date
+"""
+ch.query_run(query_text)
+```
+
+## advanced
+
+```python
+query_text = """
+SYSTEM REFRESH VIEW db1.t_device_history_by_companys_and_citys_mv
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+DROP TABLE db1.t_device_history_by_companys_and_citys_mv
 """
 
 ch.query_run(query_text)
@@ -46,22 +162,69 @@ ch.query_run(query_text)
 ```python
 query_text = """--sql
 SELECT
-    device_type,
-    created_at,
-    row_number() OVER (PARTITION BY device_uuid ORDER BY created_at) AS r_number
-FROM db1.device_history_dir_partner
-limit 2
+    sum(partner_uuid_change)
+FROM db1.t_device_history_by_companys_and_citys_ch
+WHERE report_date = '2025-06-13'
+LIMIT 10
+"""
+ch.query_run(query_text)
+```
+
+# t_device_and_shipment_history_by_company_and_city
+
+
+## main
+
+```python
+query_text = """--sql
+CREATE TABLE db1.t_device_and_shipment_history_by_company_and_city (
+    `report_date` Date,
+    `partner_uuid` String,
+    `device_type` String,
+    `tariff` String,
+    `count_serial_number` UInt32,
+    `count_serial_number_not_enterprise` UInt32,
+    `count_new_serial_number` UInt32,
+    `count_serial_number_returned` UInt32,
+    `count_serial_number_partner_change` UInt32,
+    `count_serial_number_removal` UInt32,
+    `count_serial_number_installation_point_change` UInt32,
+    `count_serial_number_first_installation` UInt32,
+    `count_serial_number_on_installation_point` UInt32,
+    `count_first_appearance_on_lk` UInt32
+)
+ENGINE = MergeTree()
+ORDER BY partner_uuid
 """
 ch.query_run(query_text)
 ```
 
 ```python
 query_text = """--sql
+CREATE MATERIALIZED VIEW db1.t_device_and_shipment_history_by_company_and_city_mv 
+	REFRESH EVERY 1 DAY OFFSET 5 HOUR 10 MINUTE TO db1.t_device_and_shipment_history_by_company_and_city AS
+WITH  device_history AS (
 SELECT
+    report_date,
+	partner_uuid,
+	installation_point_id,
+    coalesce(intercom_uuid,camera_uuid) AS device_uuid,
+    if(intercom_uuid = '', 'camera','intercom') as device_type,
+    if(intercom_uuid = '', camera_serial,motherboard_id) as device_serial,
+    first_appearance,
+    partner_uuid_change,
+    installation_point_removing,
+    installation_point_installation,
+    installation_point_first_installing,
+    installation_pont_changing,
+FROM db1.t_device_history_by_companys_and_citys_ch
+),
+-- изменяем таблицу изменений устройств у партнеров, чтобы далее определять первое появление на личном кабинете партнера
+t_first_appearance AS (SELECT
     device_uuid,
     device_type,
-    created_at,
-    if(company_uuid_from = 'b1782e4f-9198-49d1-b5aa-7bdba9c87d21' AND r_number = 1,1,0) AS first_appearance
+    toDate(created_at) as report_date,
+    if(company_uuid_from = 'b1782e4f-9198-49d1-b5aa-7bdba9c87d21' AND r_number = 1,1,0) AS first_appearance_on_lk
 FROM
     (SELECT
         device_type,
@@ -70,408 +233,108 @@ FROM
         company_uuid_to,
         created_at,
         row_number() OVER (PARTITION BY device_uuid ORDER BY created_at) AS r_number
-FROM db1.device_history_dir_partner
+FROM db1.device_history_dir_partner_ch
 ) AS t1
-limit 10
-"""
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-SELECT 
-	intercoms_st_asgard_ch.report_date as report_date,
-	intercoms_st_asgard_ch.intercom_uuid AS device_uuid,
-	motherboard_id AS serial_number,
-	'intercom' AS type,
-	intercoms_st_asgard_ch.partner_uuid AS asgard_partner_uuid,
-	intercoms_st_partner_ch.partner_uuid AS partner_uuid,
-	intercoms_st_partner_ch.installation_point_id AS installation_point_id,
-	intercoms_st_partner_ch.model_identifier as model_identifier
-FROM db1.intercoms_st_asgard_ch AS intercoms_st_asgard_ch
-LEFT JOIN db1.intercoms_dir_asgard_ch AS intercoms_dir_asgard_ch ON intercoms_st_asgard_ch.intercom_uuid = intercoms_dir_asgard_ch.intercom_uuid
-LEFT JOIN db1.intercoms_st_partner_ch AS intercoms_st_partner_ch 
-	ON intercoms_st_partner_ch.intercom_uuid = intercoms_st_asgard_ch.intercom_uuid
-	AND intercoms_st_partner_ch.report_date = intercoms_st_asgard_ch.report_date
-LEFT JOIN db1.intercoms_dir_partner_ch AS intercoms_dir_partner_ch ON intercoms_dir_partner_ch.intercom_uuid = intercoms_st_asgard_ch.intercom_uuid
-limit 10					
-"""
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-SELECT
-    --LAST_VALUE(cspc.installation_point_id) IGNORE NULLS OVER (PARTITION BY COALESCE(cspc.intercom_uuid,cspc.camera_uuid)  ORDER BY cspc.report_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS last_installation_point_id,
-    --cspc.report_date as report_date,
-    --COALESCE(cspc.intercom_uuid, cspc.camera_uuid) AS device_uuid,
-    --COALESCE(motherboard_id, camera_serial) AS serial_number,
-    IF(cspc.intercom_uuid = "","intercom","") AS device_type,
-    cspc.partner_uuid as partner_uuid,
-    cspc.installation_point_id as installation_point_id,
-    ROW_NUMBER() OVER(PARTITION BY cspc.intercom_uuid, cspc.report_date ORDER BY cspc.installation_point_id DESC) AS bug_filter
-FROM db1.cameras_st_partner_ch AS cspc
-LEFT JOIN db1.installation_point_st_partner_ch  AS  ipcp
-    ON cspc.installation_point_id = ipcp.installation_point_id
-    AND cspc.report_date = ipcp.report_date
-LEFT JOIN db1.cameras_dir_asgard_ch AS cdac
-    ON cspc.camera_uuid = cdac.camera_uuid
-LEFT JOIN db1.intercoms_dir_asgard_ch AS idac
-    ON cspc.intercom_uuid = idac.intercom_uuid
-WHERE cspc.`report_date`> DATE('2023-11-12')
-LIMIT 10
-"""
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
--- Соединяем добавляем данные из справочников
-WITH intercoms_t AS (SELECT 
-	intercoms_st_asgard_ch.report_date as report_date,
-	intercoms_st_asgard_ch.intercom_uuid AS device_uuid,
-	motherboard_id AS serial_number,
-	'intercom' AS type,
-	intercoms_st_asgard_ch.partner_uuid AS asgard_partner_uuid,
-	intercoms_st_partner_ch.partner_uuid AS partner_uuid,
-	intercoms_st_partner_ch.installation_point_id AS installation_point_id,
-	intercoms_st_partner_ch.model_identifier as model_identifier
-FROM db1.intercoms_st_asgard_ch AS intercoms_st_asgard_ch
-LEFT JOIN db1.intercoms_dir_asgard_ch AS intercoms_dir_asgard_ch ON intercoms_st_asgard_ch.intercom_uuid = intercoms_dir_asgard_ch.intercom_uuid
-LEFT JOIN db1.intercoms_st_partner_ch AS intercoms_st_partner_ch 
-	ON intercoms_st_partner_ch.intercom_uuid = intercoms_st_asgard_ch.intercom_uuid
-	AND intercoms_st_partner_ch.report_date = intercoms_st_asgard_ch.report_date
-LEFT JOIN db1.intercoms_dir_partner_ch AS intercoms_dir_partner_ch ON intercoms_dir_partner_ch.intercom_uuid = intercoms_st_asgard_ch.intercom_uuid							
+WHERE first_appearance_on_lk = 1
 ),
---Добавляем данные из истории устройст. Удаляем ковычки, мешающие работе
-device_history_clean AS(SELECT 
-	date_of_changing, 
-    number_of_changing, 
-    replace(text_of_changing, '''', '') AS text_of_changing,
-    replace(serial_number, '''', '') AS serial_number,
-    replace(device_type, '''', '') AS device_type,
-    replace(device_uuid, '''', '') AS device_uuid,
-    replace(installation_point_id, '''', '') AS installation_point_id,
-    replace(partner_uuid, '''', '') AS partner_uuid,
-    replace(partner_uuid_lag, '''', '') AS partner_uuid_lag
-FROM db1.device_history)
 --
-SELECT 
-	report_date,
-	intercoms_t.partner_uuid AS partner_uuid,
-	type,
-	number_of_changing,
-	text_of_changing,
+compleate_table AS (SELECT
+    device_history.report_date as report_date,
+    company_name,
+    partner_lk,
+	device_history.partner_uuid AS partner_uuid,
 	installation_point_id,
-	device_uuid,
-	intercoms_t.serial_number as serial_number
-FROM intercoms_t
-LEFT JOIN device_history_clean ON device_history_clean.serial_number = intercoms_t.serial_number
-							AND device_history_clean.date_of_changing = intercoms_t.report_date
-limit 10
-"""
-
-ch.query_run(query_text)
-```
-
-```python
-SELECT
-	report_date,
-	partner_uuid,
-	installation_point_id,
-	camera_uuid,
-	intercom_uuid,
-	IF(n_row = 1,1,0) AS first_appearence,
-	IF(n_row != 1 AND lag_partner_uuid != partner_uuid,1,0) AS partner_uuid_change,
-	IF(n_row != 1 AND lag_installation_point_id != 0 AND installation_point_id = 0,1,0) AS installation_point_removing,
-	IF(n_row != 1 AND lag_installation_point_id = 0 AND installation_point_id != 0 AND installation_point_id != last_installation_point_id,1,0) AS installation_point_installation,
-	IF(n_row != 1 AND last_installation_point_id = 0 AND installation_point_id != 0,1,0) AS installation_point_first_installing,
-	IF(n_row != 1 AND installation_point_id !=0 AND lag_installation_point_id != installation_point_id,1,0) AS installation_pont_changing
-FROM
-	(SELECT
-		report_date,
-		partner_uuid,
-		installation_point_id,
-		intercom_uuid,
-		camera_uuid,
-		lagInFrame(installation_point_id,1,0) OVER (PARTITION BY camera_uuid ORDER BY report_date) AS lag_installation_point_id,
-		lagInFrame(partner_uuid,1,'') OVER (PARTITION BY camera_uuid ORDER BY report_date) AS lag_partner_uuid,
-		anyLast(installation_point_id) OVER (PARTITION BY camera_uuid ORDER BY report_date) AS last_installation_point_id,
-		ROW_NUMBER() OVER (PARTITION by camera_uuid order by report_date) as n_row
-	FROM db1.cameras_st_partner_ch)
-```
-
-```python
-query_text = """--sql
--- Соединяем добавляем данные из справочников
-WITH intercoms_t AS (SELECT 
-	intercoms_st_asgard_ch.report_date as report_date,
-	intercoms_st_asgard_ch.intercom_uuid AS device_uuid,
-	motherboard_id AS serial_number,
-	'intercom' AS type,
-	intercoms_st_asgard_ch.partner_uuid AS asgard_partner_uuid,
-	intercoms_st_partner_ch.partner_uuid AS partner_uuid,
-	intercoms_st_partner_ch.installation_point_id AS installation_point_id,
-	intercoms_st_partner_ch.model_identifier as model_identifier
-FROM db1.intercoms_st_asgard_ch AS intercoms_st_asgard_ch
-LEFT JOIN db1.intercoms_dir_asgard_ch AS intercoms_dir_asgard_ch ON intercoms_st_asgard_ch.intercom_uuid = intercoms_dir_asgard_ch.intercom_uuid
-LEFT JOIN db1.intercoms_st_partner_ch AS intercoms_st_partner_ch 
-	ON intercoms_st_partner_ch.intercom_uuid = intercoms_st_asgard_ch.intercom_uuid
-	AND intercoms_st_partner_ch.report_date = intercoms_st_asgard_ch.report_date
-LEFT JOIN db1.intercoms_dir_partner_ch AS intercoms_dir_partner_ch ON intercoms_dir_partner_ch.intercom_uuid = intercoms_st_asgard_ch.intercom_uuid							
-),
---Добавляем данные из истории устройст. Удаляем ковычки, мешающие работе
-device_history_clean AS(SELECT 
-	date_of_changing, 
-    number_of_changing, 
-    replace(text_of_changing, '''', '') AS text_of_changing,
-    replace(serial_number, '''', '') AS serial_number,
-    replace(device_type, '''', '') AS device_type,
-    replace(device_uuid, '''', '') AS device_uuid,
-    replace(installation_point_id, '''', '') AS installation_point_id,
-    replace(partner_uuid, '''', '') AS partner_uuid,
-    replace(partner_uuid_lag, '''', '') AS partner_uuid_lag
-FROM db1.device_history),
---
-intercoms_and_history AS(SELECT 
-	report_date,
-	intercoms_t.partner_uuid AS partner_uuid,
-	type,
-	number_of_changing,
-	text_of_changing,
-	installation_point_id,
-	device_uuid ,
-	intercoms_t.serial_number as serial_number
-FROM intercoms_t
-LEFT JOIN device_history_clean ON device_history_clean.serial_number = intercoms_t.serial_number
-							AND device_history_clean.date_of_changing = intercoms_t.report_date
-)
+    device_history.device_uuid AS device_uuid,
+    device_history.device_type AS device_type,
+    device_serial,
+    first_appearance,
+    partner_uuid_change,
+    installation_point_removing,
+    installation_point_installation,
+    installation_point_first_installing,
+    installation_pont_changing,
+    tariff,
+    first_appearance_on_lk
+    --все устроства, что на первую доступную дату не были на личном кабинете спутника добавляются дальнейшего суммирования устройств в личных кабинетах по дням
+    --max(if(first_appearance_on_lk = 0 ,if(report_date = '2023-07-12' and partner_uuid !='b1782e4f-9198-49d1-b5aa-7bdba9c87d21',1,0),first_appearance_on_lk)) 
+    --OVER (PARTITION BY device_uuid ORDER BY report_date) AS first_appearance_max
+FROM device_history
+LEFT JOIN t_first_appearance 
+    ON device_history.device_uuid = t_first_appearance.device_uuid 
+    AND device_history.report_date = t_first_appearance.report_date
+LEFT JOIN db1.companies_dir_partner_ch AS companies_dir_partner_ch 
+    ON device_history.partner_uuid = companies_dir_partner_ch.partner_uuid
+LEFT JOIN db1.companies_st_partner_ch AS companies_st_partner_ch 
+    ON device_history.partner_uuid = companies_st_partner_ch.partner_uuid
+    AND device_history.report_date = companies_st_partner_ch.report_date
+order by report_date) 
 --
 SELECT 
 	report_date,
 	partner_uuid,
-	type,
-	count(serial_number)
-	--count(if(text_of_changing LIKE '%Первое упоминание%',serial_number,Null)) AS count_new_serial_number
-	--count(if(text_of_changing LIKE '%Возвращение на точку установки%',serial_number,Null)) AS count_serial_number_returned,
-	--count(if(text_of_changing LIKE '%Изменение партнера%',serial_number,Null)) AS count_serial_number_partner_change,
-	--count(if(text_of_changing LIKE '%Cнятие с точки установки%',serial_number,Null)) AS count_serial_number_removal,
-	--count(if(text_of_changing LIKE '%Изменение точки установки%',serial_number,Null)) AS count_serial_number_installation_point_change,
-	--count(if((text_of_changing LIKE '%Первая установка%') 
-	--		OR (text_of_changing LIKE '%Первое упоминание%' AND installation_point_id != 0),serial_number,Null)) AS count_serial_number_first_installation,
-	--count(if(partner_uuid != '',serial_number,Null)) AS count_serial_number,
-    --count(if( installation_point_id != 0,serial_number,Null)) AS count_serial_number_on_installation_point
+	device_type,
+    tariff,
+	count(if(partner_uuid != '' AND partner_uuid !='b1782e4f-9198-49d1-b5aa-7bdba9c87d21',device_uuid,null)) AS count_serial_number,
+    count(if(partner_uuid != '' AND partner_uuid !='b1782e4f-9198-49d1-b5aa-7bdba9c87d21' AND tariff != 'enterprise',device_uuid,null)) AS count_serial_number_not_enterprise,
+	sum(first_appearance) AS count_new_serial_number,
+	sum(installation_point_installation) AS count_serial_number_returned,
+    sum(partner_uuid_change) AS count_serial_number_partner_change,
+	sum(installation_point_removing) AS count_serial_number_removal,
+	sum(installation_pont_changing) AS count_serial_number_installation_point_change,
+	sum(installation_point_first_installing) AS count_serial_number_first_installation,
+    sum(if(installation_point_id != 0 ,1,0)) AS count_serial_number_on_installation_point,
+    sum(first_appearance_on_lk) AS count_first_appearance_on_lk
+    --sum(first_appearance_max) AS count_first_appearance_max
 FROM
-	intercoms_and_history
+	compleate_table
+WHERE
+    report_date >= '2024-01-01'
 GROUP BY
 	report_date,
 	partner_uuid,
-	type
-limit 100
+	device_type,
+    tariff
+"""
+ch.query_run(query_text)
+```
+
+## advanced
+
+```python
+query_text = """
+SYSTEM REFRESH VIEW db1.t_device_and_shipment_history_by_company_and_city_mv
 """
 ch.query_run(query_text)
 ```
 
 ```python
-
-query_text = """--sql
-    SELECT
-        order_date,
-        partner_lk,
-        type_simple,
-        sum(count_in_order) count_in_order,
-        sum(sale_sum) AS sale_sum
-    FROM 
-        (SELECT 
-            order_date,
-            partner_lk,
-            count_in_order,
-            sale_sum,
-            CASE
-                WHEN model = 'ГОС' OR model = 'ГОС 22' OR model = 'ГОС БР' THEN 'ГОС'
-                WHEN model = 'ИО' OR model = 'ИО 22' OR model = 'ИО АПИ' OR model = 'ИО ПРО' THEN 'ИО'
-                ElSE 'Прочие модели'
-            END AS type_simple
-        FROM db1.all_order_google_sheets
-        WHERE type = 'Домофоны'
-        )
-    GROUP BY partner_lk,
-            order_date,
-            type_simple
-    """
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    WITH all_order_intercomes AS(
-        SELECT
-            order_date,
-            partner_lk,
-            type_simple,
-            sum(count_in_order) count_in_order,
-            sum(sale_sum) AS sale_sum
-        FROM 
-            (SELECT 
-                order_date,
-                partner_lk,
-                count_in_order,
-                sale_sum,
-                CASE
-                    WHEN model = 'ГОС' OR model = 'ГОС 22' OR model = 'ГОС БР' THEN 'ГОС'
-                    WHEN model = 'ИО' OR model = 'ИО 22' OR model = 'ИО АПИ' OR model = 'ИО ПРО' THEN 'ИО'
-                    ElSE 'Прочие модели'
-                END AS type_simple
-            FROM db1.all_order_google_sheets
-            WHERE type = 'Домофоны'
-            )
-        GROUP BY partner_lk,
-                order_date,
-                type_simple),
-    --
-        all_order_with_accumulated_sum AS(
-        SELECT
-            order_date,
-            if(partner_lk = 0,Null,partner_lk) as partner_lk,
-            type_simple,
-            count_in_order,
-            sale_sum,
-            sum(count_in_order) OVER (PARTITION BY partner_lk,type_simple ORDER BY order_date) AS accumulated_count,
-            sum(sale_sum) OVER (PARTITION BY partner_lk,type_simple ORDER BY order_date) AS accumulated_sum
-        FROM all_order_intercomes
-        ),
-    --			
-        date_range_cross_join AS (
-        SELECT 
-            date_range,	
-            partner_lk,
-            type_simple
-        FROM db1.date_range_table
-        CROSS JOIN 
-            (SELECT
-                DISTINCT
-                partner_lk,
-                type_simple
-            FROM all_order_with_accumulated_sum) as all_order_with_accumulated_sum
-        ),
-    --
-        date_range_with_orders AS (SELECT
-            date_range,
-            if(partner_lk = 0,Null,partner_lk) as partner_lk,
-            if(type_simple = '',Null, type_simple) as type_simple,
-            if(count_in_order = 0,Null,count_in_order) as count_in_order,
-            if(accumulated_count = 0,Null,accumulated_count) as accumulated_count,
-            if(sale_sum = 0, Null,sale_sum) as sale_sum,
-            if(accumulated_sum = 0,Null,accumulated_sum) AS accumulated_sum
-        FROM date_range_cross_join
-        LEFT JOIN all_order_with_accumulated_sum ON all_order_with_accumulated_sum.order_date = date_range_cross_join.date_range
-                                                AND all_order_with_accumulated_sum.partner_lk = date_range_cross_join.partner_lk
-                                                AND all_order_with_accumulated_sum.type_simple = date_range_cross_join.type_simple
-        ORDER BY  type_simple,partner_lk, date_range)
-    --
-    SELECT
-        date_range,
-        partner_lk,
-        type_simple,
-    --	last_value(count_in_order) IGNORE NULLS OVER (partition by partner_lk,type_simple ORDER BY date_range) as count_in_order,
-        count_in_order,
-        last_value(accumulated_count) IGNORE NULLS OVER (partition by partner_lk,type_simple ORDER BY date_range) as accumulated_count,
-        sale_sum,
-    --	last_value(sale_sum) IGNORE NULLS OVER (partition by partner_lk,type_simple ORDER BY date_range) as sale_sum,
-        last_value(accumulated_sum) IGNORE NULLS OVER (partition by partner_lk,type_simple ORDER BY date_range) as accumulated_sum
-    FROM date_range_with_orders
-    ORDER BY  type_simple,partner_lk, date_range
-    """
+query_text = """
+DROP TABLE db1.t_device_and_shipment_history_by_company_and_city_mv
+"""
 
 ch.query_run(query_text)
 ```
 
 ```python
-
-INSERT INTO FUNCTION s3(
-    'https://storage.yandexcloud.net/aggregated-data/all_order_accumulated_data/all_order_accumulated_data.parquet',
-    'parquet'
-)
-SETTINGS s3_truncate_on_insert = 1
-WITH all_order_intercomes AS(
-	SELECT
-		order_date,
-		partner_lk,
-		type_simple,
-		sum(count_in_order) count_in_order,
-		sum(sale_sum) AS sale_sum
-	FROM 
-		(SELECT 
-			order_date,
-			partner_lk,
-			count_in_order,
-			sale_sum,
-			CASE
-				WHEN model = 'ГОС' OR model = 'ГОС 22' OR model = 'ГОС БР' THEN 'ГОС'
-				WHEN model = 'ИО' OR model = 'ИО 22' OR model = 'ИО АПИ' OR model = 'ИО ПРО' THEN 'ИО'
-				ElSE 'Прочие модели'
-			END AS type_simple
-		FROM db1.all_order_google_sheets
-		WHERE type = 'Домофоны'
-		)
-	GROUP BY partner_lk,
-			order_date,
-			type_simple),
---
-	all_order_with_accumulated_sum AS(
-	SELECT
-		order_date,
-		if(partner_lk = 0,Null,partner_lk) as partner_lk,
-		type_simple,
-		count_in_order,
-		sale_sum,
-		sum(count_in_order) OVER (PARTITION BY partner_lk,type_simple ORDER BY order_date) AS accumulated_count,
-		sum(sale_sum) OVER (PARTITION BY partner_lk,type_simple ORDER BY order_date) AS accumulated_sum
-	FROM all_order_intercomes
-	),
---			
-	date_range_cross_join AS (
-	SELECT 
-		date_range,	
-		partner_lk,
-		type_simple
-	FROM db1.date_range_table
-	CROSS JOIN 
-		(SELECT
-			DISTINCT
-			partner_lk,
-			type_simple
-		FROM all_order_with_accumulated_sum) as all_order_with_accumulated_sum
-	),
---
-	date_range_with_orders AS (SELECT
-		date_range,
-		if(partner_lk = 0,Null,partner_lk) as partner_lk,
-		if(type_simple = '',Null, type_simple) as type_simple,
-		if(count_in_order = 0,Null,count_in_order) as count_in_order,
-		if(accumulated_count = 0,Null,accumulated_count) as accumulated_count,
-		if(sale_sum = 0, Null,sale_sum) as sale_sum,
-		if(accumulated_sum = 0,Null,accumulated_sum) AS accumulated_sum
-	FROM date_range_cross_join
-	LEFT JOIN all_order_with_accumulated_sum ON all_order_with_accumulated_sum.order_date = date_range_cross_join.date_range
-											AND all_order_with_accumulated_sum.partner_lk = date_range_cross_join.partner_lk
-											AND all_order_with_accumulated_sum.type_simple = date_range_cross_join.type_simple
-	ORDER BY  type_simple,partner_lk, date_range)
---
+query_text = """--sql
 SELECT
-	date_range,
-	partner_lk,
-	type_simple,
---	last_value(count_in_order) IGNORE NULLS OVER (partition by partner_lk,type_simple ORDER BY date_range) as count_in_order,
-	count_in_order,
-	last_value(accumulated_count) IGNORE NULLS OVER (partition by partner_lk,type_simple ORDER BY date_range) as accumulated_count,
-	sale_sum,
---	last_value(sale_sum) IGNORE NULLS OVER (partition by partner_lk,type_simple ORDER BY date_range) as sale_sum,
-	last_value(accumulated_sum) IGNORE NULLS OVER (partition by partner_lk,type_simple ORDER BY date_range) as accumulated_sum
-FROM date_range_with_orders
-ORDER BY  type_simple,partner_lk, date_range
+    sum(count_serial_number_partner_change)
+FROM db1.t_device_and_shipment_history_by_company_and_city
+WHERE report_date = '2025-06-13'
+LIMIT 10
+"""
+ch.query_run(query_text)
+```
 
-
+```python
+query_text="""
+SELECT
+    count(distinct camera_uuid)
+FROM db1.cameras_st_asgard_ch
+WHERE report_date = '2025-06-14'
+    AND partner_uuid != 'b1782e4f-9198-49d1-b5aa-7bdba9c87d21'
+GROUP BY report_date
+limit 10
+"""
+ch.query_run(query_text)
 ```

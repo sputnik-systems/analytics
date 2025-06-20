@@ -26,6 +26,8 @@ from dotenv import load_dotenv
 # import clickhouse_client
 from clickhouse_client import ClickHouse_client
 ch = ClickHouse_client()
+
+
 ```
 
 ___
@@ -33,7 +35,7 @@ ___
 
 ```python
 query_text = """
-    DROP TABLE db1.hex_metrics_parquet_asgard_ch
+    DROP TABLE db1.companies_st_partner_mv
     """
 ch.query_run(query_text)
 ```
@@ -44,7 +46,19 @@ ___
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.intercoms_st_partner_ch
+SYSTEM REFRESH VIEW db1.companies_st_partner_mv
+"""
+
+ch.query_run(query_text)
+```
+
+___
+## Change refresh time
+
+```python
+query_text = """
+ALTER TABLE db1.companies_st_partner_mv
+MODIFY REFRESH EVERY 1 DAY OFFSET 4 HOUR RANDOMIZE FOR 1 HOUR;
 """
 
 ch.query_run(query_text)
@@ -58,7 +72,8 @@ ___
 query_text = """--sql
     SHOW TABLES FROM db1
 """
-ch.query_run(query_text)
+df = ch.query_run(query_text)
+
 ```
 
 ```python
@@ -1495,7 +1510,8 @@ query_text = """--sql
     `enterprise_test` Int16,
     `balance` Float64,
     `tariff` String,
-    `kz_pro` Int16
+    `kz_pro` Int16,
+    `tariff_full` String
 )
     ENGINE = MergeTree()
     ORDER BY partner_uuid
@@ -1507,9 +1523,33 @@ ch.query_run(query_text)
 ```python
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.companies_st_partner_mv
-    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.companies_st_partner_ch AS
+    REFRESH EVERY 1 DAY OFFSET 4 HOUR RANDOMIZE FOR 1 HOUR TO db1.companies_st_partner_ch AS
     SELECT
-        *
+        `report_date` ,
+        `partner_uuid` ,
+        `is_blocked` ,
+        `pro_subs` ,
+        `enterprise_subs` ,
+        `billing_pro` ,
+        `enterprise_not_paid` ,
+        `enterprise_test` ,
+        `balance`,
+        `kz_pro`,
+        CASE
+            WHEN pro_subs = 1 THEN 'pro'
+            WHEN kz_pro = 1 THEN 'kz_pro'
+            WHEN enterprise_subs = 1 then 'enterprise'
+            ELSE 'start'
+        END AS `tariff`,
+        CASE
+            WHEN enterprise_test = 1 then 'Enterprise Тест'
+            WHEN enterprise_not_paid = 1 then 'Enterprise без биллинга'
+            WHEN enterprise_subs = 1 then 'Enterprise'
+            WHEN kz_pro = 1  then 'PRO Казахстан'
+            WHEN pro_subs = 1 and billing_pro = 0 then 'PRO без биллинга'
+            WHEN pro_subs = 1 and billing_pro = 1 then 'PRO'
+        ELSE 'Start'
+    END as tariff_full 
     FROM db1.companies_st_partner
     """
 
@@ -1521,6 +1561,7 @@ query_text = """--sql
 SELECT
     *
 FROM db1.companies_st_partner_ch
+WHERE report_date = '2025-06-17'
 limit 100
 
 """
@@ -2014,6 +2055,7 @@ query_text = """--sql
     SELECT
         *
     FROM db1.cameras_st_asgard
+    WHERE partner_uuid not like '%main:tokens:%'
     """
 
 ch.query_run(query_text)
@@ -2086,9 +2128,14 @@ query_text = """--sql
     SELECT
         *
     FROM db1.intercoms_dir_asgard
+    WHERE partner_uuid not like '%main:tokens:%'
     """
 
 ch.query_run(query_text)
+```
+
+```python
+
 ```
 
 ```python
@@ -2160,6 +2207,7 @@ query_text = """--sql
     SELECT
         *
     FROM db1.intercoms_st_asgard
+    WHERE partner_uuid not like '%main:tokens:%'
     """
 
 ch.query_run(query_text)
