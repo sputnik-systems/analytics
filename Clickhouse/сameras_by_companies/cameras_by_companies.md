@@ -32,13 +32,13 @@ pd.set_option('display.max_rows', 1000)
 
 # Links:
 
-[[cameras_st_asgard]]
-[[cameras_dir_partner]]
-[[companies_st_partner]]
-[[companies_dir_partner]]
+[[cameras_st_asgard]]<br>
+[[cameras_dir_partner]]<br>
+[[companies_st_partner]]<br>
+[[companies_dir_partner]]<br>
 
 
-# Create table
+# Creating a table
 
 
 ```python
@@ -62,7 +62,7 @@ query_text = """--sql
 ch.query_run(query_text)
 ```
 
-# Create mv
+# Creating mv
 
 ```python
 query_text = """--sql
@@ -99,29 +99,67 @@ GROUP BY
 ch.query_run(query_text)
 ```
 
-# Additional
-
-```python
-query_text = """--sql
-SELECT
-    DISTINCT
-    partner_uuid,
-    
-FROM db1.billing_orders_dir_partner
-limit 10
-    """
-ch.query_run(query_text)
-```
+# Requests
 
 ```python
 query_text = """--sql
 SELECT
     *
 FROM db1.t_cameras_by_companies
-LIMIT 10
+WHERE company_name !=''
+LIMIT 1
+
     """
 ch.query_run(query_text)
 ```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>tariff_full</th>
+      <th>report_date</th>
+      <th>partner_uuid</th>
+      <th>partner_lk</th>
+      <th>company_name</th>
+      <th>tin</th>
+      <th>kpp</th>
+      <th>camera_with_intercom_count</th>
+      <th>external_camera_izi_count</th>
+      <th>external_camera_foreign_count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Start</td>
+      <td>2023-11-01</td>
+      <td>77eb19de-7879-4f7e-b2ff-6a270eae9ba2</td>
+      <td>144393</td>
+      <td>ООО "ИНТЕЛСК"</td>
+      <td>5040075820</td>
+      <td></td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 ```python
 query_text = """

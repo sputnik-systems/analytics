@@ -13,6 +13,8 @@ jupyter:
     name: python3
 ---
 
+# Start
+
 ```python
 import clickhouse_connect
 import datetime
@@ -27,6 +29,15 @@ sys.path.append('/home/boris/Documents/Work/analytics/Clickhouse')
 from clickhouse_client import ClickHouse_client
 ch = ClickHouse_client()
 ```
+
+# Links:
+
+[[installation_point_st_partner_ch]]<br>
+[[entries_installation_points_dir_partner_ch]]<br>
+[[intercoms_st_partner_ch]]<br>
+[[companies_st_partner_ch]]<br>
+[[citizens_st_mobile_ch]]<br>
+[[citizens_dir_mobile_ch]]<br>
 
 ```python
 query_text = """--sql
@@ -114,11 +125,70 @@ GROUP BY citizens_st_mobile.report_date AS report_date) AS accounts ON accounts.
 ch.query_run(query_text)
 ```
 
+___
+
+## [[service_history_dir_partner]]
+
 ```python
 query_text = """--sql
 SELECT
     *
 FROM db1.t_count_of_nuw_addresses_ch
+limit 1
 """
 ch.query_run(query_text)
 ```
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>report_date</th>
+      <th>addresses</th>
+      <th>buildings</th>
+      <th>addresses_pro</th>
+      <th>addresses_entesprice</th>
+      <th>addresses_start</th>
+      <th>nuw_addresses_day</th>
+      <th>nuw_addresses_day_entesprice</th>
+      <th>nuw_addresses_day_start</th>
+      <th>nuw_addresses_day_pro</th>
+      <th>nuw_created_account_day</th>
+      <th>nuw_activated_account_day</th>
+      <th>nuw_buildings_day</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023-08-29</td>
+      <td>24222</td>
+      <td>10544</td>
+      <td>0</td>
+      <td>347</td>
+      <td>23879</td>
+      <td>33</td>
+      <td>0</td>
+      <td>33</td>
+      <td>0</td>
+      <td>1248</td>
+      <td>1040</td>
+      <td>21</td>
+    </tr>
+  </tbody>
+</table>
+</div>

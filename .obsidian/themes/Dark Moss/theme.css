@@ -63,12 +63,12 @@
     --green-light: #42accd;
   
   
-    --text-title-h1: #289aff;
-    --text-title-h2: #00f56a;
-    --text-title-h3: #0af7ff;
-    --text-title-h4: #F9F871;
-    --text-title-h5: #ff5757;
-    --text-title-h6: #ff3cd5;
+    --text-title-h1: #ffffff;
+    --text-title-h2: #ffffff;
+    --text-title-h3: #ffffff;
+    --text-title-h4: #ffffff;
+    --text-title-h5: #ffffff;
+    --text-title-h6: #ffffff;
   
     --font-weight-title: 600;
     --font-monospace: "Consolas", "Fira Code", "Source Code Pro", "Droid Sans Mono", "Monoid", "Arial", sans-serif;
@@ -76,8 +76,8 @@
     --file-line-width: 1000px;
   
   
-    --search-match-color: #ffff00;
-    --search-other-match-color: #ff9632;
+    --search-match-color: #ffffff;
+    --search-other-match-color: #ffffff;
   
   }
   

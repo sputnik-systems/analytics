@@ -23,9 +23,12 @@ import pytz
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
-# import clickhouse_client
+
+import sys
+sys.path.append('/home/boris/Documents/Work/analytics/Clickhouse')
 from clickhouse_client import ClickHouse_client
 ch = ClickHouse_client()
+pd.set_option('display.max_rows', 1000)
 
 
 ```
@@ -35,7 +38,7 @@ ___
 
 ```python
 query_text = """
-    DROP TABLE db1.companies_st_partner_mv
+    DROP TABLE db1.citizens_st_mobile_parquet_mv
     """
 ch.query_run(query_text)
 ```
@@ -46,7 +49,7 @@ ___
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.companies_st_partner_mv
+SYSTEM REFRESH VIEW db1.citizens_st_mobile_parquet_mv
 """
 
 ch.query_run(query_text)
@@ -76,66 +79,8 @@ df = ch.query_run(query_text)
 
 ```
 
-```python
-
-```
-
 ____
-
-## [[uk_addresses_partner]] 
-
-
-```python
-query_text = """--sql
-    CREATE TABLE db1.uk_addresses_partner
-    (
-        `patrner_uuid_uk` String,
-        `address_uuid`  String,
-    )
-    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/uk_addresses_partner/uk_addresses_partner.csv','CSVWithNames')
-    """
-
-ch.query_run(query_text)
-
-```
-
-```python
-query_text = """--sql
-    CREATE TABLE db1.uk_addresses_partner_ch
-    (
-        `patrner_uuid_uk` String,
-        `address_uuid`  String,
-    )
-    ENGINE = MergeTree()
-    ORDER BY patrner_uuid_uk
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.uk_addresses_partner_mv
-    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.uk_addresses_partner_ch AS
-    SELECT
-        *
-    FROM db1.uk_addresses_partner
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    SELECT
-        *
-    FROM db1.uk_addresses_partner_ch
-    LIMIT 2
-    """
-
-ch.query_run(query_text)
-```
-
+[[uk_addresses_partner]]
 ___
 
 ## [[users_st_partner]]
@@ -585,6 +530,88 @@ ___
 ## [[subscriptions_st_mobile]]
 
 ```python
+
+query_text = """--sql
+    CREATE TABLE db1.subscriptions_st_mobile_2
+(
+    `report_date` Date,
+    `citizen_id` Int32,
+    `state` String,
+    `created_at` String,
+    `subscribed_from` String,
+    `auto_renew_status` Int16,
+    `activated_at` String,
+    `plan` String,
+    `expires_date` String,
+    `renew_stopped_at` String,
+    `renew_failed_at` String,
+    `started_from` String,
+    `renew_fail_reason` String
+)
+    ENGINE = S3Queue('https://storage.yandexcloud.net/dwh-asgard/subscriptions_st_mobile/year=*/month=*/*.csv','CSVWithNames')
+    SETTINGS mode = 'unordered'
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.subscriptions_st_mobile_ch_2
+    (
+    `report_date` Date,
+    `citizen_id` Int32,
+    `state` String,
+    `created_at` String,
+    `subscribed_from` String,
+    `auto_renew_status` Int16,
+    `activated_at` String,
+    `plan` String,
+    `expires_date` String,
+    `renew_stopped_at` String,
+    `renew_failed_at` String,
+    `started_from` String,
+    `renew_fail_reason` String
+    )
+    ENGINE = MergeTree()
+    ORDER BY citizen_id
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.subscriptions_st_mobile_mv_2 TO db1.subscriptions_st_mobile_ch_2 AS
+    SELECT
+        *
+    FROM db1.subscriptions_st_mobile
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    SELECT
+        *
+    FROM db1.subscriptions_st_mobile_ch
+    WHERE report_date != '2025-06-25'
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    SELECT
+        *
+    FROM db1.subscriptions_st_mobile_ch_2
+    """
+
+ch.query_run(query_text)
+```
+
+```python
 # creating a table from s3
 
 query_text = """--sql
@@ -720,6 +747,83 @@ ch.query_run(query_text)
 
 ___
 
+## [[citizens_st_mobile_parquet]]
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.citizens_st_mobile_parquet
+    (
+    `report_date` Date,
+    `citizen_id` Int32,
+    `trial_available` Int32,
+    `state` String,
+    `flat_uuid` String,
+    `address_uuid` String
+    )
+    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/citizens_st_mobile_parquet/year=*/month=*/*.parquet','parquet')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.citizens_st_mobile_parquet_ch
+    (
+    `report_date` Date,
+    `citizen_id` Int32,
+    `trial_available` Int32,
+    `state` String,
+    `flat_uuid` String,
+    `address_uuid` String
+    )
+    ENGINE = MergeTree()
+    ORDER BY report_date
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.citizens_st_mobile_parquet_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR 30 MINUTE RANDOMIZE FOR 1 HOUR TO db1.citizens_st_mobile_parquet_ch AS
+    SELECT
+        *
+    FROM db1.citizens_st_mobile_parquet
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    SELECT
+        *
+    FROM db1.citizens_st_mobile_parquet_ch
+    WHERE report_date = '2025-05-29'
+    limit 100
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    DROP TABLE db1.citizens_st_mobile_parquet
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    SYSTEM T TABLE db1.citizens_st_mobile_parquet
+    """
+ch.query_run(query_text)
+```
+
+___
+
 ## [[citizens_dir_mobile]]
 
 
@@ -845,6 +949,10 @@ query_text = """--sql
     """
 
 ch.query_run(query_text)
+```
+
+```python
+
 ```
 
 ```python
@@ -1475,7 +1583,7 @@ ___
 # creating a table from s3
 
 query_text = """--sql 
-    CREATE TABLE db1.companies_st_partner
+CREATE TABLE db1.companies_st_partner
 (
     `report_date` Date,
     `partner_uuid` String,
@@ -1489,8 +1597,8 @@ query_text = """--sql
     `tariff` String,
     `kz_pro` Int16
 )
-    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/companies_st_partner/year=*/month=*/*.csv','CSVWithNames')
-    PARTITION BY partner_uuid
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/companies_st_partner/year=*/month=*/*.csv', 'CSVWithNames')
+PARTITION BY partner_uuid
     """
 
 ch.query_run(query_text)
@@ -1499,6 +1607,67 @@ ch.query_run(query_text)
 ```python
 query_text = """--sql
     CREATE TABLE db1.companies_st_partner_ch
+(
+    `report_date` Date,
+    `partner_uuid` String,
+    `is_blocked` Int16,
+    `pro_subs` Int16,
+    `enterprise_subs` Int16,
+    `billing_pro` Int16,
+    `enterprise_not_paid` Int16,
+    `enterprise_test` Int16,
+    `balance` Float64,
+    `tariff` String,
+    `kz_pro` Int16
+)
+    ENGINE = MergeTree()
+    ORDER BY partner_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.companies_st_partner_mv REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.companies_st_partner_ch AS
+    SELECT
+       *
+    FROM db1.companies_st_partner
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.companies_st_partner_ch
+ORDER BY report_date DESC
+limit 10
+"""
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+DROP TABLE db1.companies_st_partner
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+SYSTEM REFRESH VIEW db1.companies_st_partner_mv
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.companies_st_partner_ch_test
 (
     `report_date` Date,
     `partner_uuid` String,
@@ -1522,35 +1691,10 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.companies_st_partner_mv
-    REFRESH EVERY 1 DAY OFFSET 4 HOUR RANDOMIZE FOR 1 HOUR TO db1.companies_st_partner_ch AS
+    CREATE MATERIALIZED VIEW db1.companies_st_partner_mv_test TO db1.companies_st_partner_ch_test AS
     SELECT
-        `report_date` ,
-        `partner_uuid` ,
-        `is_blocked` ,
-        `pro_subs` ,
-        `enterprise_subs` ,
-        `billing_pro` ,
-        `enterprise_not_paid` ,
-        `enterprise_test` ,
-        `balance`,
-        `kz_pro`,
-        CASE
-            WHEN pro_subs = 1 THEN 'pro'
-            WHEN kz_pro = 1 THEN 'kz_pro'
-            WHEN enterprise_subs = 1 then 'enterprise'
-            ELSE 'start'
-        END AS `tariff`,
-        CASE
-            WHEN enterprise_test = 1 then 'Enterprise Тест'
-            WHEN enterprise_not_paid = 1 then 'Enterprise без биллинга'
-            WHEN enterprise_subs = 1 then 'Enterprise'
-            WHEN kz_pro = 1  then 'PRO Казахстан'
-            WHEN pro_subs = 1 and billing_pro = 0 then 'PRO без биллинга'
-            WHEN pro_subs = 1 and billing_pro = 1 then 'PRO'
-        ELSE 'Start'
-    END as tariff_full 
-    FROM db1.companies_st_partner
+        *
+    FROM db1.companies_st_partner_ch
     """
 
 ch.query_run(query_text)
@@ -1560,8 +1704,8 @@ ch.query_run(query_text)
 query_text = """--sql
 SELECT
     *
-FROM db1.companies_st_partner_ch
-WHERE report_date = '2025-06-17'
+FROM db1.companies_st_partner_ch_test
+order by report_date DESC
 limit 100
 
 """
@@ -1723,6 +1867,7 @@ query_text = """--sql
 SELECT
     *
 FROM db1.cameras_st_partner_ch
+order by report_date DESC
 limit 100
 
 """
@@ -1919,7 +2064,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.intercoms_dir_partner_mv
+    CREATE MATERIALIZED VIEW db1.intercoms_dir_partner_mv 
     REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.intercoms_dir_partner_ch AS
     SELECT
         *
@@ -1930,14 +2075,82 @@ ch.query_run(query_text)
 ```
 
 ```python
+query_text = """
+    DROP TABLE db1.intercoms_dir_partner_mv_test
+    """
+ch.query_run(query_text)
+
+```
+
+```python
+query_text = """
+SYSTEM REFRESH VIEW db1.citizens_st_mobile_parquet_mv
+"""
+
+ch.query_run(query_text)
+```
+
+```python
 query_text = """--sql
 SELECT
     *
 FROM db1.intercoms_dir_partner_ch
-limit 100
+limit 1
 
 """
 
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+INSERT INTO db1.intercoms_dir_partner_ch
+SELECT *
+FROM db1.intercoms_dir_partner;
+"""
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.intercoms_dir_partner_ch_test
+(
+    `installation_date` DateTime,
+    `service_partner_uuid` String,
+    `partner_uuid` String,
+    `intercom_uuid` String,
+    `installation_point_id` Int64,
+    `second_device_type` String,
+    `second_device_state` Int16,
+    `second_device_created_at` String,
+    `model_identifier` String
+)
+    ENGINE = MergeTree()
+    ORDER BY intercom_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.intercoms_dir_partner_mv_test TO db1.intercoms_dir_partner_ch_test AS
+    SELECT
+        *
+    FROM db1.intercoms_dir_partner_ch
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.intercoms_dir_partner_ch_test
+limit 1
+
+"""
 ch.query_run(query_text)
 ```
 
