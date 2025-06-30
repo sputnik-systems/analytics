@@ -1,0 +1,13 @@
+{
+	"nodes":[
+		{"id":"Clickhouse/count_of_nuw_addresses/count_of_nuw_addresses.md","width":500,"height":500,"y":300,"x":0,"type":"file","file":"Clickhouse/count_of_nuw_addresses/count_of_nuw_addresses.md","color":"1"},
+		{"id":"Clickhouse/citizens_st_mobile.md","width":500,"height":500,"x":1000,"y":0,"type":"file","file":"Clickhouse/citizens_st_mobile.md"},
+		{"id":"Clickhouse/test.md","width":500,"height":500,"x":2000,"y":0,"type":"file","file":"Clickhouse/test.md"},
+		{"id":"citizens_dir_mobile.md","width":500,"height":500,"x":1000,"y":600,"type":"file","file":"citizens_dir_mobile.md"}
+	],
+	"edges":[
+		{"id":"Clickhouse/count_of_nuw_addresses/count_of_nuw_addresses.md-Clickhouse/citizens_st_mobile.md","fromSide":"right","toSide":"left","fromNode":"Clickhouse/count_of_nuw_addresses/count_of_nuw_addresses.md","toNode":"Clickhouse/citizens_st_mobile.md"},
+		{"id":"Clickhouse/citizens_st_mobile.md-Clickhouse/test.md","fromSide":"right","toSide":"left","fromNode":"Clickhouse/citizens_st_mobile.md","toNode":"Clickhouse/test.md"},
+		{"id":"Clickhouse/count_of_nuw_addresses/count_of_nuw_addresses.md-citizens_dir_mobile.md","fromSide":"right","toSide":"left","fromNode":"Clickhouse/count_of_nuw_addresses/count_of_nuw_addresses.md","toNode":"citizens_dir_mobile.md"}
+	]
+}

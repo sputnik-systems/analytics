@@ -702,10 +702,125 @@ ch.query_run(query_text)
 ```
 
 ```python
+
+```
+
+```python
+# creating a table from s3
+
+query_text = """--sql
+    CREATE TABLE db1.citizens_st_mobile_test_uuid
+    (
+    `report_date` Date,
+    `citizen_id` Int32,
+    `trial_available` Int32,
+    `state` String,
+    `flat_uuid` String,
+    `address_uuid` String
+    )
+    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/citizens_st_mobile_parquet/year=*/month=*/*.parquet','parquet')
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql 
+SELECT
+    *
+FROM db1.citizens_st_mobile_test_uuid
+limit 10
+"""
+
+ch.query_run(query_text)
+```
+
+```python
 # creating a table for materialized view
 
 query_text = """--sql
-    CREATE TABLE db1.citizens_st_mobile_ch
+    CREATE TABLE db1.citizens_st_mobile_test_uuid_ch
+    (
+    `report_date` Date,
+    `citizen_id` Int32,
+    `trial_available` Int32,
+    `state` String,
+    `flat_uuid` UUID,
+    `address_uuid` UUID
+    )
+    ENGINE = MergeTree()
+    ORDER BY report_date
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    SELECT
+        `report_date`,
+        `citizen_id`,
+        `trial_available`,
+        `state`,
+        reinterpretAsUUID(flat_uuid) AS flat_uuid,
+        reinterpretAsUUID(flat_uuid) AS address_uuid
+    FROM db1.citizens_st_mobile_test_uuid
+    limit 10
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    SELECT
+        COUNT(citizen_id)
+    FROM db1.citizens_st_mobile_test_uuid_ch
+    WHERE report_date = dateTrunc('month', report_date) 
+    GROUP BY report_date,flat_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.citizens_st_mobile_test_uuid_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.citizens_st_mobile_test_uuid_ch AS
+    SELECT
+        `report_date`,
+        `citizen_id`,
+        `trial_available`,
+        `state`,
+        reinterpretAsUUID(flat_uuid) AS flat_uuid,
+        reinterpretAsUUID(flat_uuid) AS address_uuid
+    FROM db1.citizens_st_mobile_test_uuid
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SYSTEM REFRESH VIEW db1.citizens_st_mobile_parquet_mv
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    DROP TABLE db1.citizens_st_mobile_test_uuid_mv
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+# creating a table for materialized view
+
+query_text = """--sql
+    CREATE TABLE db1.citizens_st_mobile_test_uuid
     (
     `report_date` Date,
     `citizen_id` Int32,
@@ -1618,67 +1733,6 @@ query_text = """--sql
     `enterprise_test` Int16,
     `balance` Float64,
     `tariff` String,
-    `kz_pro` Int16
-)
-    ENGINE = MergeTree()
-    ORDER BY partner_uuid
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.companies_st_partner_mv REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.companies_st_partner_ch AS
-    SELECT
-       *
-    FROM db1.companies_st_partner
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-SELECT
-    *
-FROM db1.companies_st_partner_ch
-ORDER BY report_date DESC
-limit 10
-"""
-ch.query_run(query_text)
-```
-
-```python
-query_text = """
-DROP TABLE db1.companies_st_partner
-"""
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """
-SYSTEM REFRESH VIEW db1.companies_st_partner_mv
-"""
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    CREATE TABLE db1.companies_st_partner_ch_test
-(
-    `report_date` Date,
-    `partner_uuid` String,
-    `is_blocked` Int16,
-    `pro_subs` Int16,
-    `enterprise_subs` Int16,
-    `billing_pro` Int16,
-    `enterprise_not_paid` Int16,
-    `enterprise_test` Int16,
-    `balance` Float64,
-    `tariff` String,
     `kz_pro` Int16,
     `tariff_full` String
 )
@@ -1691,23 +1745,51 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.companies_st_partner_mv_test TO db1.companies_st_partner_ch_test AS
+    CREATE MATERIALIZED VIEW db1.companies_st_partner_mv
+    REFRESH EVERY 1 DAY OFFSET 4 HOUR RANDOMIZE FOR 1 HOUR TO db1.companies_st_partner_ch AS
     SELECT
-        *
-    FROM db1.companies_st_partner_ch
-    """
+        `report_date` ,
+        `partner_uuid` ,
+        `is_blocked` ,
+        `pro_subs` ,
+        `enterprise_subs` ,
+        `billing_pro` ,
+        `enterprise_not_paid` ,
+        `enterprise_test` ,
+        `balance`,
+        `kz_pro`,
+        CASE
+            WHEN pro_subs = 1 THEN 'pro'
+            WHEN kz_pro = 1 THEN 'kz_pro'
+            WHEN enterprise_subs = 1 then 'enterprise'
+            ELSE 'start'
+        END AS `tariff`,
+        CASE
+            WHEN enterprise_test = 1 then 'Enterprise Тест'
+            WHEN enterprise_not_paid = 1 then 'Enterprise без биллинга'
+            WHEN enterprise_subs = 1 then 'Enterprise'
+            WHEN kz_pro = 1  then 'PRO Казахстан'
+            WHEN pro_subs = 1 and billing_pro = 0 then 'PRO без биллинга'
+            WHEN pro_subs = 1 and billing_pro = 1 then 'PRO'
+            ELSE 'Start'
+        END as tariff_full
+    FROM db1.companies_st_partner
+ORDER BY report_date DESC
+"""
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+DROP TABLE db1.companies_st_partner_mv
+"""
 
 ch.query_run(query_text)
 ```
 
 ```python
-query_text = """--sql
-SELECT
-    *
-FROM db1.companies_st_partner_ch_test
-order by report_date DESC
-limit 100
-
+query_text = """
+SYSTEM REFRESH VIEW db1.companies_st_partner_mv
 """
 
 ch.query_run(query_text)

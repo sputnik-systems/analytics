@@ -44,7 +44,7 @@ for day_index in dates_pd.index:
     date_key = dates_pd.loc[day_index,['date_key']].values[0]
     query_text = f"""
         INSERT INTO FUNCTION s3(
-        'https://storage.yandexcloud.net/dwh-asgard/citizens_st_mobile_parquet/{date_key}',
+        'https://storage.yandexcloud.net/dwh-asgard/citizens_st_mobile_parquet_uuid/{date_key}',
         'parquet'
         )
         SETTINGS s3_truncate_on_insert = 1

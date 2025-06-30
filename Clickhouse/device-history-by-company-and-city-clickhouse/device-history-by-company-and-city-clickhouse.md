@@ -34,7 +34,13 @@ pd.set_option('display.max_rows', 1000)
 # t_device_history_by_companys_and_citys_ch
 
 
-## main
+## Links:
+
+[[cameras_st_asgard]]<br>
+[[cameras_dir_asgard]]<br>
+[[cameras_st_asgard]]<br>
+[[intercoms_dir_asgard]]<br>
+[[cameras_st_partner]]<br>
 
 ```python
 query_text = """--sql
@@ -171,6 +177,14 @@ ch.query_run(query_text)
 ```
 
 # t_device_and_shipment_history_by_company_and_city
+
+
+## Links:
+
+[[cameras_st_asgard]]<br>
+[[cameras_dir_asgard]]<br>
+[[cameras_st_asgard]]<br>
+[[intercoms_dir_asgard]]<br>
 
 
 ## main

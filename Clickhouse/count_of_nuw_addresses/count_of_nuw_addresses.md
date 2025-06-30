@@ -32,12 +32,12 @@ ch = ClickHouse_client()
 
 # Links:
 
-[[installation_point_st_partner_ch]]<br>
-[[entries_installation_points_dir_partner_ch]]<br>
-[[intercoms_st_partner_ch]]<br>
-[[companies_st_partner_ch]]<br>
-[[citizens_st_mobile_ch]]<br>
-[[citizens_dir_mobile_ch]]<br>
+[[installation_point_st_partner]]<br>
+[[entries_installation_points_dir_partner]]<br>
+[[intercoms_st_partner]]<br>
+[[companies_st_partner]]<br>
+[[citizens_st_mobile]]<br>
+[[citizens_dir_mobile]]<br>
 
 ```python
 query_text = """--sql
