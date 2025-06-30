@@ -77,7 +77,7 @@ for day_index in dates_pd.index:
 
 ```python
 start_date = datetime.datetime.strptime('2025-05-30','%Y-%m-%d').date()
-end_date = datetime.datetime.strptime('2025-04-21','%Y-%m-%d').date()
+end_date = datetime.datetime.strptime('2025-06-30','%Y-%m-%d').date()
 
 dates_pd = pd.DataFrame({
         'date': pd.date_range(start=start_date, end=end_date).strftime('%Y-%m-%d'),
@@ -170,6 +170,124 @@ INSERT INTO FUNCTION s3(
     FROM db1.citizens_st_mobile_ch AS citizens_st_mobile
     WHERE report_date = '{date}'
         
+    """
+
+ch.query_run(query_text)
+```
+
+# add date for billing_orders_devices_st_partner
+
+```python
+query_text = """--sql 
+    CREATE TABLE db1.billing_orders_devices_dir_partner
+    (   
+        `billing_account_id` Int64,
+        `cost` Float64,
+        `count` Int64,
+        `created_at` DateTime,
+        `device_type` String,
+        `device_uuid` String,
+        `partner_uuid` String,
+        `report_date` Date,
+        `service` String,
+        `state` String,
+        `total` Float64
+    )
+    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/billing_orders_devices_dir_partner/*.csv','CSVWithNames')
+    PARTITION BY billing_account_id
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    DROP TABLE db1.billing_orders_devices_dir_partner
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    SELECT
+        toDate(created_at)
+    FROM db1.billing_orders_devices_dir_partner
+    WHERE toDate(created_at)
+    limit 10
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+start_date = datetime.datetime.strptime('2025-01-24','%Y-%m-%d').date()
+end_date = datetime.datetime.strptime('2025-05-21','%Y-%m-%d').date()
+
+dates_pd = pd.DataFrame({
+        'date': pd.date_range(start=start_date, end=end_date).strftime('%Y-%m-%d'),
+        'date_key': pd.date_range(start=start_date, end=end_date).strftime('year=%-Y/month=%-m/%-d.csv')
+        })
+dates_pd = dates_pd.iloc[::-1].reset_index(drop=True)
+for day_index in dates_pd.index:
+    date = dates_pd.loc[day_index,['date']].values[0]
+    date_key = dates_pd.loc[day_index,['date_key']].values[0]
+    query_text = f"""
+        INSERT INTO FUNCTION s3(
+        'https://storage.yandexcloud.net/dwh-asgard/billing_orders_devices_st_partner/{date_key}',
+        'CSVWithNames'
+        )
+        SETTINGS s3_truncate_on_insert = 1
+            SELECT
+            `billing_account_id`,
+                `cost`,
+                `count`,
+                `created_at`,
+                `device_type`,
+                `device_uuid`,
+                `partner_uuid`,
+                toDate(created_at) AS `report_date`,
+                `service`,
+                `state`,
+                `total`
+
+            FROM db1.billing_orders_devices_dir_partner
+        WHERE toDate(created_at) = '{date}'
+        
+    """
+    ch.query_run(query_text)
+    print(date)
+# ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+SELECT
+   `billing_account_id`,
+    `cost`,
+    `count`,
+    `created_at`,
+    `device_type`,
+    `device_uuid`,
+    `partner_uuid`,
+    toDate(created_at) AS `report_date`,
+    `service`,
+    `state`,
+    `total`
+
+FROM db1.billing_orders_devices_dir_partner
+limit 10
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.billing_orders_devices_st_partner_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.billing_orders_devices_st_partner_ch AS
+    SELECT
+        *
+    FROM db1.billing_orders_devices_st_partner
     """
 
 ch.query_run(query_text)

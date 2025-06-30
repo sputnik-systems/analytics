@@ -99,6 +99,18 @@ GROUP BY
 ch.query_run(query_text)
 ```
 
+```python
+query_text = """--sql
+SELECT
+    *
+FROM db1.cameras_st_asgard_ch
+ORDER BY report_date DESC
+LIMIT 1
+
+    """
+ch.query_run(query_text)
+```
+
 # Requests
 
 ```python
@@ -106,7 +118,7 @@ query_text = """--sql
 SELECT
     *
 FROM db1.t_cameras_by_companies
-WHERE company_name !=''
+ORDER BY report_date DESC
 LIMIT 1
 
     """
@@ -170,7 +182,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.t_cameras_by_companies
+SYSTEM REFRESH VIEW db1.t_cameras_by_companies_mv
 """
 
 ch.query_run(query_text)

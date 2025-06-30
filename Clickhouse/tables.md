@@ -930,13 +930,6 @@ query_text = """
 ch.query_run(query_text)
 ```
 
-```python
-query_text = """
-    SYSTEM T TABLE db1.citizens_st_mobile_parquet
-    """
-ch.query_run(query_text)
-```
-
 ___
 
 ## [[citizens_dir_mobile]]
@@ -1243,15 +1236,39 @@ query_text = """--sql
 ch.query_run(query_text)
 ```
 
+Количество квартир в базе отличается от квартир на подъездах
+
 ```python
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.entries_installation_points_dir_partner_mv
     REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.entries_installation_points_dir_partner_ch AS
     SELECT
-        *
+    `full_address`,
+    `created_at`,
+    `number`,
+    `lat`,
+    `lon`,
+    `first_flat`,
+    `last_flat`,
+    flats_count AS flats_count_in_base,
+    last_flat - first_flat + 1 AS `flats_count`,
+    `address_uuid`,
+    `parent_uuid`,
+    `partner_uuid`,
+    `installation_point_id`,
+    `region`,
+    `country`,
+    `city`
     FROM db1.entries_installation_points_dir_partner
     """
 
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    DROP TABLE db1.entries_installation_points_dir_partner_ch
+    """
 ch.query_run(query_text)
 ```
 
@@ -1549,7 +1566,7 @@ ch.query_run(query_text)
 
 ___
 
-## [[billing_orders_devices_dir_partner]]
+## [[billing_orders_devices_st_partner]]
 
 
 
@@ -1571,7 +1588,7 @@ query_text = """--sql
         `state` String,
         `total` Float64
     )
-    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/billing_orders_devices_dir_partner/billing_orders_devices_dir_partner.csv','CSVWithNames')
+    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/billing_orders_devices_st_partner/year=*/month=*/*.csv','CSVWithNames')
     PARTITION BY billing_account_id
     """
 
@@ -1604,7 +1621,7 @@ ch.query_run(query_text)
 ```python
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.billing_orders_devices_st_partner_mv
-    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.billing_orders_devices_st_partner_ch AS
+    REFRESH EVERY 1 DAY OFFSET 4 HOUR RANDOMIZE FOR 1 HOUR TO db1.billing_orders_devices_st_partner_ch AS
     SELECT
         *
     FROM db1.billing_orders_devices_st_partner
@@ -1614,11 +1631,30 @@ ch.query_run(query_text)
 ```
 
 ```python
-query_text = """SELECT
+query_text = """--sql
+SELECT
     *
-FROM db1.billing_orders_devices_st_partner_ch
-limit 100
+FROM db1.billing_orders_devices_st_partner
+WHERE   report_date  = '2025-05-21'
+limit 1
 
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    DROP TABLE db1.billing_orders_devices_st_partner_mv
+    """
+ch.query_run(query_text)
+
+```
+
+```python
+
+query_text = """
+SYSTEM REFRESH VIEW db1.billing_orders_devices_st_partner_mv
 """
 
 ch.query_run(query_text)
@@ -3158,5 +3194,113 @@ limit 100
 
 ch.query_run(query_text)
 ```
+____
+## [[all_installetion_points_parquet]]
 
 
+
+
+
+
+бакет aggregated-data
+
+```python
+query_text = """--sql
+CREATE TABLE db1.all_installetion_points_parquet
+(
+    `address_uuid` String,
+    `city` String,
+    `country` String,
+    `created_at` String,
+    `full_address` String,
+    `installation_point_id` Int32,
+    `parent_uuid` String ,
+    `region` String,
+    `report_date` Date
+)
+
+ENGINE = S3('https://storage.yandexcloud.net/aggregated-data/all_installetion_points_parquet/year=*/month=*/day=*/*.parquet','parquet')
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+csjue85puvc1ihvk38v4_0_3Y3oRgr8BUOStQmzePNR6Ux1JZ9SIpFr.parquet
+```
+
+```python
+query_text="""--sql
+SELECT * FROM db1.all_installetion_points_parquet
+limit 10
+"""
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+CREATE TABLE db1.all_installetion_points_parquet_ch
+    (
+    `address_uuid` String,
+    `city` String,
+    `country` String,
+    `created_at` String,
+    `full_address` String,
+    `installation_point_id` Int32,
+    `parent_uuid` String ,
+    `region` String,
+    `report_date` Date
+    )
+    ENGINE = MergeTree()
+    ORDER BY installation_point_id
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.all_installetion_points_parquet_mv
+    REFRESH EVERY 1 DAY OFFSET 4 HOUR TO db1.all_installetion_points_parquet_ch AS
+    SELECT
+        `address_uuid` String,
+        `city` String,
+        `country` String,
+        `created_at` String,
+        `full_address` String,
+        `installation_point_id` Int32,
+        `parent_uuid` String ,
+        `region` String,
+        `report_date` Date
+    FROM db1.all_installetion_points_parquet
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    SELECT
+        *
+    FROM db1.all_installetion_points_parquet_ch
+    limit 10
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+SYSTEM REFRESH VIEW db1.all_installetion_points_parquet_mv
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+DROP TABLE db1.all_installetion_points_parquet_mv
+"""
+
+ch.query_run(query_text)
+```
