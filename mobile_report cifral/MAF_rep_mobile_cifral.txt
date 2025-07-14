@@ -24,7 +24,7 @@ FROM
     ) AS flats 
     JOIN
     (SELECT
-            flat_uuid,
+            citizens_st_mobile.flat_uuid AS flat_uuid,
             sessions_st_mobile.citizen_id as citizen_id
         FROM 
             `sessions_st_mobile` 

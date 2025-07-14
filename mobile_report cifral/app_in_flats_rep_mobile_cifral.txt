@@ -9,7 +9,7 @@ FROM
             citizens_st.citizen_id as citizen_id, 
             report_date,
             state,
-            flat_uuid
+            citizens_st.flat_uuid AS flat_uuid
         FROM 
             `citizens_st_mobile` as citizens_st
             LEFT join `citizens_dir_mobile` as citizens_dir using(citizen_id)

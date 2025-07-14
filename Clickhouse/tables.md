@@ -38,7 +38,7 @@ ___
 
 ```python
 query_text = """
-    DROP TABLE db1.citizens_st_mobile_parquet_mv
+    DROP TABLE db1.sessions_st_mobile_mv
     """
 ch.query_run(query_text)
 ```
@@ -49,7 +49,7 @@ ___
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.citizens_st_mobile_parquet_mv
+SYSTEM REFRESH VIEW db1.sessions_st_mobile_mv
 """
 
 ch.query_run(query_text)
@@ -462,68 +462,8 @@ ch.query_run(query_text)
 
 ___
 
-## [[sessions_st_mobile]]
+[[sessions_st_mobile]]
 
-```python
-# creating a table from s3
-
-query_text = """--sql
-    CREATE TABLE db1.sessions_st_mobile
-    (
-        `report_date` Date,
-        `citizen_id`  Int32,
-        `created_at` DateTime,
-        `last_use` DateTime,
-        `updated_at` DateTime,
-        `platform` String,
-        `call_enabled` Int16,
-        `app` String,
-        `logged_in` Int16,
-        `timezone` String
-    )
-    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/sessions_st_mobile/year=*/month=*/*.csv','CSVWithNames')
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-# creating a table for materialized view
-
-query_text = """--sql
-    CREATE TABLE db1.sessions_st_mobile_ch
-    (
-        `report_date` Date,
-        `citizen_id`  Int32,
-        `created_at` DateTime,
-        `last_use` DateTime,
-        `updated_at` DateTime,
-        `platform` String,
-        `call_enabled` Int16,
-        `app` String,
-        `logged_in` Int16,
-        `timezone` String
-    )
-    ENGINE = MergeTree()
-    ORDER BY citizen_id
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-# creating a materialized view
-
-query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.sessions_st_mobile_mv
-    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.sessions_st_mobile_ch AS
-    SELECT
-        *
-    FROM db1.sessions_st_mobile
-    """
-
-ch.query_run(query_text)
-```
 
 ___
 
@@ -692,6 +632,7 @@ query_text = """--sql
     `citizen_id` Int32,
     `trial_available` Int32,
     `state` String,
+    `activated_at` String,
     `flat_uuid` String,
     `address_uuid` String
     )
@@ -702,135 +643,21 @@ ch.query_run(query_text)
 ```
 
 ```python
-
-```
-
-```python
 # creating a table from s3
 
 query_text = """--sql
-    CREATE TABLE db1.citizens_st_mobile_test_uuid
+    CREATE TABLE db1.citizens_st_mobile_ch
     (
     `report_date` Date,
     `citizen_id` Int32,
     `trial_available` Int32,
     `state` String,
-    `flat_uuid` String,
-    `address_uuid` String
-    )
-    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/citizens_st_mobile_parquet/year=*/month=*/*.parquet','parquet')
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql 
-SELECT
-    *
-FROM db1.citizens_st_mobile_test_uuid
-limit 10
-"""
-
-ch.query_run(query_text)
-```
-
-```python
-# creating a table for materialized view
-
-query_text = """--sql
-    CREATE TABLE db1.citizens_st_mobile_test_uuid_ch
-    (
-    `report_date` Date,
-    `citizen_id` Int32,
-    `trial_available` Int32,
-    `state` String,
-    `flat_uuid` UUID,
-    `address_uuid` UUID
-    )
-    ENGINE = MergeTree()
-    ORDER BY report_date
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    SELECT
-        `report_date`,
-        `citizen_id`,
-        `trial_available`,
-        `state`,
-        reinterpretAsUUID(flat_uuid) AS flat_uuid,
-        reinterpretAsUUID(flat_uuid) AS address_uuid
-    FROM db1.citizens_st_mobile_test_uuid
-    limit 10
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    SELECT
-        COUNT(citizen_id)
-    FROM db1.citizens_st_mobile_test_uuid_ch
-    WHERE report_date = dateTrunc('month', report_date) 
-    GROUP BY report_date,flat_uuid
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.citizens_st_mobile_test_uuid_mv
-    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.citizens_st_mobile_test_uuid_ch AS
-    SELECT
-        `report_date`,
-        `citizen_id`,
-        `trial_available`,
-        `state`,
-        reinterpretAsUUID(flat_uuid) AS flat_uuid,
-        reinterpretAsUUID(flat_uuid) AS address_uuid
-    FROM db1.citizens_st_mobile_test_uuid
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-SYSTEM REFRESH VIEW db1.citizens_st_mobile_parquet_mv
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-query_text = """--sql
-    DROP TABLE db1.citizens_st_mobile_test_uuid_mv
-    """
-
-ch.query_run(query_text)
-```
-
-```python
-# creating a table for materialized view
-
-query_text = """--sql
-    CREATE TABLE db1.citizens_st_mobile_test_uuid
-    (
-    `report_date` Date,
-    `citizen_id` Int32,
-    `trial_available` Int32,
-    `state` String,
+    `activated_at` String,
     `flat_uuid` String,
     `address_uuid` String
     )
     ENGINE = MergeTree()
-    ORDER BY report_date
+    ORDER BY citizen_id
     """
 
 ch.query_run(query_text)
@@ -860,6 +687,14 @@ query_text = """--sql
 ch.query_run(query_text)
 ```
 
+```python
+query_text = """--sql
+    DROP TABLE db1.citizens_st_mobile_ch
+    """
+
+ch.query_run(query_text)
+```
+
 ___
 
 ## [[citizens_st_mobile_parquet]]
@@ -871,6 +706,7 @@ query_text = """--sql
     `report_date` Date,
     `citizen_id` Int32,
     `trial_available` Int32,
+    `activated_at` String,
     `state` String,
     `flat_uuid` String,
     `address_uuid` String
@@ -888,6 +724,7 @@ query_text = """--sql
     `report_date` Date,
     `citizen_id` Int32,
     `trial_available` Int32,
+    `activated_at` String,
     `state` String,
     `flat_uuid` String,
     `address_uuid` String
@@ -1220,6 +1057,7 @@ query_text = """--sql
         `lon` String,
         `first_flat` Int16,
         `last_flat` Int16,
+        `flats_count_in_base` Int16,
         `flats_count` Int16,
         `address_uuid` String,
         `parent_uuid` String,
@@ -1267,7 +1105,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """
-    DROP TABLE db1.entries_installation_points_dir_partner_ch
+    DROP TABLE db1.entries_installation_points_dir_partner_mv
     """
 ch.query_run(query_text)
 ```
@@ -1557,6 +1395,7 @@ query_text = """--sql
 SELECT
     *
 FROM db1.billing_orders_dir_partner_ch
+order by created_at DESC
 limit 100
 
 """
@@ -1635,7 +1474,7 @@ query_text = """--sql
 SELECT
     *
 FROM db1.billing_orders_devices_st_partner
-WHERE   report_date  = '2025-05-21'
+WHERE   report_date  = '2025-06-30'
 limit 1
 
 """

@@ -30,12 +30,15 @@ ch = ClickHouse_client()
 pd.set_option('display.max_rows', 1000)
 ```
 
+___
+## Tags: #Tables
+___
 # Links:
 
-[[cameras_st_asgard]]<br>
-[[cameras_dir_partner]]<br>
-[[companies_st_partner]]<br>
-[[companies_dir_partner]]<br>
+[[cameras_st_asgard]]
+[[cameras_dir_partner]]
+[[companies_st_partner]]
+[[companies_dir_partner]]
 
 
 # Creating a table

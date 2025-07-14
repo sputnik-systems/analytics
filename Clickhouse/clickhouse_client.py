@@ -3,6 +3,7 @@ import datetime
 import os
 import pytz
 import pandas as pd
+import polars as pl
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
 
@@ -27,5 +28,21 @@ class ClickHouse_client:
         query_text = query_text
         result = self.client.query(query_text)
         self.df = pd.DataFrame(result.result_rows, columns=result.column_names)
+        # self.df = pl.DataFrame(result.result_rows, schema=result.column_names)
+        self.df =  pl.from_pandas(self.df)
         # display(self.df)
         return self.df
+
+    def get_schema (self, query_text):
+        query_text = query_text
+        result = self.client.query(query_text)
+        column_names = result.column_names
+        column_types = result.column_types
+        columns_description = "(\n" + ",\n".join(f"    `{name}` {str(type).split('.')[-1].split()[0]}" for name, type in zip(column_names, column_types)) + "\n)"
+
+        # Вывод результата
+        print(columns_description)
+
+        # print(self.query_schema)
+        # display(self.query_schema)
+        # return(self.query_schema)

@@ -14,5 +14,14 @@
             "driver": "ClickHouse",
             "name": "Clickhouse"
         }
-    ]
+    ],
+    "files.exclude": {
+        "Clickhouse/.ipynb_checkpoints": true,
+        "Clickhouse/.jupytext-sync-ipynb": true,
+        "Clickhouse/__pycache__": true,
+        ".obsidian": true,
+        ".venv": true,
+        ".vscode": true,
+        "Clickhouse/.env": true
+    }
 }

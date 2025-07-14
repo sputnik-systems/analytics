@@ -9,12 +9,12 @@ FROM
             citizens_st.citizen_id as citizen_id, 
             report_date,
             state,
-            flat_uuid
+            citizens_st.flat_uuid as flat_uuid
         FROM 
             `citizens_st_mobile` as citizens_st
             LEFT join `citizens_dir_mobile` as citizens_dir using(citizen_id)
         WHERE 
-            state = 'activated' and report_date = cast('{0}' as DATE)
+            state = 'activated' and report_date = cast('{2}' as DATE)
         ) AS citizens
     RIGHT JOIN
         (SELECT
@@ -29,9 +29,11 @@ FROM
         LEFT JOIN  installation_point_st_partner ON entries_installation_points_dir_partner.installation_point_id = installation_point_st_partner.installation_point_id
                                                 AND flats_st_partner.report_date = installation_point_st_partner.report_date
         WHERE 
-            deleted = 0 and flats_st_partner.report_date = CAST("{0}" AS Date)
+            deleted = 0 and flats_st_partner.report_date = CAST("{2}" AS Date)
         ) AS flats 
         using(flat_uuid)
     Group by flats.flat_uuid as flat_uuid
     ) AS to_avg
+
+
 

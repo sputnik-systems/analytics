@@ -30,6 +30,9 @@ from clickhouse_client import ClickHouse_client
 ch = ClickHouse_client()
 ```
 
+___
+## Tags: #Tables
+___
 # Links:
 
 [[installation_point_st_partner]]<br>
@@ -124,10 +127,6 @@ GROUP BY citizens_st_mobile.report_date AS report_date) AS accounts ON accounts.
 """ 
 ch.query_run(query_text)
 ```
-
-___
-
-## [[service_history_dir_partner]]
 
 ```python
 query_text = """--sql

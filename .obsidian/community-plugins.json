@@ -1,4 +1,6 @@
 [
   "table-editor-obsidian",
-  "link-exploder"
+  "link-exploder",
+  "code-emitter",
+  "breadcrumbs"
 ]

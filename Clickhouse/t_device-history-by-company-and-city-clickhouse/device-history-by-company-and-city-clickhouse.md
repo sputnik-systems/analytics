@@ -13,7 +13,7 @@ jupyter:
     name: python3
 ---
 
-# Start
+## Start
 
 ```python
 import clickhouse_connect
@@ -31,16 +31,19 @@ ch = ClickHouse_client()
 pd.set_option('display.max_rows', 1000)
 ```
 
-# t_device_history_by_companys_and_citys_ch
+## t_device_history_by_companys_and_citys_ch
 
 
+___
+## Tags: #Tables
+___
 ## Links:
 
-[[cameras_st_asgard]]<br>
-[[cameras_dir_asgard]]<br>
-[[cameras_st_asgard]]<br>
-[[intercoms_dir_asgard]]<br>
-[[cameras_st_partner]]<br>
+[[cameras_st_asgard]]
+[[cameras_dir_asgard]]
+[[cameras_st_asgard]]
+[[intercoms_dir_asgard]]
+[[cameras_st_partner]]
 
 ```python
 query_text = """--sql
@@ -187,7 +190,7 @@ ch.query_run(query_text)
 [[intercoms_dir_asgard]]<br>
 
 
-## main
+## Creating a table
 
 ```python
 query_text = """--sql
@@ -212,6 +215,8 @@ ORDER BY partner_uuid
 """
 ch.query_run(query_text)
 ```
+
+## Creating a MV
 
 ```python
 query_text = """--sql
