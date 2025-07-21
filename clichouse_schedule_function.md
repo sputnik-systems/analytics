@@ -1,10 +1,12 @@
 ___
-
 ### Tags: #YandexFunctions
 
+### Links: 
+
+[[citizens_st_mobile]]
 
 https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/functions/functions/d4edcea0td54cgl3crd0/editor
-
+____
 ## citizens_st_mobile_ch
 
 ```sql

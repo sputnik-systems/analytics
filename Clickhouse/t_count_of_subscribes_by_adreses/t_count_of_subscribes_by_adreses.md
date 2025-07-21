@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.17.1
+      jupytext_version: 1.17.2
   kernelspec:
     display_name: myenv
     language: python
@@ -57,6 +57,7 @@ query_text = """--sql
         `installation_point_id` Int64,
         `address_uuid` String,
         `partner_uuid` String,
+        `flats_count_full` Int16,
         `flats_count` Int16,
         `archive_from_partner` String,
         `count_of_subscribes` UInt64,
@@ -78,8 +79,8 @@ ___
 
 ```python
 query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.t_count_of_subscribes_by_adreses_mv
-    REFRESH EVERY 1 DAY OFFSET 5 HOUR 33 MINUTE TO db1.t_count_of_subscribes_by_adreses AS
+CREATE MATERIALIZED VIEW db1.t_count_of_subscribes_by_adreses_mv
+REFRESH EVERY 1 DAY OFFSET 5 HOUR 33 MINUTE TO db1.t_count_of_subscribes_by_adreses AS
 WITH t_entries_ip_dir_p AS (
     SELECT
         DISTINCT
@@ -87,6 +88,7 @@ WITH t_entries_ip_dir_p AS (
         ip_st_p.installation_point_id AS installation_point_id,
         e_ip_dir_p.address_uuid AS address_uuid,
         e_ip_dir_p.partner_uuid AS partner_uuid,
+        flats_count_full,
         flats_count,
         monetization_is_allowed
     FROM db1.installation_point_st_partner_ch AS ip_st_p
@@ -113,6 +115,7 @@ WITH t_entries_ip_dir_p AS (
         t_entries_ip_dir_p.installation_point_id AS installation_point_id,
         address_uuid,
         t_entries_ip_dir_p.partner_uuid AS partner_uuid,
+        flats_count_full,
         flats_count,
         archive_from_partner,
         camera_dvr_depth,
@@ -123,19 +126,28 @@ WITH t_entries_ip_dir_p AS (
         AND t_entries_ip_dir_p.installation_point_id = t_cameras_st_p.installation_point_id
     ),
     --
+    sub_st_m_ch AS (SELECT 
+		`report_date`,
+		`citizen_id`,
+		`state` 
+	FROM db1.subscriptions_st_mobile_ch)
+	,
+	cit_dir_m AS (SELECT 
+		citizen_id, 
+		report_date, 
+		address_uuid
+	FROM db1.citizens_st_mobile_ch),
+   	--
     subscriptions_count AS (
     SELECT
-        DISTINCT
-        report_date,
-        address_uuid,
-        COUNT(if(state = 'activated', sub_st_m_ch.citizen_id,Null)) AS count_of_subscribes
-    FROM db1.`subscriptions_st_mobile_ch` AS sub_st_m_ch
-    LEFT JOIN db1.`citizens_st_mobile_ch` AS cit_dir_m 
-        ON cit_dir_m.`citizen_id` = sub_st_m_ch.`citizen_id`
-        AND cit_dir_m.`report_date` = sub_st_m_ch.`report_date`
-    GROUP BY
-        report_date,
-        address_uuid
+	  sub_st_m_ch.report_date,
+	  cit_dir_m.address_uuid,
+	  COUNTIf(sub_st_m_ch.state = 'activated') AS count_of_subscribes
+	FROM sub_st_m_ch
+	LEFT ANY JOIN cit_dir_m
+	  ON cit_dir_m.citizen_id = sub_st_m_ch.citizen_id
+	  AND cit_dir_m.report_date = sub_st_m_ch.report_date
+	GROUP BY report_date, address_uuid
     ),
     --
     company AS (
@@ -155,6 +167,7 @@ SELECT
     installation_point_id,
     cameras_status.address_uuid AS address_uuid,
     cameras_status.partner_uuid as partner_uuid,
+    flats_count_full,
     flats_count,
     archive_from_partner,
     count_of_subscribes,
@@ -170,6 +183,9 @@ LEFT JOIN subscriptions_count
 LEFT JOIN company 
     ON cameras_status.partner_uuid = company.partner_uuid 
     AND cameras_status.report_date = company.report_date
+SETTINGS join_any_take_last_row = 1,
+		join_algorithm = 'partial_merge'
+
 """
 
 ch.query_run(query_text)
@@ -186,8 +202,7 @@ ___
 query_text = """--sql
 SELECT
     *
-FROM db1.t_count_of_subscribes_by_adreses_mv
-WHERE partner_uuid != ''
+FROM db1.t_count_of_subscribes_by_adreses
 ORDER BY report_date DESC
 limit 10
 

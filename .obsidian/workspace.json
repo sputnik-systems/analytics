@@ -8,45 +8,13 @@
         "type": "tabs",
         "children": [
           {
-            "id": "f40c676de9d11f63",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/citizens_st_mobile_parquet.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "citizens_st_mobile_parquet"
-            }
-          },
-          {
             "id": "86dd9a58365a2579",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities/subscribtions_citizens_by_companies_and_cities.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "subscribtions_citizens_by_companies_and_cities"
-            }
-          },
-          {
-            "id": "071be93e31061913",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/t_count_of_nuw_addresses/count_of_nuw_addresses.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "count_of_nuw_addresses"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           },
           {
@@ -55,17 +23,16 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clickhouse/t_buildings_cohorts/buildings_cohorts.md",
+                "file": "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "buildings_cohorts"
+              "title": "t_building_dir_partner"
             }
           }
-        ],
-        "currentTab": 3
+        ]
       }
     ],
     "direction": "vertical"
@@ -270,14 +237,84 @@
             "id": "a3c4a80f8b7f1ac3",
             "type": "leaf",
             "state": {
-              "type": "BC-tree",
+              "type": "empty",
               "state": {},
-              "icon": "feather-corner-right-down",
-              "title": "Breadcrumbs Down"
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           },
           {
             "id": "ce1438aeedab5817",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "3a202ed68a7f4b73",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "1c98b1edc6e6bffd",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "9bead7104ba1dc19",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "12f02fb3c58866fd",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "bb963fa136b1cc66",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "39bf3fc4357f0084",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "ffafecf911cf7d00",
             "type": "leaf",
             "state": {
               "type": "BC-matrix",
@@ -285,13 +322,24 @@
               "icon": "BC-trail-icon",
               "title": "Breadcrumbs Matrix"
             }
+          },
+          {
+            "id": "ed0a3fa6d3ba079e",
+            "type": "leaf",
+            "state": {
+              "type": "BC-tree",
+              "state": {},
+              "icon": "feather-corner-right-down",
+              "title": "Breadcrumbs Down"
+            }
           }
         ],
-        "currentTab": 11
+        "currentTab": 19
       }
     ],
     "direction": "horizontal",
-    "width": 829.5
+    "width": 829.5,
+    "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -305,44 +353,44 @@
       "breadcrumbs:Breadcrumbs Visualisation": false
     }
   },
-  "active": "ce1438aeedab5817",
+  "active": "86dd9a58365a2579",
   "lastOpenFiles": [
-    "LEFT ANY JOIN.md",
-    "join_algorithm.md",
+    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
+    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.ipynb",
+    "Clickhouse/Sources/Asgard/cameras_st_asgard.md",
+    "Clickhouse/Sources/Asgard/cameras_st_asgard.ipynb",
+    "Clickhouse/Sources/Asgard/cameras_dir_asgard.md",
+    "Clickhouse/Sources/Asgard/cameras_dir_asgard.ipynb",
+    "Clickhouse/Sources/Partner/uk_st_partner.md",
+    "Clickhouse/Sources/Partner/uk_dir_partner.md",
+    "Clickhouse/Sources/Partner/intercoms_dir_partner.md",
+    "Clickhouse/Sources/Partner/intercoms_dir_partner.ipynb",
+    "Clickhouse/Sources/Partner/intercoms_st_partner.md",
+    "Clickhouse/Sources/Partner/intercoms_st_partner.ipynb",
+    "Clickhouse/Sources/Partner/cameras_dir_partner.md",
+    "Clickhouse/Sources/Partner/cameras_dir_partner.ipynb",
+    "Clickhouse/Sources/Partner/cameras_st_partner.md",
+    "Clickhouse/Sources/Partner/cameras_st_partner.ipynb",
+    "Clickhouse/Sources/Partner/service_history_dir_partner.md",
+    "Clickhouse/Sources/Partner/service_history_dir_partner.ipynb",
+    "Clickhouse/Sources/Partner/companies_st_partner.md",
+    "Clickhouse/Sources/Partner/companies_st_partner.ipynb",
+    "Clickhouse/Sources/Partner/companies_dir_partner.md",
+    "Clickhouse/Sources/Partner/companies_dir_partner.ipynb",
+    "Clickhouse/Sources/Partner/billing_orders_devices_st_partner.md",
+    "Clickhouse/Sources/Partner/billing_orders_dir_partner.md",
+    "Clickhouse/Sources/Partner/accruals_dir_partner.md",
+    "Clickhouse/Sources/Partner/gates_st_partner.md",
+    "Clickhouse/Sources/Partner/uk_addresses_st_partner.md",
+    "Clickhouse/Sources/Partner/buildings_st_partner.md",
+    "Clickhouse/Sources/Partner/installation_point_st_partner.md",
+    "Clickhouse/Sources/Partner/flats_st_partner.md",
     "clichouse_schedule_function.md",
-    "Clickhouse/t_buildings_cohorts/dl_Когорты домов.md",
-    "Clickhouse/t_buildings_cohorts/d_buildings_cohorts.md",
-    "Clickhouse/t_buildings_cohorts/buildings_cohorts.md",
-    "Clickhouse/t_count_of_nuw_addresses/count_of_nuw_addresses.md",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities/subscribtions_citizens_by_companies_and_cities.md",
-    "Clickhouse/t_device_billings/device_billings.md",
-    "Clickhouse/t_device-history-by-company-and-city-clickhouse/device-history-by-company-and-city-clickhouse.md",
-    "Clickhouse/citizens_st_mobile.md",
-    "Clickhouse/citizens_st_mobile_parquet.md",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.ipynb",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address",
-    "Clickhouse/tables.md",
-    "Clickhouse/entries_installation_points_dir_partner.md",
-    "Clickhouse/Refreshable Materialized View schedule.md",
-    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total.ipynb",
-    "Clickhouse/mobile_report_total",
-    "Clickhouse/sessions_st_mobile.md",
-    "Clickhouse/sessions_st_mobile.ipynb",
-    "mobile_report/temp_file",
-    "partner_report/temp_file",
-    "Clickhouse/citizens_st_mobile_parquet.ipynb",
-    "Clickhouse/citizens_st_mobile.ipynb",
-    "Clickhouse/[[citizens_st_mobile.md",
-    "Clickhouse/[[citizens_st_mobile]].md",
-    "Clickhouse/t_count_of_subscribes_by_adreses/t_count_of_subscribes_by_adreses.md",
-    "Clickhouse/t_count_of_subscribes_by_adreses/t_count_of_subscribes_by_adreses.ipynb",
-    "Clickhouse/t_сameras_by_companies/123231.md",
-    "Clickhouse/t_сameras_by_companies/cameras_by_companies.md",
-    "Clickhouse/device_billings/device_billings.md",
-    "Clickhouse/buildings_cohorts/buildings_cohorts.md",
-    "Clickhouse/count_of_nuw_addresses/count_of_nuw_addresses.md",
-    "Clickhouse/table_remaking.md",
-    "Clickhouse/count_of_nuw_addresses/citizen_id.md",
+    "Clickhouse/Sources/Partner/flats_dir_partner.md",
+    "Clickhouse/Sources/Partner/users_st_partner.md",
+    "Clickhouse/Sources/Partner/uk_addresses_partner.md",
+    "Clickhouse/Sources/Partner/entries_installation_points_dir_partner.md",
+    "Clickhouse/Sources/Mobile/citizens_dir_mobile.md",
     "Untitled.canvas",
     "count_of_nuw_addresses-0.canvas",
     "count_of_nuw_addresses.canvas",
