@@ -4,83 +4,36 @@
     "type": "split",
     "children": [
       {
-        "id": "283b0b6406211815",
+        "id": "e8718052938a985d",
         "type": "tabs",
         "children": [
           {
-            "id": "86dd9a58365a2579",
+            "id": "8243780cf8f6deb9",
             "type": "leaf",
-            "pinned": true,
             "state": {
-              "type": "juggl_view",
+              "type": "graph",
               "state": {},
-              "pinned": true,
-              "icon": "lucide-file",
-              "title": "Juggl"
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           },
           {
-            "id": "bf4ef69beb11c830",
+            "id": "9879bd45b30797fe",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clickhouse/Sources/Asgard/reconnects_intercoms_st_asgard.md",
+                "file": "Clickhouse/Sources/Support/requests_st_support.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "reconnects_intercoms_st_asgard"
-            }
-          },
-          {
-            "id": "d107b1427a6bbc22",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
-              "icon": "lucide-file",
-              "title": "t_building_dir_partner"
-            }
-          },
-          {
-            "id": "a5614b495e37766f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
-              "icon": "lucide-file",
-              "title": "dh_Саппорт - новые метрики"
-            }
-          },
-          {
-            "id": "422e0076e448eba0",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/Sources/Support/categories_st_support.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
-              "icon": "lucide-file",
-              "title": "categories_st_support"
+              "title": "requests_st_support"
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -466,8 +419,8 @@
             "state": {
               "type": "BC-matrix",
               "state": {},
-              "icon": "BC-trail-icon",
-              "title": "Breadcrumbs Matrix"
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
             }
           },
           {
@@ -476,8 +429,8 @@
             "state": {
               "type": "BC-tree",
               "state": {},
-              "icon": "feather-corner-right-down",
-              "title": "Breadcrumbs Down"
+              "icon": "lucide-file",
+              "title": "Plugin no longer active"
             }
           }
         ],
@@ -496,26 +449,34 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "breadcrumbs:Breadcrumbs Visualisation": false,
-      "juggl:Juggl global graph": false
+      "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "422e0076e448eba0",
+  "active": "9879bd45b30797fe",
   "lastOpenFiles": [
+    "Clickhouse/Sources/Support/requests_st_support.md",
+    "Clickhouse/Sources/Partner/companies_st_partner.md",
+    "Clickhouse/Sources/Asgard/cameras_daily_percentage_online_st_asgard.md",
+    "Clickhouse/Sources/Asgard/reconnects_intercoms_st_asgard.md",
+    "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
+    "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
+    "Clickhouse/Sources/Support/categories_st_support.md",
+    "Clickhouse/test.md",
+    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
+    "citizens_st_mobile.canvas",
+    "tables.canvas",
+    "uk_addresses_partner.canvas",
+    "tables-0.canvas",
+    "Clickhouse/Sources/tables.md",
+    "Untitled 2.canvas",
     "Untitled 1.canvas",
     "categories_sc_support.md",
-    "Clickhouse/Sources/Asgard/reconnects_intercoms_st_asgard.md",
     "Clickhouse/t_device-history-by-company-and-city-clickhouse/t_device-history-by-company-and-city-clickhouse.md",
     "d_requests_info_st_support.md",
     "d_requests_st_support.md",
     "clichouse_schedule_function.md",
     "categories-sc-support.md",
-    "Clickhouse/Sources/tables.md",
-    "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
     "Clickhouse/t_requests_st_support/t_requests_info_st_support.md",
-    "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
-    "Clickhouse/Sources/Support/categories_st_support.md",
     "Clickhouse/Sources/Support/categories_st_support.ipynb",
     "Clickhouse/Sources/Support/categories_sc_support.md",
     "Clickhouse/Sources/Support/categories_sc_support.ipynb",
@@ -535,17 +496,10 @@
     "Clickhouse/Sources/Partner/companies_dir_partner.md",
     "Clickhouse/t_requests_st_support/t_requests_st_support.md",
     "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
-    "Clickhouse/Sources/t_requests_st_support/t_requests_st_support.md",
-    "Clickhouse/Sources/Support/requests_st_support.md",
-    "Clickhouse/Sources/Modified sources/all_installetion_points_parquet.md",
-    "Clickhouse/Sources/Asgard/metrics_asgard.md",
     "Untitled.canvas",
     "count_of_nuw_addresses-0.canvas",
     "count_of_nuw_addresses.canvas",
     "adding_tables.canvas",
-    "adding_tables-0.canvas",
-    "adding_tables-1.canvas",
-    "citizens_st_mobile.canvas",
     "Clickhouse/image.png"
   ]
 }

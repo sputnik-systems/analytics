@@ -134,7 +134,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.intercoms_st_partner_mv
+SYSTEM REFRESH VIEW db1.cameras_daily_percentage_online_st_asgard_ch
 """
 
 ch.query_run(query_text)

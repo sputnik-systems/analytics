@@ -1,7 +1,7 @@
 [
   "table-editor-obsidian",
   "link-exploder",
-  "code-emitter",
-  "breadcrumbs",
-  "dataview"
+  "dataview",
+  "persistent-graph",
+  "jupymd"
 ]

@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "categories_st_support",
+  "search": "requests",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -49,9 +49,9 @@
   "nodeSizeMultiplier": 0.891145833333333,
   "lineSizeMultiplier": 0.584895833333333,
   "collapse-forces": false,
-  "centerStrength": 0.677083333333333,
-  "repelStrength": 14.8958333333333,
-  "linkStrength": 1,
+  "centerStrength": 0.578125,
+  "repelStrength": 15.2083333333333,
+  "linkStrength": 0.875,
   "linkDistance": 30,
   "scale": 0.45050811767578125,
   "close": false
