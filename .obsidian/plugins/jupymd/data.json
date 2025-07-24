@@ -1,0 +1,5 @@
+{
+  "pythonInterpreter": "python3",
+  "notebookEditorCommand": "jupyter-lab",
+  "enableCodeBlocks": true
+}

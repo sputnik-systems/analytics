@@ -10,11 +10,28 @@
           {
             "id": "86dd9a58365a2579",
             "type": "leaf",
+            "pinned": true,
             "state": {
-              "type": "graph",
+              "type": "juggl_view",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "pinned": true,
+              "icon": "lucide-file",
+              "title": "Juggl"
+            }
+          },
+          {
+            "id": "bf4ef69beb11c830",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/Sources/Asgard/reconnects_intercoms_st_asgard.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "reconnects_intercoms_st_asgard"
             }
           },
           {
@@ -31,8 +48,39 @@
               "icon": "lucide-file",
               "title": "t_building_dir_partner"
             }
+          },
+          {
+            "id": "a5614b495e37766f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "dh_Саппорт - новые метрики"
+            }
+          },
+          {
+            "id": "422e0076e448eba0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/Sources/Support/categories_st_support.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "categories_st_support"
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -85,8 +133,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -317,6 +364,106 @@
             "id": "ffafecf911cf7d00",
             "type": "leaf",
             "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "ed0a3fa6d3ba079e",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "2bd08177917d015a",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "4346efe897abf6d4",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "7d7f0404c29141a3",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "8326bf0e355b75b1",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "9191d73d175ecff6",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "2fb1847aa205ae32",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "55a9caf00aa5f2db",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "f766b55506c16a30",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "f729a3bc514cf66e",
+            "type": "leaf",
+            "state": {
               "type": "BC-matrix",
               "state": {},
               "icon": "BC-trail-icon",
@@ -324,7 +471,7 @@
             }
           },
           {
-            "id": "ed0a3fa6d3ba079e",
+            "id": "6b1b726a893d4023",
             "type": "leaf",
             "state": {
               "type": "BC-tree",
@@ -334,7 +481,7 @@
             }
           }
         ],
-        "currentTab": 19
+        "currentTab": 29
       }
     ],
     "direction": "horizontal",
@@ -350,47 +497,48 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "breadcrumbs:Breadcrumbs Visualisation": false
+      "breadcrumbs:Breadcrumbs Visualisation": false,
+      "juggl:Juggl global graph": false
     }
   },
-  "active": "86dd9a58365a2579",
+  "active": "422e0076e448eba0",
   "lastOpenFiles": [
-    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
-    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.ipynb",
-    "Clickhouse/Sources/Asgard/cameras_st_asgard.md",
-    "Clickhouse/Sources/Asgard/cameras_st_asgard.ipynb",
-    "Clickhouse/Sources/Asgard/cameras_dir_asgard.md",
-    "Clickhouse/Sources/Asgard/cameras_dir_asgard.ipynb",
-    "Clickhouse/Sources/Partner/uk_st_partner.md",
-    "Clickhouse/Sources/Partner/uk_dir_partner.md",
-    "Clickhouse/Sources/Partner/intercoms_dir_partner.md",
-    "Clickhouse/Sources/Partner/intercoms_dir_partner.ipynb",
-    "Clickhouse/Sources/Partner/intercoms_st_partner.md",
-    "Clickhouse/Sources/Partner/intercoms_st_partner.ipynb",
-    "Clickhouse/Sources/Partner/cameras_dir_partner.md",
-    "Clickhouse/Sources/Partner/cameras_dir_partner.ipynb",
-    "Clickhouse/Sources/Partner/cameras_st_partner.md",
-    "Clickhouse/Sources/Partner/cameras_st_partner.ipynb",
-    "Clickhouse/Sources/Partner/service_history_dir_partner.md",
-    "Clickhouse/Sources/Partner/service_history_dir_partner.ipynb",
-    "Clickhouse/Sources/Partner/companies_st_partner.md",
-    "Clickhouse/Sources/Partner/companies_st_partner.ipynb",
-    "Clickhouse/Sources/Partner/companies_dir_partner.md",
-    "Clickhouse/Sources/Partner/companies_dir_partner.ipynb",
-    "Clickhouse/Sources/Partner/billing_orders_devices_st_partner.md",
-    "Clickhouse/Sources/Partner/billing_orders_dir_partner.md",
-    "Clickhouse/Sources/Partner/accruals_dir_partner.md",
-    "Clickhouse/Sources/Partner/gates_st_partner.md",
-    "Clickhouse/Sources/Partner/uk_addresses_st_partner.md",
-    "Clickhouse/Sources/Partner/buildings_st_partner.md",
-    "Clickhouse/Sources/Partner/installation_point_st_partner.md",
-    "Clickhouse/Sources/Partner/flats_st_partner.md",
+    "Untitled 1.canvas",
+    "categories_sc_support.md",
+    "Clickhouse/Sources/Asgard/reconnects_intercoms_st_asgard.md",
+    "Clickhouse/t_device-history-by-company-and-city-clickhouse/t_device-history-by-company-and-city-clickhouse.md",
+    "d_requests_info_st_support.md",
+    "d_requests_st_support.md",
     "clichouse_schedule_function.md",
-    "Clickhouse/Sources/Partner/flats_dir_partner.md",
-    "Clickhouse/Sources/Partner/users_st_partner.md",
-    "Clickhouse/Sources/Partner/uk_addresses_partner.md",
-    "Clickhouse/Sources/Partner/entries_installation_points_dir_partner.md",
-    "Clickhouse/Sources/Mobile/citizens_dir_mobile.md",
+    "categories-sc-support.md",
+    "Clickhouse/Sources/tables.md",
+    "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
+    "Clickhouse/t_requests_st_support/t_requests_info_st_support.md",
+    "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
+    "Clickhouse/Sources/Support/categories_st_support.md",
+    "Clickhouse/Sources/Support/categories_st_support.ipynb",
+    "Clickhouse/Sources/Support/categories_sc_support.md",
+    "Clickhouse/Sources/Support/categories_sc_support.ipynb",
+    "join_algorithm.md",
+    "Clickhouse/Sources/Support/categories-sc-support.md",
+    "Clickhouse/Sources/Support/categories-sc-support.ipynb",
+    "Clickhouse/categories-sc-support",
+    "Clickhouse/t_requests_st_support/categories.csv",
+    "Clickhouse/t_requests_st_support/categories.txt",
+    "Clickhouse/t_requests_st_support/__pycache__/config.cpython-312.pyc",
+    "Clickhouse/t_requests_st_support/__pycache__",
+    "Clickhouse/t_requests_st_support/config.py",
+    "Clickhouse/t_requests_st_support copy/t_requests_st_support.md",
+    "Clickhouse/t_requests_st_support copy/t_requests_st_support.ipynb",
+    "Clickhouse/Refreshable Materialized View schedule.md",
+    "LEFT ANY JOIN.md",
+    "Clickhouse/Sources/Partner/companies_dir_partner.md",
+    "Clickhouse/t_requests_st_support/t_requests_st_support.md",
+    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
+    "Clickhouse/Sources/t_requests_st_support/t_requests_st_support.md",
+    "Clickhouse/Sources/Support/requests_st_support.md",
+    "Clickhouse/Sources/Modified sources/all_installetion_points_parquet.md",
+    "Clickhouse/Sources/Asgard/metrics_asgard.md",
     "Untitled.canvas",
     "count_of_nuw_addresses-0.canvas",
     "count_of_nuw_addresses.canvas",

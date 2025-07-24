@@ -184,11 +184,15 @@ ch.query_run(query_text)
 
 ## Links:
 
-[[cameras_st_asgard]]<br>
-[[cameras_dir_asgard]]<br>
-[[cameras_st_asgard]]<br>
-[[intercoms_dir_asgard]]<br>
+[[cameras_st_asgard]]
 
+[[cameras_dir_asgard]]
+
+[[cameras_st_asgard]]
+
+[[intercoms_dir_asgard]]
+
+[[companies_dir_partner]]
 
 ## Creating a table
 

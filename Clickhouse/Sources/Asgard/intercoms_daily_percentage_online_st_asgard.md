@@ -9,10 +9,6 @@ jupyter:
       jupytext_version: 1.17.2
 ---
 
-```python
-
-```
-
 ## Start
 
 ```python
@@ -29,8 +25,6 @@ sys.path.append('/home/boris/Documents/Work/analytics/Clickhouse')
 from clickhouse_client import ClickHouse_client
 ch = ClickHouse_client()
 pd.set_option('display.max_rows', 1000)
-
-
 ```
 
 ___
@@ -43,19 +37,13 @@ ___
 # creating a table from s3
 
 query_text = """--sql 
-   CREATE TABLE db1.intercoms_dir_asgard
+   CREATE TABLE db1.intercoms_daily_percentage_online_st_asgard
 (
-    `created_at` Date,
-    `first_online_at` Date,
-    `first_open_door_at` Date,
-    `flat_range` Int16,
-    `flat_count` Int16,
-    `hardware_version` String,
-    `motherboard_id` String,
-    `partner_uuid` String,
-    `intercom_uuid` String
+    `report_date` Date,
+    `intercom_uuid` String,
+    `onlinePercent` Int16
 )
-ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/intercoms_dir_asgard/*.csv','CSVWithNames')
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/intercoms_daily_percentage_online_st_asgard/year=*/month=*/*.csv','CSVWithNames')
     """
 
 ch.query_run(query_text)
@@ -63,17 +51,11 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    CREATE TABLE db1.intercoms_dir_asgard_ch
+    CREATE TABLE db1.intercoms_daily_percentage_online_st_asgard_ch
 (
-    `created_at` Date,
-    `first_online_at` Date,
-    `first_open_door_at` Date,
-    `flat_range` Int16,
-    `flat_count` Int16,
-    `hardware_version` String,
-    `motherboard_id` String,
-    `partner_uuid` String,
-    `intercom_uuid` String
+    `report_date` Date,
+    `intercom_uuid` String,
+    `onlinePercent` Int16
 )
     ENGINE = MergeTree()
     ORDER BY intercom_uuid
@@ -84,12 +66,11 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.intercoms_dir_asgard_mv
-    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.intercoms_dir_asgard_ch AS
+    CREATE MATERIALIZED VIEW db1.intercoms_daily_percentage_online_st_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.intercoms_daily_percentage_online_st_asgard_ch AS
     SELECT
         *
-    FROM db1.intercoms_dir_asgard
-    WHERE partner_uuid not like '%main:tokens:%'
+    FROM db1.intercoms_daily_percentage_online_st_asgard
     """
 
 ch.query_run(query_text)
@@ -105,9 +86,21 @@ ___
 query_text = """--sql
     SELECT
         *
-    FROM db1.intercoms_dir_asgard_ch
+    FROM db1.intercoms_daily_percentage_online_st_asgard_ch
     ORDER BY report_date desc
     limit 100
+    """
+
+ch.query_run(query_text)
+
+```
+
+### delete a part
+
+
+```python
+query_text = """--sql
+    ALTER TABLE db1.intercoms_daily_percentage_online_st_asgard_ch DELETE WHERE report_date = '2025-07-17'
     """
 
 ch.query_run(query_text)
@@ -118,7 +111,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.intercoms_dir_asgard_mv
+    DROP TABLE db1.intercoms_daily_percentage_online_st_asgard_mv
     """
 
 ch.query_run(query_text)
@@ -129,7 +122,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.intercoms_dir_asgard_ch
+    DROP TABLE db1.intercoms_daily_percentage_online_st_asgard_ch
     """
 
 ch.query_run(query_text)
@@ -139,7 +132,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.intercoms_dir_asgard_mv
+SYSTEM REFRESH VIEW db1.intercoms_daily_percentage_online_st_asgard_mv
 """
 
 ch.query_run(query_text)

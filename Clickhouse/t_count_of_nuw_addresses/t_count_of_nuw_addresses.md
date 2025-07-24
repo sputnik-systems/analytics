@@ -13,7 +13,7 @@ jupyter:
     name: python3
 ---
 
-# Start
+## Start
 
 ```python
 import clickhouse_connect
@@ -33,7 +33,7 @@ ch = ClickHouse_client()
 ___
 ## Tags: #Tables
 ___
-# Links:
+## Links:
 
 [[installation_point_st_partner]]<br>
 [[entries_installation_points_dir_partner]]<br>

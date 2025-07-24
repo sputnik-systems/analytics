@@ -28,3 +28,13 @@ address_uuid
 FROM db1.citizens_st_mobile_ch
 WHERE report_date = '{0}'
 ```
+
+___
+[[categories_sc_support]]
+
+```
+
+```
+
+https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/functions/functions/d4e51m57ib7qdnaim7fa/testing
+___

@@ -29,32 +29,31 @@ pd.set_option('display.max_rows', 1000)
 
 ```
 
-<!-- #raw -->
 ___
 ### Tags: #Source #Partner
 
 ### Links: 
 ___
-<!-- #endraw -->
 
 ```python
 # creating a table from s3
 
 query_text = """--sql 
-   CREATE TABLE db1.intercoms_st_partner
+   CREATE TABLE db1.flussonic_stats_st_asgard
 (
-    `report_date` Date,
-    `installation_date` DateTime,
-    `service_partner_uuid` String,
-    `partner_uuid` String,
-    `intercom_uuid` String,
-    `installation_point_id` Int64,
-    `second_device_type` String,
-    `second_device_state` Int16,
-    `second_device_created_at` String,
-    `model_identifier` String
+    `report_date` DateTime,
+    `stream_name` String,
+    `disabled` String,
+    `status` String,
+    `alive` String,
+    `lifetime` Int64,
+    `bitrate` Int32,
+    `agent_status` String,
+    `server` String,
+    `dvr_depth` Int16,
+    `dvr_depth_minute` Int64
 )
-ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/intercoms_st_partner/year=*/month=*/*.csv','CSVWithNames')
+ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/flussonic_stats_st_asgard/year=*/month=*/day=*/*.csv','CSVWithNames')
     """
 
 ch.query_run(query_text)
@@ -62,21 +61,22 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    CREATE TABLE db1.intercoms_st_partner_ch
+    CREATE TABLE db1.flussonic_stats_st_asgard_ch
 (
-    `report_date` Date,
-    `installation_date` DateTime,
-    `service_partner_uuid` String,
-    `partner_uuid` String,
-    `intercom_uuid` String,
-    `installation_point_id` Int64,
-    `second_device_type` String,
-    `second_device_state` Int16,
-    `second_device_created_at` String,
-    `model_identifier` String
+    `report_date` DateTime,
+    `stream_name` String,
+    `disabled` String,
+    `status` String,
+    `alive` String,
+    `lifetime` Int64,
+    `bitrate` Int32,
+    `agent_status` String,
+    `server` String,
+    `dvr_depth` Int16,
+    `dvr_depth_minute` Int64
 )
     ENGINE = MergeTree()
-    ORDER BY intercom_uuid
+    ORDER BY stream_name
     """
 
 ch.query_run(query_text)
@@ -84,11 +84,11 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.intercoms_st_partner_mv
-    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.intercoms_st_partner_ch AS
+    CREATE MATERIALIZED VIEW db1.flussonic_stats_st_asgard_mv
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.flussonic_stats_st_asgard_ch AS
     SELECT
         *
-    FROM db1.intercoms_st_partner
+    FROM db1.flussonic_stats_st_asgard
     """
 
 ch.query_run(query_text)
@@ -104,7 +104,7 @@ ___
 query_text = """--sql
     SELECT
         *
-    FROM db1.intercoms_st_partner_ch
+    FROM db1.flussonic_stats_st_asgard_ch
     ORDER BY report_date desc
     limit 100
     """
@@ -118,7 +118,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    ALTER TABLE db1.intercoms_st_partner_ch DELETE WHERE report_date = '2025-07-17'
+    ALTER TABLE db1.flussonic_stats_st_asgard_ch DELETE WHERE report_date = '2025-07-17'
     """
 
 ch.query_run(query_text)
@@ -129,7 +129,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.intercoms_st_partner_mv
+    DROP TABLE db1.flussonic_stats_st_asgard_mv
     """
 
 ch.query_run(query_text)
@@ -140,7 +140,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.intercoms_st_partner_ch
+    DROP TABLE db1.flussonic_stats_st_asgard_ch
     """
 
 ch.query_run(query_text)
@@ -150,7 +150,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.intercoms_st_partner_mv
+SYSTEM REFRESH VIEW db1.flussonic_stats_st_asgard_mv
 """
 
 ch.query_run(query_text)

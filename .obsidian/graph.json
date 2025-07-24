@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "",
+  "search": "categories_st_support",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -53,6 +53,6 @@
   "repelStrength": 14.8958333333333,
   "linkStrength": 1,
   "linkDistance": 30,
-  "scale": 0.6666666666666644,
+  "scale": 0.45050811767578125,
   "close": false
 }
