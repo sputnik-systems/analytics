@@ -13,9 +13,7 @@ jupyter:
     name: python3
 ---
 
-## Start
-
-```python
+```python jupyter={"is_executing": false}
 import clickhouse_connect
 import datetime
 import os
@@ -107,7 +105,7 @@ ___
 ### query
 
 
-```python
+```python jupyter={"is_executing": false}
 query_text = """--sql
     SELECT
         *

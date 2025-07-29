@@ -11,10 +11,90 @@
             "id": "8243780cf8f6deb9",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/Sources/Partner/billing_orders_devices_st_partner.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "billing_orders_devices_st_partner"
+            }
+          },
+          {
+            "id": "f7eca5408b4d8686",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Отчет по рекуррентным платежам - Eжедневные данные.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "Отчет по рекуррентным платежам - Eжедневные данные"
+            }
+          },
+          {
+            "id": "fe9a24b3eabd9715",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "d_count_of_nuw_addresses.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "d_count_of_nuw_addresses"
+            }
+          },
+          {
+            "id": "659a2753ac19bcc5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "t_count_of_nuw_addresses"
+            }
+          },
+          {
+            "id": "8a045b9d616cefab",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "t_count_of_nuw_addresses"
+            }
+          },
+          {
+            "id": "6e2325135d72ced0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "t_subscribtions_citizens_by_companies_and_cities_address_ch"
             }
           },
           {
@@ -23,17 +103,41 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clickhouse/Sources/Support/requests_st_support.md",
+                "file": "Clickhouse/Sources/Asgard/flussonic_stats_st_asgard.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "requests_st_support"
+              "title": "flussonic_stats_st_asgard"
+            }
+          },
+          {
+            "id": "8ace63c112ce9fc9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities/t_subscribtions_citizens_by_companies_and_cities.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "t_subscribtions_citizens_by_companies_and_cities"
+            }
+          },
+          {
+            "id": "f348c04c467dfe59",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -65,7 +169,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "billing_orders_devices_st_partner_ch",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -86,7 +190,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -452,50 +557,50 @@
       "table-editor-obsidian:Advanced Tables Toolbar": false
     }
   },
-  "active": "9879bd45b30797fe",
+  "active": "dcce8c5322958ebc",
   "lastOpenFiles": [
+    "Clickhouse/t_requests_st_support/t_requests_st_support.md",
+    "clichouse_schedule_function.md",
+    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
+    "Clickhouse/Sources/Partner/entries_installation_points_dir_partner.md",
+    "Clickhouse/t_citizens_id_city_partner/t_citizens_id_city_partner.md",
+    "Clickhouse/t_citizens_id_city_partner/t_citizens_id_city_partner.ipynb",
+    "Clickhouse/t_citizens_id_city_partner/citizens_id_city_partner.ipynb",
+    "Clickhouse/t_citizens_id_city_partner",
+    "Clickhouse/Sources/Modified sources/citizens_id_city_partner.ipynb",
+    "Clickhouse/Sources/Modified sources/citizens_id_city_partner",
+    "Clickhouse/Sources/Modified sources/t_citizens_id_city_partner",
+    "Clickhouse/mobile_report_total/t_citizens_id_city_partner",
+    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full.md",
+    "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
+    "d_requests_info_st_support.md",
+    "Clickhouse/Sources/Partner/cameras_st_partner.md",
+    "Clickhouse/t_buildings_cohorts/t_buildings_cohorts.md",
+    "Отчет по рекуррентным платежам - Eжедневные данные.md",
+    "d_count_of_nuw_addresses.md",
+    "Clickhouse/Sources/Partner/installation_point_st_partner.md",
+    "Clickhouse/Sources/Asgard/flussonic_stats_st_asgard.md",
+    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities/t_subscribtions_citizens_by_companies_and_cities.md",
+    "Clickhouse/Sources/Partner/billing_orders_devices_st_partner.md",
+    "Clickhouse/Sources/Partner/cameras_dir_partner.md",
+    "Clickhouse/t_count_of_subscribes_by_adreses/t_count_of_subscribes_by_adreses.md",
+    "join_algorithm.md",
+    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/partial_merge.md",
+    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
+    "Clickhouse/t_сameras_by_companies/t_cameras_by_companies.md",
+    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full.ipynb",
     "Clickhouse/Sources/Support/requests_st_support.md",
     "Clickhouse/Sources/Partner/companies_st_partner.md",
     "Clickhouse/Sources/Asgard/cameras_daily_percentage_online_st_asgard.md",
     "Clickhouse/Sources/Asgard/reconnects_intercoms_st_asgard.md",
-    "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
-    "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
-    "Clickhouse/Sources/Support/categories_st_support.md",
-    "Clickhouse/test.md",
-    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
     "citizens_st_mobile.canvas",
     "tables.canvas",
     "uk_addresses_partner.canvas",
     "tables-0.canvas",
-    "Clickhouse/Sources/tables.md",
     "Untitled 2.canvas",
     "Untitled 1.canvas",
-    "categories_sc_support.md",
-    "Clickhouse/t_device-history-by-company-and-city-clickhouse/t_device-history-by-company-and-city-clickhouse.md",
-    "d_requests_info_st_support.md",
-    "d_requests_st_support.md",
-    "clichouse_schedule_function.md",
-    "categories-sc-support.md",
-    "Clickhouse/t_requests_st_support/t_requests_info_st_support.md",
     "Clickhouse/Sources/Support/categories_st_support.ipynb",
-    "Clickhouse/Sources/Support/categories_sc_support.md",
     "Clickhouse/Sources/Support/categories_sc_support.ipynb",
-    "join_algorithm.md",
-    "Clickhouse/Sources/Support/categories-sc-support.md",
-    "Clickhouse/Sources/Support/categories-sc-support.ipynb",
-    "Clickhouse/categories-sc-support",
-    "Clickhouse/t_requests_st_support/categories.csv",
-    "Clickhouse/t_requests_st_support/categories.txt",
-    "Clickhouse/t_requests_st_support/__pycache__/config.cpython-312.pyc",
-    "Clickhouse/t_requests_st_support/__pycache__",
-    "Clickhouse/t_requests_st_support/config.py",
-    "Clickhouse/t_requests_st_support copy/t_requests_st_support.md",
-    "Clickhouse/t_requests_st_support copy/t_requests_st_support.ipynb",
-    "Clickhouse/Refreshable Materialized View schedule.md",
-    "LEFT ANY JOIN.md",
-    "Clickhouse/Sources/Partner/companies_dir_partner.md",
-    "Clickhouse/t_requests_st_support/t_requests_st_support.md",
-    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
     "Untitled.canvas",
     "count_of_nuw_addresses-0.canvas",
     "count_of_nuw_addresses.canvas",

@@ -1,5 +1,5 @@
 {
-  "pythonInterpreter": "python3",
-  "notebookEditorCommand": "jupyter-lab",
-  "enableCodeBlocks": true
+  "pythonInterpreter": "/home/boris/myenv/bin/python",
+  "notebookEditorCommand": "code",
+  "enableCodeBlocks": false
 }

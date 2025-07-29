@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "requests",
+  "search": "billing",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -25,7 +25,7 @@
       "query": "tag: #Dashboards",
       "color": {
         "a": 1,
-        "rgb": 16759552
+        "rgb": 16743168
       }
     },
     {
@@ -39,7 +39,14 @@
       "query": "tag: #YandexFunctions  ",
       "color": {
         "a": 1,
-        "rgb": 5431473
+        "rgb": 2322775
+      }
+    },
+    {
+      "query": "tag: #Mobile_Report",
+      "color": {
+        "a": 1,
+        "rgb": 49151
       }
     }
   ],
@@ -51,8 +58,8 @@
   "collapse-forces": false,
   "centerStrength": 0.578125,
   "repelStrength": 15.2083333333333,
-  "linkStrength": 0.875,
+  "linkStrength": 0.572916666666667,
   "linkDistance": 30,
-  "scale": 0.45050811767578125,
+  "scale": 1.3675662571990774,
   "close": false
 }

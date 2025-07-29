@@ -147,8 +147,8 @@ for day_index in dates_pd.index:
 ### add data after 2025-05-30
 
 ```python
-start_date = datetime.datetime.strptime('2025-07-11','%Y-%m-%d').date()
-end_date = datetime.datetime.strptime('2025-07-17','%Y-%m-%d').date()
+start_date = datetime.datetime.strptime('2025-07-27','%Y-%m-%d').date()
+end_date = datetime.datetime.strptime('2025-07-27','%Y-%m-%d').date()
 
 dates_pd = pd.DataFrame({
         'date': pd.date_range(start=start_date, end=end_date).strftime('%Y-%m-%d'),
@@ -189,6 +189,7 @@ query_text = """--sql
     SELECT
         *
     FROM db1.citizens_st_mobile_ch
+    WHERE report_date = '2025-07-27'
     ORDER BY report_date desc
     limit 100
     """
@@ -202,7 +203,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    ALTER TABLE db1.citizens_st_mobile_ch DELETE WHERE report_date = '2025-07-17'
+    ALTER TABLE db1.citizens_st_mobile_ch DELETE WHERE report_date = '2025-07-27'
     """
 
 ch.query_run(query_text)
