@@ -113,9 +113,9 @@ ___
 ```python
 query_text = """--sql
     SELECT
-        *
+	    DISTINCT
+       state
     FROM db1.citizen_payments_st_mobile_ch
-    LIMIT 2
     """
 
 ch.query_run(query_text)

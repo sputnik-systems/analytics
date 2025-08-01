@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "billing",
+  "search": "",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -46,7 +46,7 @@
       "query": "tag: #Mobile_Report",
       "color": {
         "a": 1,
-        "rgb": 49151
+        "rgb": 6278642
       }
     }
   ],
@@ -60,6 +60,6 @@
   "repelStrength": 15.2083333333333,
   "linkStrength": 0.572916666666667,
   "linkDistance": 30,
-  "scale": 1.3675662571990774,
+  "scale": 0.14840784716892388,
   "close": false
 }

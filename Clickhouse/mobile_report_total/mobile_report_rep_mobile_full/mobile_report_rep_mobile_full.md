@@ -36,20 +36,9 @@ ___
 
 ### Links:  
 
+[[rep_mobile_citizens_id_city_partner]]
+
 [[citizen_payments_st_mobile]]
-
-[[citizens_st_mobile]]
-
-[[citizens_dir_mobile]]
-
-[[flats_dir_partner]]
-
-[[entries_installation_points_dir_partner]]
-
-[[installation_point_st_partner]]
-
-[[companies_st_partner]]
-
 ___
 ### Table
 
@@ -140,8 +129,8 @@ query_text = """--sql
     FROM    
         (SELECT
             citizen_payments_st_mobile_ch.report_date AS report_date,
-            installation_point_st_partner.partner_uuid  AS partner_uuid,
-            entries_installation_points_dir_partner.city AS city,
+            t_cit_id.partner_uuid  AS partner_uuid,
+            t_cit_id.city AS city,
             count(if(`from` = 'appstore' and amount = 85 and citizen_payments_st_mobile.state = 'success', citizen_payments_st_mobile.citizen_id,null)) as appstore_count_85,
             count(if(`from` = 'appstore' and amount = 85 and citizen_payments_st_mobile.state = 'refunded', citizen_payments_st_mobile.citizen_id,null)) as appstore_count_85_refunded,
             count(if(`from` = 'appstore' and amount = 69 and citizen_payments_st_mobile.state = 'success', citizen_payments_st_mobile.citizen_id,null)) as appstore_count_69,
@@ -174,30 +163,15 @@ query_text = """--sql
             --
             max(citizen_payments_st_mobile.`report_date`) as max_report_date,
             min(citizen_payments_st_mobile.`report_date`) as min_report_date
-        FROM db1.`citizen_payments_st_mobile_ch` AS citizen_payments_st_mobile
-        LEFT JOIN db1.citizens_st_mobile_ch AS citizens_st_mobile
-            ON citizens_st_mobile.`citizen_id` = citizen_payments_st_mobile.`citizen_id`
-            AND  citizen_payments_st_mobile.`report_date` = citizens_st_mobile.`report_date`  
-        LEFT JOIN db1.`citizens_dir_mobile_ch` AS citizens_dir_mobile 
-            ON citizen_payments_st_mobile.`citizen_id` = citizens_dir_mobile.`citizen_id`
-        LEFT JOIN db1.`flats_dir_partner_ch` AS flats_dir_partner 
-            ON flats_dir_partner.`flat_uuid` = citizens_st_mobile_ch.`flat_uuid`
-        LEFT JOIN db1.`entries_installation_points_dir_partner_ch` AS entries_installation_points_dir_partner 
-            ON flats_dir_partner.`address_uuid` = entries_installation_points_dir_partner.`address_uuid`
-        LEFT JOIN `db1`.`installation_point_st_partner_ch` AS installation_point_st_partner
-            ON `installation_point_st_partner`.`installation_point_id` = entries_installation_points_dir_partner.`installation_point_id`
-            AND installation_point_st_partner.`report_date` = citizen_payments_st_mobile.`report_date`
-        LEFT JOIN db1.`companies_st_partner_ch` AS companies_st_partner
-            ON installation_point_st_partner.`partner_uuid`= companies_st_partner.`partner_uuid`
-            AND  companies_st_partner.`report_date` = citizen_payments_st_mobile.`report_date`
+        FROM db1.rep_mobile_citizens_id_city_partner AS t_cit_id
+        ANY JOIN db1.`citizen_payments_st_mobile_ch` AS citizen_payments_st_mobile
+        	ON citizen_payments_st_mobile.`report_date` = t_cit_id.`report_date`
+        	AND citizen_payments_st_mobile.`citizen_id` = t_cit_id.`citizen_id`
         GROUP by 
             report_date,
             partner_uuid,
             city
             ) as t1
-        SETTINGS join_algorithm = 'partial_merge'
-
-
     """
 
 ch.query_run(query_text)

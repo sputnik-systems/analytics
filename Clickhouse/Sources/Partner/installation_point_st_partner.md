@@ -7,6 +7,10 @@ jupyter:
       format_name: markdown
       format_version: '1.3'
       jupytext_version: 1.17.2
+  kernelspec:
+    display_name: myenv
+    language: python
+    name: python3
 ---
 
 ## Start
@@ -96,9 +100,10 @@ ___
 ```python
 query_text = """--sql
     SELECT
-        *
+        COUNT(if(monetization = 0,installation_point_id,null)),
+        COUNT(if(monetization = 1,installation_point_id,null))
     FROM db1.installation_point_st_partner_ch
-    ORDER BY report_date desc
+    WHERE report_date = '2024-01-01'
     limit 100
     """
 

@@ -22,7 +22,6 @@
         ".obsidian": true,
         ".venv": true,
         ".vscode": true,
-        "Clickhouse/.env": true,
         "Clickhouse/Sources/Partner/companies_dir_partner.ipynb": true
     }
 }

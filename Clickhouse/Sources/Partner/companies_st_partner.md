@@ -7,6 +7,10 @@ jupyter:
       format_name: markdown
       format_version: '1.3'
       jupytext_version: 1.17.2
+  kernelspec:
+    display_name: myenv
+    language: python
+    name: python3
 ---
 
 ## Start
@@ -89,6 +93,7 @@ query_text = """--sql
     CREATE MATERIALIZED VIEW db1.companies_st_partner_mv
     REFRESH EVERY 1 DAY OFFSET 4 HOUR RANDOMIZE FOR 1 HOUR TO db1.companies_st_partner_ch AS
     SELECT
+        DISTINCT
         `report_date` ,
         `partner_uuid` ,
         `is_blocked` ,
@@ -97,7 +102,7 @@ query_text = """--sql
         `billing_pro` ,
         `enterprise_not_paid` ,
         `enterprise_test` ,
-        `balance`,
+        max(`balance`) OVER (partition by partner_uuid,report_date) AS `balance`,
         `kz_pro`,
         CASE
             WHEN pro_subs = 1 THEN 'pro'

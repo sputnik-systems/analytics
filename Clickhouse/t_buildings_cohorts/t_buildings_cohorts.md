@@ -69,7 +69,6 @@ query_text = """--sql
         `lon` String,
         `building_cohorts` String,
         `building_cohorts_rank` String,
-        `intercom_uuid` String,
         `flat_range` String
     )
     ENGINE = MergeTree()
@@ -87,52 +86,53 @@ query_text = """--sql
     CREATE MATERIALIZED VIEW db1.t_billings_cohorts_mv
     REFRESH EVERY 1 DAY OFFSET 5 HOUR 30 MINUTE TO db1.t_billings_cohorts AS
 SELECT
-    `full_address`,
-    `region`,
-    `city`,
-    `country`,
-    installation_point_st_partner.`report_date` AS `report_date`,
-    installation_point_st_partner.`installation_point_id` AS `installation_point_id`,
-    `digital_keys_count`,
-    `device_keys_count`,
-    `monetization_is_allowed`,
-    `monetization`,
-    installation_point_st_partner.`partner_uuid` AS `partner_uuid`,
-    `parent_uuid`,
-    `flats_count`,
-    `company_name`,
-    `tin`,
-    `kpp`,
-    `partner_lk`,
-    `lat`,
-    `lon`,
-    CASE
-        WHEN `flats_count`<=25 THEN 'Малоэтажки  - до 25 кв'
-        WHEN `flats_count` > 25 AND `flats_count` <= 48  THEN 'Многоэтажки - от 25 до 48 кв'
-        WHEN `flats_count` > 48 THEN 'Высотки - от 48 кв и больше'
-        ELSE NULL
-    END building_cohorts,
-    CASE
-        WHEN `flats_count`<=25 THEN '0. Малоэтажки  - до 25 кв'
-        WHEN `flats_count` > 25 AND `flats_count` <= 48 THEN '1. Многоэтажки - от 25 до 48 кв'
-        WHEN `flats_count` > 48 THEN '2. Высотки - от 48 кв и больше'
-        ELSE NULL
-    END building_cohorts_rank,
-    intercoms_st_partner.`intercom_uuid` AS intercom_uuid,
-    intercoms_st_partner.`model_identifier` as flat_range
-FROM db1.`installation_point_st_partner_ch` AS installation_point_st_partner
-LEFT JOIN db1.`entries_installation_points_dir_partner_ch` AS entries_installation_points_dir_partner
-    ON installation_point_st_partner.`installation_point_id` = entries_installation_points_dir_partner.`installation_point_id`
-LEFT JOIN db1.`companies_st_partner_ch` AS companies_st_partner
-	ON `installation_point_st_partner`.`report_date` = `companies_st_partner`.`report_date`
-    AND `installation_point_st_partner`.`partner_uuid` = `companies_st_partner`.`partner_uuid`
-LEFT JOIN db1.`companies_dir_partner_ch` AS companies_dir_partner 
-	ON companies_dir_partner.`partner_uuid` = companies_st_partner.`partner_uuid`
-LEFT JOIN db1.`intercoms_st_partner_ch` AS intercoms_st_partner
-	ON intercoms_st_partner.`installation_point_id` = installation_point_st_partner.`installation_point_id`
-    AND intercoms_st_partner.`report_date` = installation_point_st_partner.`report_date`
-WHERE installation_point_st_partner.`partner_uuid` is not null
-        AND installation_point_st_partner.`installation_point_id` is not null
+		DISTINCT
+		installation_point_st_partner.`report_date` AS `report_date`,
+	    installation_point_st_partner.`installation_point_id` AS `installation_point_id`,
+	    `flats_count`,
+	    `full_address`,
+	    `region`,
+	    `city`,
+	    `country`,
+	    `digital_keys_count`,
+	    `device_keys_count`,
+	    `monetization_is_allowed`,
+	    `monetization`,
+	    installation_point_st_partner.`partner_uuid` AS `partner_uuid`,
+	    `parent_uuid`,
+		company_name,
+		`tin`,
+        `kpp`,
+        `partner_lk`,
+		`lat`,
+        `lon`,
+	    CASE
+	        WHEN `flats_count`<=25 THEN 'Малоэтажки  - до 25 кв'
+	        WHEN `flats_count` > 25 AND `flats_count` <= 48  THEN 'Многоэтажки - от 25 до 48 кв'
+	        WHEN `flats_count` > 48 THEN 'Высотки - от 48 кв и больше'
+	        ELSE NULL
+	    END building_cohorts,
+	    CASE
+	        WHEN `flats_count`<=25 THEN '0. Малоэтажки  - до 25 кв'
+	        WHEN `flats_count` > 25 AND `flats_count` <= 48 THEN '1. Многоэтажки - от 25 до 48 кв'
+	        WHEN `flats_count` > 48 THEN '2. Высотки - от 48 кв и больше'
+	        ELSE NULL
+	    END building_cohorts_rank,
+	   	intercoms_st_partner.`model_identifier` as flat_range
+	FROM db1.`installation_point_st_partner_ch` AS installation_point_st_partner
+	LEFT JOIN db1.`entries_installation_points_dir_partner_ch` AS entries_installation_points_dir_partner
+	    ON installation_point_st_partner.`installation_point_id` = entries_installation_points_dir_partner.`installation_point_id`
+	LEFT JOIN db1.`companies_st_partner_ch` AS companies_st_partner
+		ON `installation_point_st_partner`.`report_date` = `companies_st_partner`.`report_date`
+	    AND `installation_point_st_partner`.`partner_uuid` = `companies_st_partner`.`partner_uuid`
+	LEFT JOIN db1.`companies_dir_partner_ch` AS companies_dir_partner 
+		ON companies_dir_partner.`partner_uuid` = companies_st_partner.`partner_uuid`
+	LEFT JOIN db1.`intercoms_st_partner_ch` AS intercoms_st_partner
+		ON intercoms_st_partner.`installation_point_id` = installation_point_st_partner.`installation_point_id`
+	    AND intercoms_st_partner.`report_date` = installation_point_st_partner.`report_date`
+	WHERE  installation_point_st_partner.`partner_uuid` != ''
+	        AND installation_point_st_partner.`installation_point_id` != 0
+	        and intercom_uuid !=''
 """
 
 ch.query_run(query_text)
