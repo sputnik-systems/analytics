@@ -71,10 +71,15 @@
             "id": "83bf003805478f10",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/Sources/Partner/billing_orders_dir_partner.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": false
+              },
+              "icon": "lucide-file",
+              "title": "billing_orders_dir_partner"
             }
           }
         ],
@@ -110,7 +115,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "dh",
+                "query": "billing_orders_devices_st_partner_ch",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -500,6 +505,15 @@
   },
   "active": "83bf003805478f10",
   "lastOpenFiles": [
+    "SMS/expense_smsc_2025_05.csv",
+    "SMS/__pycache__/config.cpython-312.pyc",
+    "SMS/__pycache__",
+    "SMS/config.py",
+    "SMS/smsc.ipynb",
+    "SMS",
+    "partner_report/temp_file",
+    "mobile_report/temp_file",
+    "Clickhouse/Sources/Partner/billing_orders_devices_st_partner.md",
     "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total/nuw_users_pd_rep_mobile_total.md",
     "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.ipynb",
     "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total",
@@ -515,15 +529,8 @@
     "Clickhouse/Sources/Mobile/entries_st_mobile.md",
     "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.md",
     "Clickhouse/Sources/Asgard/cameras_st_asgard.md",
-    "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.ipynb",
-    "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full",
     "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.md",
     "Clickhouse/Sources/Mobile/subscriptions_st_mobile.md",
-    "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.ipynb",
-    "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total",
-    "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total/nuw_users_pd_rep_mobile_total.py",
-    "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total/nuw_users_pd_rep_mobile_total.ipynb",
-    "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total",
     "Clickhouse/Sources/Partner/flats_st_partner.md",
     "Clickhouse/Sources/Partner/installation_point_st_partner.md",
     "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/t_citizens_id_city_partner.md",
@@ -534,8 +541,6 @@
     "Clickhouse/Sources/Mobile/citizen_payments_st_mobile.md",
     "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full.md",
     "Clickhouse/t_subscribtions_citizens_by_companies_and_cities/t_subscribtions_citizens_by_companies_and_cities.md",
-    "Clickhouse/Sources/Asgard/flussonic_stats_st_asgard.md",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
     "citizens_st_mobile.canvas",
     "tables.canvas",
     "uk_addresses_partner.canvas",
