@@ -8,82 +8,132 @@
         "type": "tabs",
         "children": [
           {
-            "id": "2a3a21876f2c5213",
+            "id": "e7acac71c16e3dfb",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clickhouse/t_buildings_cohorts/t_buildings_cohorts.md",
+                "file": "Clickhouse/t_count_of_subscribes_by_adreses/t_count_of_subscribes_by_adreses.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "t_buildings_cohorts"
+              "title": "t_count_of_subscribes_by_adreses"
             }
           },
           {
-            "id": "deb538fcf2021fcd",
+            "id": "e8d0e925fa2a0577",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "d_requests_st_support.md",
+                "file": "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "d_requests_st_support"
+              "title": "rep_mobile_citizens_id_city_partner"
             }
           },
           {
-            "id": "4f77b50b2c939580",
+            "id": "f4c29cacbbb02ad7",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "VIEW_TYPE_TIMELINE_VIEW",
               "state": {
-                "file": "d_buildings_cohorts.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
+                "focalValue": 1754974965584.3445,
+                "vScroll": 0,
+                "mode": "edit",
+                "scale": 5243128.021857924,
+                "settings": {
+                  "isOpen": true,
+                  "property": {
+                    "collapsed": true,
+                    "property": "created",
+                    "propertiesUseWholeNumbers": {},
+                    "secondaryProperty": {
+                      "name": "modified",
+                      "inUse": false,
+                      "useAs": "end"
+                    }
+                  },
+                  "filter": {
+                    "collapsed": true,
+                    "query": ""
+                  },
+                  "groups": {
+                    "collapsed": true,
+                    "groups": []
+                  },
+                  "display": {
+                    "collapsed": true,
+                    "names": false
+                  }
+                }
               },
-              "icon": "lucide-file",
-              "title": "d_buildings_cohorts"
+              "icon": "waypoints",
+              "title": "Timeline view [created]"
             }
           },
           {
-            "id": "7be954a9a8a8a9fb",
+            "id": "949c966d3acfc332",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "VIEW_TYPE_TIMELINE_VIEW",
               "state": {
-                "file": "dh Когорты домов.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
+                "focalValue": 1751199913408.612,
+                "vScroll": 0,
+                "mode": "edit",
+                "scale": 30000000,
+                "settings": {
+                  "isOpen": false,
+                  "property": {
+                    "collapsed": true,
+                    "property": "created",
+                    "propertiesUseWholeNumbers": {},
+                    "secondaryProperty": {
+                      "name": "modified",
+                      "inUse": false,
+                      "useAs": "end"
+                    }
+                  },
+                  "filter": {
+                    "collapsed": true,
+                    "query": ""
+                  },
+                  "groups": {
+                    "collapsed": true,
+                    "groups": []
+                  },
+                  "display": {
+                    "collapsed": true,
+                    "names": false
+                  }
+                }
               },
-              "icon": "lucide-file",
-              "title": "dh Когорты домов"
+              "icon": "waypoints",
+              "title": "Timeline view [created]"
             }
           },
           {
-            "id": "83bf003805478f10",
+            "id": "d7200ac3a437feda",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clickhouse/Sources/Partner/billing_orders_dir_partner.md",
+                "file": "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": false
               },
               "icon": "lucide-file",
-              "title": "billing_orders_dir_partner"
+              "title": "total_active_users_per_day_full_table"
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -115,7 +165,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "billing_orders_devices_st_partner_ch",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -500,47 +550,48 @@
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
-      "table-editor-obsidian:Advanced Tables Toolbar": false
+      "table-editor-obsidian:Advanced Tables Toolbar": false,
+      "timeline-view:Open timeline view": false
     }
   },
-  "active": "83bf003805478f10",
+  "active": "dcce8c5322958ebc",
   "lastOpenFiles": [
-    "SMS/expense_smsc_2025_05.csv",
-    "SMS/__pycache__/config.cpython-312.pyc",
-    "SMS/__pycache__",
-    "SMS/config.py",
-    "SMS/smsc.ipynb",
-    "SMS",
-    "partner_report/temp_file",
-    "mobile_report/temp_file",
-    "Clickhouse/Sources/Partner/billing_orders_devices_st_partner.md",
-    "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total/nuw_users_pd_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.ipynb",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total.ipynb",
-    "Clickhouse/t_buildings_cohorts/t_buildings_cohorts.md",
-    "dh Когорты домов.md",
-    "d_buildings_cohorts.md",
-    "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
-    "d_requests_st_support.md",
-    "Untitled.md",
-    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
+    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.md",
+    "count_of_nuw_addresses.md",
     "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
-    "Clickhouse/Sources/Mobile/entries_st_mobile.md",
-    "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.md",
-    "Clickhouse/Sources/Asgard/cameras_st_asgard.md",
+    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.ipynb",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
     "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.md",
-    "Clickhouse/Sources/Mobile/subscriptions_st_mobile.md",
-    "Clickhouse/Sources/Partner/flats_st_partner.md",
-    "Clickhouse/Sources/Partner/installation_point_st_partner.md",
-    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/t_citizens_id_city_partner.md",
-    "Clickhouse/mobile_report_total/t_citizens_id_city_partner/t_citizens_id_city_partner.md",
-    "Clickhouse/t_citizens_id_city_partner/t_citizens_id_city_partner.md",
+    "Clickhouse/mobile_report_total/mobile_report_total",
+    "Clickhouse/mobile_report_total/units_on_sk_platform_rep_mobile_total/units_on_sk_platform_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/units_on_sk_platform_rep_mobile_total/units_on_sk_platform_rep_mobile_total.ipynb",
+    "Clickhouse/mobile_report_total/units_on_sk_platform_rep_mobile_total",
+    "Clickhouse/Sources/Mobile/entries_st_mobile.md",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.ipynb",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.md",
+    "Clickhouse/t_count_of_subscribes_by_adreses/t_count_of_subscribes_by_adreses.md",
+    "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
+    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full/mobile_report_rep_mobile_full.md",
+    "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.md",
+    "Clickhouse/mobile_report_total/maf_rep_mobile_total/maf_rep_mobile_total.md",
+    "partner_report/temp_file",
+    "SMS/expense_smsc_2025_06.csv",
+    "SMS/expense_smsc_2025_05.csv",
+    "all_order_accumulated_data.md",
+    "Clickhouse/Sources/Partner/billing_orders_dir_partner.md",
+    "billing_and_accruals.md",
+    "device_history_by_company_and_city.md",
+    "clichouse_schedule_function.md",
     "Clickhouse/Sources/tables.md",
-    "Clickhouse/Sources/Partner/flats_dir_partner.md",
-    "Clickhouse/Sources/Mobile/citizen_payments_st_mobile.md",
-    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full.md",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities/t_subscribtions_citizens_by_companies_and_cities.md",
+    "Clickhouse/Sources/Partner/complaints_st_partner.md",
+    "d_subscriptions_id_stat.md",
+    "dh_Отчет по рекуррентным платежам.md",
+    "Clickhouse/Sources/Partner/complaints_st_partner.ipynb",
+    "Clickhouse/t_device-history-by-company-and-city-clickhouse/t_device-history-by-company-and-city-clickhouse.md",
+    "Clickhouse/t_buildings_cohorts/t_buildings_cohorts.md",
+    "d_requests_st_support.md",
     "citizens_st_mobile.canvas",
     "tables.canvas",
     "uk_addresses_partner.canvas",

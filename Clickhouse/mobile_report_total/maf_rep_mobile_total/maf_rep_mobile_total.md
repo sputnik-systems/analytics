@@ -34,11 +34,7 @@ ___
 
 ### Links:
 
-[[rep_mobile_citizens_id_city_partner]]
-
-[[sessions_st_mobile]]
-
-[[citizens_dir_mobile]]
+[[total_active_users_per_day_full_table]]
 ___
 
 ```python
@@ -47,6 +43,8 @@ CREATE TABLE db1.maf_rep_mobile_total
 (
     `report_date` Date,
     `MAF` UInt64,
+    `partner_uuid` String,
+    `city` String,
     `stricted_MAF` UInt64,
     `freemonetization_MAF` UInt64
 )
@@ -61,36 +59,17 @@ ch.query_run(query_text)
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.maf_rep_mobile_total_mv
     REFRESH EVERY 1 DAY OFFSET 5 HOUR 45 MINUTE TO db1.maf_rep_mobile_total AS
-    WITH t_m AS (SELECT
-        report_date,
-        flat_uuid,
-        monetization,
-        citizen_id
-    FROM db1.rep_mobile_citizens_id_city_partner
-    WHERE toDate(`flat_created_at`) <= report_date
-        AND state = 'activated'
-    ),
-    t_s AS 
-    (SELECT 
-        report_date,
-        sessions_st_mobile_ch.citizen_id AS citizen_id
-    FROM db1.`sessions_st_mobile_ch` AS sessions_st_mobile
-    LEFT ANY JOIN  db1.`citizens_dir_mobile_ch` AS citizens_dir_mobile
-            ON citizens_dir_mobile.citizen_id = sessions_st_mobile.citizen_id 
-    WHERE toDateOrNull(citizens_dir_mobile.`created_at`) <= sessions_st_mobile.report_date
-        AND (toDate(`last_use`) BETWEEN toStartOfMonth(sessions_st_mobile.report_date) AND sessions_st_mobile.report_date) 
-    )
-    --
     SELECT
-        t_m.report_date AS report_date,
-        COUNT(t_m.flat_uuid) AS MAF,
-        COUNT(if(monetization = 0, t_m.flat_uuid, null)) AS stricted_MAF,
-        COUNT(if(monetization = 1 or monetization is null, t_m.flat_uuid, null)) AS freemonetization_MAF
-    FROM t_m
-    ANY JOIN t_s 
-        ON t_m.citizen_id = t_s.citizen_id 
-        AND t_m.report_date = t_s.report_date
-    GROUP BY report_date
+        partner_uuid,
+        city,
+        report_date AS report_date,
+        COUNT(DISTINCT flat_uuid) AS MAF,
+        COUNT(DISTINCT if(monetization = 0, flat_uuid, null)) AS stricted_MAF,
+        COUNT(DISTINCT if(monetization = 1 or monetization is null, flat_uuid, null)) AS freemonetization_MAF
+    FROM db1.total_active_users_per_day_full_table
+    GROUP BY report_date,
+        partner_uuid,
+        city
     """
 
 ch.query_run(query_text)

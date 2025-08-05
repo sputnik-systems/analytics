@@ -1,0 +1,1 @@
+https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/storage/buckets/aggregated-data?key=device_history_by_company_and_city%2F

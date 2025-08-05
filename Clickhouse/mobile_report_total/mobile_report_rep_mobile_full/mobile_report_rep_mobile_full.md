@@ -44,7 +44,7 @@ ___
 
 ```python
 query_text = """--sql
-CREATE TABLE db1.t_mobile_report_rep_mobile_full
+CREATE TABLE db1.mobile_report_rep_mobile_full
     (
         `report_date` Date,
         `partner_uuid` String,
@@ -88,8 +88,8 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    CREATE MATERIALIZED VIEW db1.t_mobile_report_rep_mobile_full_mv
-    REFRESH EVERY 1 DAY OFFSET 5 HOUR 40 MINUTES TO db1.t_mobile_report_rep_mobile_full AS
+    CREATE MATERIALIZED VIEW db1.mobile_report_rep_mobile_full_mv
+    REFRESH EVERY 1 DAY OFFSET 5 HOUR 40 MINUTES TO db1.mobile_report_rep_mobile_full AS
     SELECT
         report_date ,
         partner_uuid,
@@ -187,7 +187,7 @@ ___
 query_text = """--sql
     SELECT
         *
-    FROM db1.t_mobile_report_rep_mobile_full_mv
+    FROM db1.mobile_report_rep_mobile_full
     ORDER BY report_date desc
     limit 10
     """

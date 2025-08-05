@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "billing",
+  "search": "renew_stopped_at",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -60,6 +60,6 @@
   "repelStrength": 15.2083333333333,
   "linkStrength": 0.572916666666667,
   "linkDistance": 30,
-  "scale": 0.4505081176757867,
+  "scale": 1.980144855904634,
   "close": false
 }

@@ -1,0 +1,354 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,md
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.17.2
+  kernelspec:
+    display_name: myenv
+    language: python
+    name: python3
+---
+
+```python
+import clickhouse_connect
+import datetime
+import os
+import pytz
+import pandas as pd
+from dateutil.relativedelta import relativedelta
+from dotenv import load_dotenv
+
+import sys
+sys.path.append('/home/boris/Documents/Work/analytics/Clickhouse')
+from clickhouse_client import ClickHouse_client
+ch = ClickHouse_client()
+pd.set_option('display.max_rows', 1000)
+```
+
+___
+### Tags: #Mobile_Report
+
+### Links:
+
+[[units_on_sk_platform_rep_mobile_total]]
+
+[[subscriptions_report_comerce_rep_mobile_total]]
+
+[[total_active_users_per_day_rep_mobile_total]]
+
+[[total_active_users_rep_mobile_total]]
+
+[[mobile_report_rep_mobile_full]]
+
+[[total_activated_account_rep_mobile_full]]
+
+[[nuw_users_pd_rep_mobile_total]]
+
+[[maf_rep_mobile_total]]
+___
+
+```python
+query_text = """--sql
+CREATE TABLE db1.mobile_report_total
+(
+    `report_date` Date,
+    `partner_uuid` String,
+    `city` String,
+    `android_sub` UInt64,
+    `android_sub_extended_new` UInt64,
+    `android_sub_extended_new_cart` UInt64,
+    `android_sub_first_new` UInt64,
+    `android_sub_first_new_cart` UInt64,
+    `android_sub_from_cart` UInt64,
+    `failed_subscript_last_28_days` UInt64,
+    `ios_sub` UInt64,
+    `ios_sub_extended_new` UInt64,
+    `ios_sub_extended_new_cart` UInt64,
+    `ios_sub_first_new` UInt64,
+    `ios_sub_first_new_cart` UInt64,
+    `ios_sub_first_new_cart_transition` UInt64,
+    `ios_sub_from_cart` UInt64,
+    `paying_new_users_in_last_28_days` UInt64,
+    `paying_users` UInt64,
+    `paying_users_day` UInt64,
+    `paying_users_partner_pro` UInt64,
+    `paying_users_standart` UInt64,
+    `paying_users_standart_appstore` UInt64,
+    `paying_users_standart_ios_from_cart` UInt64,
+    `paying_users_standart_yakassa` UInt64,
+    `renew_failed_at` UInt64,
+    `renew_failed_at_andeoid_cart` UInt64,
+    `renew_failed_at_android` UInt64,
+    `renew_failed_at_ios` UInt64,
+    `renew_failed_at_ios_cart` UInt64,
+    `renew_stopped_at` UInt64,
+    `renew_stopped_at_android` UInt64,
+    `renew_stopped_at_android_cart` UInt64,
+    `renew_stopped_at_ios` UInt64,
+    `renew_stopped_at_ios_cart` UInt64,
+    `renewed_subscriptions_last_28_days` UInt64,
+    `stoped_subscript_last_28_days` UInt64,
+    `units_free_monetization_start` UInt64,
+    `units_free_monetization` UInt64,
+    `units_free_monetization_pro` UInt64,
+    `units_on_platform` UInt64,
+    `units_stricted monetization` UInt64,
+    `total_active_user_monetization_per_day` Int32,
+    `total_active_user_subscribed_monetization_per_day` Int32,
+    `total_active_users_per_day` Int32,
+    `new_active_users` UInt32,
+    `total_active_user_subscribed_monetization` UInt32,
+    `total_active_users` UInt32,
+    `total_active_users_ble_available` UInt32,
+    `total_active_users_ble_available_monetization` UInt32,
+    `total_active_users_ble_available_subscribed_monetization` UInt32,
+    `total_active_users_monetization` UInt32,
+    `Android_PL` Int64,
+    `IOS_PL` Int64,
+    `appstore_count_1` UInt64,
+    `appstore_count_1_refunded` UInt64,
+    `appstore_count_2390` UInt64,
+    `appstore_count_2390_refunded` UInt64,
+    `appstore_count_499` UInt64,
+    `appstore_count_499_refunded` UInt64,
+    `appstore_count_69` UInt64,
+    `appstore_count_69_refunded` UInt64,
+    `refunded_amount_appstore` Int64,
+    `refunded_amount_yookassa` Int64,
+    `yookassa_count_1` UInt64,
+    `yookassa_count_1_refunded` UInt64,
+    `yookassa_count_2390` UInt64,
+    `yookassa_count_2390_refunded` UInt64,
+    `yookassa_count_249` UInt64,
+    `yookassa_count_249_refunded` UInt64,
+    `yookassa_count_35` UInt64,
+    `yookassa_count_35_refunded` UInt64,
+    `yookassa_count_499` UInt64,
+    `yookassa_count_499_refunded` UInt64,
+    `yookassa_count_69` UInt64,
+    `yookassa_count_69_refunded` UInt64,
+    `appstore_count_85` UInt64,
+    `appstore_count_85_refunded` UInt64,
+    `yookassa_count_85` UInt64,
+    `yookassa_count_85_refunded` UInt64,
+    `total_activated_account` UInt64,
+    `total_activated_account_monetization` UInt64,
+    `total_activated_account_ble_available_monetization` UInt64,
+    `total_activated_account_ble_available` UInt64,
+    `nuw_created_account_day` UInt64,
+    `nuw_activated_accoun_day` UInt64,
+    `MAF` UInt64,
+    `stricted_MAF` UInt64,
+    `freemonetization_MAF` UInt64
+)
+ENGINE = MergeTree()
+ORDER BY report_date
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    CREATE MATERIALIZED VIEW db1.mobile_report_total_mv
+    REFRESH EVERY 1 DAY OFFSET 6 HOUR 15 MINUTE TO db1.mobile_report_total AS
+    SELECT
+    uosprmt.report_date AS report_date,
+    uosprmt.partner_uuid AS partner_uuid,
+    uosprmt.city AS city,
+	--
+    `android_sub`,
+    `android_sub_extended_new`,
+    `android_sub_extended_new_cart`,
+    `android_sub_first_new`,
+    `android_sub_first_new_cart`,
+    `android_sub_from_cart`,
+    `failed_subscript_last_28_days`,
+    `ios_sub`,
+    `ios_sub_extended_new`,
+    `ios_sub_extended_new_cart`,
+    `ios_sub_first_new`,
+    `ios_sub_first_new_cart`,
+    `ios_sub_first_new_cart_transition`,
+    `ios_sub_from_cart`,
+    `paying_new_users_in_last_28_days`,
+    `paying_users`,
+    `paying_users_day`,
+    `paying_users_partner_pro`,
+    `paying_users_standart`,
+    `paying_users_standart_appstore`,
+    `paying_users_standart_ios_from_cart`,
+    `paying_users_standart_yakassa`,
+    `renew_failed_at_c` AS `renew_failed_at`,
+    `renew_failed_at_andeoid_cart`,
+    `renew_failed_at_android`,
+    `renew_failed_at_ios`,
+    `renew_failed_at_ios_cart`,
+    `renew_stopped_at_c` AS `renew_stopped_at`,
+    `renew_stopped_at_android`,
+    `renew_stopped_at_android_cart`,
+    `renew_stopped_at_ios`,
+    `renew_stopped_at_ios_cart`,
+    `renewed_subscriptions_last_28_days`,
+    `stoped_subscript_last_28_days`,
+	--
+    `units_free_monetization_start`,
+    `units_free_monetization`,
+    `units_free_monetization_pro`,
+    `units_on_platform`,
+    `units_stricted monetization`,
+	--
+    `total_active_user_monetization_per_day`,
+    `total_active_user_subscribed_monetization_per_day`,
+    `total_active_users_per_day`,
+	--
+    `new_active_users`,
+    `total_active_user_subscribed_monetization`,
+    `total_active_users`,
+    `total_active_users_ble_available`,
+    `total_active_users_ble_available_monetization`,
+    `total_active_users_ble_available_subscribed_monetization`,
+    `total_active_users_monetization`,
+	--
+    `Android_PL`,
+    `IOS_PL`,
+    `appstore_count_1`,
+    `appstore_count_1_refunded`,
+    `appstore_count_2390`,
+    `appstore_count_2390_refunded`,
+    `appstore_count_499`,
+    `appstore_count_499_refunded`,
+    `appstore_count_69`,
+    `appstore_count_69_refunded`,
+    `refunded_amount_appstore`,
+    `refunded_amount_yookassa`,
+    `yookassa_count_1`,
+    `yookassa_count_1_refunded`,
+    `yookassa_count_2390`,
+    `yookassa_count_2390_refunded`,
+    `yookassa_count_249`,
+    `yookassa_count_249_refunded`,
+    `yookassa_count_35`,
+    `yookassa_count_35_refunded`,
+    `yookassa_count_499`,
+    `yookassa_count_499_refunded`,
+    `yookassa_count_69`,
+    `yookassa_count_69_refunded`,
+    `appstore_count_85`,
+    `appstore_count_85_refunded`,
+    `yookassa_count_85`,
+    `yookassa_count_85_refunded`,
+	--
+    `total_activated_account`,
+    `total_activated_account_monetization`,
+    `total_activated_account_ble_available_monetization`,
+    `total_activated_account_ble_available`,
+    --
+    --new_users_pd_rep_mobile
+    `nuw_created_account_day`,
+    `nuw_activated_accoun_day`,
+    --maf_rep_mobile_total
+    --
+    `MAF`,
+    `stricted_MAF`,
+    `freemonetization_MAF`
+    --
+FROM db1.`units_on_sk_platform_rep_mobile_total` AS uosprmt 
+LEFT JOIN db1.`subscriptions_report_comerce_rep_mobile_total` AS srcrmt
+    ON srcrmt.report_date = uosprmt.report_date 
+    AND srcrmt.city = uosprmt.city
+    AND srcrmt.partner_uuid = uosprmt.partner_uuid
+LEFT JOIN db1.`total_active_users_per_day_rep_mobile_total` AS taupdrmt
+    ON taupdrmt.report_date = uosprmt.report_date 
+    AND taupdrmt.city = uosprmt.city
+    AND taupdrmt.partner_uuid = uosprmt.partner_uuid
+LEFT JOIN db1.`total_active_users_rep_mobile_total` AS taurmt
+    ON taurmt.report_date = uosprmt.report_date 
+    AND taurmt.city = uosprmt.city
+    AND taurmt.partner_uuid = uosprmt.partner_uuid
+LEFT JOIN db1.`mobile_report_rep_mobile_full` AS mrrmf
+    ON mrrmf.report_date = uosprmt.report_date 
+    AND mrrmf.city = uosprmt.city
+    AND mrrmf.partner_uuid = uosprmt.partner_uuid
+LEFT JOIN db1.`total_activated_account_rep_mobile_full` AS taarmf
+    ON taarmf.report_date = uosprmt.report_date 
+    AND taarmf.city = uosprmt.city
+    AND taarmf.partner_uuid = uosprmt.partner_uuid
+LEFT JOIN db1.`nuw_users_pd_rep_mobile_total` AS nwprm
+    ON nwprm.report_date = uosprmt.report_date 
+    AND nwprm.city = uosprmt.city
+    AND nwprm.partner_uuid = uosprmt.partner_uuid
+LEFT JOIN db1.`maf_rep_mobile_total` AS mrmt
+    ON mrmt.report_date = uosprmt.report_date 
+    AND mrmt.city = uosprmt.city
+    AND mrmt.partner_uuid = uosprmt.partner_uuid
+ORDER BY report_date DESC
+    """
+
+ch.query_run(query_text)
+```
+
+___
+## Tools
+___
+### query
+
+
+```python
+query_text = """--sql
+    SELECT
+        *
+    FROM db1.mobile_report_total
+    ORDER BY report_date desc
+    limit 10
+    """
+
+ch.query_run(query_text)
+
+```
+
+### delete a part
+
+
+```python
+query_text = """--sql
+    ALTER TABLE db1.mobile_report_total DELETE WHERE report_date = '2025-07-17'
+    """
+
+ch.query_run(query_text)
+
+```
+
+### drop mv
+
+```python
+query_text = """--sql
+    DROP TABLE db1.mobile_report_total_mv
+    """
+
+ch.query_run(query_text)
+```
+
+### drop table
+
+```python
+query_text = """--sql
+    DROP TABLE db1.mobile_report_total
+    """
+
+ch.query_run(query_text)
+```
+
+### refresh mv
+
+```python
+query_text = """
+SYSTEM REFRESH VIEW db1.mobile_report_total_mv
+"""
+
+ch.query_run(query_text)
+```

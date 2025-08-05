@@ -1,0 +1,1 @@
+https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/storage/buckets/aggregated-data?key=count_of_nuw_addresses%2Fyear%3D2025%2Fmonth%3D07%2F

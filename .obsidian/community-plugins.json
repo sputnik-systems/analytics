@@ -3,5 +3,6 @@
   "link-exploder",
   "dataview",
   "persistent-graph",
-  "jupymd"
+  "jupymd",
+  "timeline-view"
 ]

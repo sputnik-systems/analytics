@@ -1,0 +1,1 @@
+https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/storage/buckets/aggregated-data?key=all_order_accumulated_data%2F

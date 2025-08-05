@@ -38,3 +38,21 @@ ___
 
 https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/functions/functions/d4e51m57ib7qdnaim7fa/testing
 ___
+### billing-and-accruals-clickhouse
+
+[[billing_and_accruals]]
+
+https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/functions/functions/d4esbmrease57pfpvc2u/editor
+___
+### count-of-nuw-addresses-clickhouse
+
+[[count_of_nuw_addresses]]
+
+https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/functions/functions/d4efr5qcsursk7liivor/editor
+___
+### device-history-by-company-and-city-clickhouse
+
+[[all_order_accumulated_data]]
+[[device_history_by_company_and_city]]
+
+https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/functions/functions/d4e0t1jnr7j5q2sg7jb9/editor

@@ -128,6 +128,8 @@ ____
 
 [[all_installetion_points_parquet]]
 
+[[complaints_st_partner]]
+
 
 ___
 ### Asgard
