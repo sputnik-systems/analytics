@@ -43,7 +43,7 @@ ___
 
 [[entries_installation_points_dir_partner]]
 
-[[companies_st_partne]]
+[[companies_st_partner]]
 
 
 ### Table
