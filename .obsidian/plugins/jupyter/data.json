@@ -1,0 +1,19 @@
+{
+  "pythonExecutable": "path",
+  "pythonExecutablePath": "/home/boris/myenv/bin/python",
+  "startJupyterAuto": true,
+  "jupyterEnvType": "lab",
+  "useSimpleMode": true,
+  "displayServerRibbonIcon": true,
+  "useStatusNotices": true,
+  "jupyterTimeoutMs": 60000,
+  "debugConsole": false,
+  "displayFileRibbonIcon": true,
+  "displayFolderContextMenuItem": true,
+  "openCreatedFileMode": "current-tab",
+  "updatePopup": true,
+  "knownVersion": "0.6.2-beta",
+  "deleteCheckpoints": true,
+  "moveCheckpointsToTrash": false,
+  "checkpointsFolder": ""
+}

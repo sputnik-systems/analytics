@@ -92,9 +92,9 @@ query_text = """--sql
     ANY JOIN db1.`intercoms_st_partner_ch` AS int_st
                     ON int_st.installation_point_id = inst_p_st.installation_point_id
                     AND int_st.report_date = inst_p_st.report_date
-    LEFT ANY JOIN db1.`entries_installation_points_dir_partner_ch` AS entr_p_dir 
+    LEFT JOIN db1.`entries_installation_points_dir_partner_ch` AS entr_p_dir 
         ON inst_p_st.installation_point_id = entr_p_dir.installation_point_id
-    LEFT ANY JOIN db1.`companies_st_partner_ch` AS comp_st
+    LEFT JOIN db1.`companies_st_partner_ch` AS comp_st
                     ON comp_st.`partner_uuid` = int_st.`partner_uuid`
                     AND comp_st.`report_date` = int_st.`report_date`
     GROUP BY  
@@ -118,10 +118,12 @@ ___
 ```python
 query_text = """--sql
     SELECT
-        *
+        report_date,
+        sum(units_on_platform)
     FROM db1.units_on_sk_platform_rep_mobile_total
+    GROUP BY report_date
     ORDER BY report_date DESC
-    limit 100
+    limit 10
     """
 
 ch.query_run(query_text)

@@ -15,7 +15,7 @@ jupyter:
 
 ## Start
 
-```python
+```python jupyter={"is_executing": false}
 import clickhouse_connect
 import datetime
 import os
@@ -29,7 +29,6 @@ sys.path.append('/home/boris/Documents/Work/analytics/Clickhouse')
 from clickhouse_client import ClickHouse_client
 ch = ClickHouse_client()
 ```
-
 ___
 ## Tags: #Tables
 ___
@@ -93,7 +92,7 @@ SELECT
     nuw_addresses_day_pro,
     nuw_created_account_day,
     nuw_activated_account_day,
-    nuw_buildings_day
+    nuw_buildings_day,
 FROM (SELECT
     installation_point_st_partner.report_date AS report_date,
     COUNT(DISTINCT entries_installation_points_dir_partner.`address_uuid`) AS `addresses`,

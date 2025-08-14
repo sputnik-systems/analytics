@@ -8,7 +8,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: myenv
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---

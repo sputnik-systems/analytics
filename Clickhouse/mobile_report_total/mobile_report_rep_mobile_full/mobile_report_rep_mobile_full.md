@@ -164,7 +164,7 @@ query_text = """--sql
             max(citizen_payments_st_mobile.`report_date`) as max_report_date,
             min(citizen_payments_st_mobile.`report_date`) as min_report_date
         FROM db1.rep_mobile_citizens_id_city_partner AS t_cit_id
-        ANY JOIN db1.`citizen_payments_st_mobile_ch` AS citizen_payments_st_mobile
+        JOIN db1.`citizen_payments_st_mobile_ch` AS citizen_payments_st_mobile
         	ON citizen_payments_st_mobile.`report_date` = t_cit_id.`report_date`
         	AND citizen_payments_st_mobile.`citizen_id` = t_cit_id.`citizen_id`
         GROUP by 
@@ -212,7 +212,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.t_mobile_report_rep_mobile_full_mv
+    DROP TABLE db1.mobile_report_rep_mobile_full_mv
     """
 
 ch.query_run(query_text)
@@ -222,7 +222,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.t_mobile_report_rep_mobile_full
+    DROP TABLE db1.mobile_report_rep_mobile_full
     """
 
 ch.query_run(query_text)

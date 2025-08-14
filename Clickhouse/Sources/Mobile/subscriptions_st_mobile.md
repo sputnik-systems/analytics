@@ -115,7 +115,7 @@ query_text = """--sql
     SELECT
 	    DISTINCT
        state
-    FROM db1.citizen_payments_st_mobile_ch
+    FROM db1.subscriptions_st_mobile_ch
     """
 
 ch.query_run(query_text)

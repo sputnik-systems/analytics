@@ -4,102 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "e8718052938a985d",
+        "id": "3c5818cdd254c12d",
         "type": "tabs",
         "children": [
           {
-            "id": "e7acac71c16e3dfb",
+            "id": "6ab01ff8bd16d639",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
-            }
-          },
-          {
-            "id": "e8d0e925fa2a0577",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
               "icon": "lucide-file",
-              "title": "rep_mobile_citizens_id_city_partner"
-            }
-          },
-          {
-            "id": "f4c29cacbbb02ad7",
-            "type": "leaf",
-            "state": {
-              "type": "VIEW_TYPE_TIMELINE_VIEW",
-              "state": {
-                "focalValue": 1750462133288,
-                "vScroll": 0,
-                "mode": "edit",
-                "scale": 5243128.021857924,
-                "settings": {
-                  "isOpen": true,
-                  "property": {
-                    "collapsed": true,
-                    "property": "created",
-                    "propertiesUseWholeNumbers": {},
-                    "secondaryProperty": {
-                      "name": "modified",
-                      "inUse": false,
-                      "useAs": "end"
-                    }
-                  },
-                  "filter": {
-                    "collapsed": true,
-                    "query": ""
-                  },
-                  "groups": {
-                    "collapsed": true,
-                    "groups": []
-                  },
-                  "display": {
-                    "collapsed": true,
-                    "names": false
-                  }
-                }
-              },
-              "icon": "waypoints",
-              "title": "Timeline view [created]"
-            }
-          },
-          {
-            "id": "949c966d3acfc332",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "companies_st_partne.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
-              "icon": "lucide-file",
-              "title": "companies_st_partne"
-            }
-          },
-          {
-            "id": "d7200ac3a437feda",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
-              "icon": "lucide-file",
-              "title": "total_active_users_per_day_full_table"
+              "title": "New tab"
             }
           }
         ]
@@ -134,7 +49,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "",
+                "query": "rep_mobile_citizens_id_city_partnernuw_users_pd_rep_mobile_total",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -155,28 +70,27 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 437.5110321044922
   },
   "right": {
     "id": "be27a329106dfeaa",
     "type": "split",
     "children": [
       {
-        "id": "7c61d18f7e33cfd4",
+        "id": "0b711101f1abdd54",
         "type": "tabs",
         "children": [
           {
-            "id": "763b693a039f4588",
+            "id": "e05cf1ff3e3c42c1",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Clickhouse/adding_tables.md",
+                "file": "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -186,40 +100,25 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for adding_tables"
+              "title": "Backlinks for t_count_of_nuw_addresses"
             }
           },
           {
-            "id": "fdae548a1bd27c29",
+            "id": "6bbe779bf1332a0b",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "join_algorithm.md",
+                "file": "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total/nuw_users_pd_rep_mobile_total.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from join_algorithm"
+              "title": "Outgoing links from nuw_users_pd_rep_mobile_total"
             }
           },
           {
-            "id": "b1d4f2ae2f377fec",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "join_algorithm.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
-              "icon": "lucide-file",
-              "title": "join_algorithm"
-            }
-          },
-          {
-            "id": "9e315006a97ff116",
+            "id": "9e83887026ed9c06",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -234,285 +133,30 @@
             }
           },
           {
-            "id": "bd5658f28417430d",
+            "id": "c78d8c61dc798eb6",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "Clickhouse/adding_tables.md",
+                "file": "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total/nuw_users_pd_rep_mobile_total.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of adding_tables"
-            }
-          },
-          {
-            "id": "5b748a482b384719",
-            "type": "leaf",
-            "state": {
-              "type": "advanced-tables-toolbar",
-              "state": {},
-              "icon": "spreadsheet",
-              "title": "Advanced Tables"
-            }
-          },
-          {
-            "id": "f7a22c65bd13f045",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "7598f8bc349eab14",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "7e184f80c7fb39c8",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "clichouse_schedule_function.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": false
-              },
-              "icon": "lucide-file",
-              "title": "clichouse_schedule_function"
-            }
-          },
-          {
-            "id": "929045c78fd0d583",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "a3c4a80f8b7f1ac3",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "ce1438aeedab5817",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "3a202ed68a7f4b73",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "1c98b1edc6e6bffd",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "9bead7104ba1dc19",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "12f02fb3c58866fd",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "bb963fa136b1cc66",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "39bf3fc4357f0084",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "ffafecf911cf7d00",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "ed0a3fa6d3ba079e",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "2bd08177917d015a",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "4346efe897abf6d4",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "7d7f0404c29141a3",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "8326bf0e355b75b1",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "9191d73d175ecff6",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "2fb1847aa205ae32",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "55a9caf00aa5f2db",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "f766b55506c16a30",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
-            }
-          },
-          {
-            "id": "f729a3bc514cf66e",
-            "type": "leaf",
-            "state": {
-              "type": "BC-matrix",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "Plugin no longer active"
-            }
-          },
-          {
-            "id": "6b1b726a893d4023",
-            "type": "leaf",
-            "state": {
-              "type": "BC-tree",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "Plugin no longer active"
+              "title": "Outline of nuw_users_pd_rep_mobile_total"
             }
           }
-        ],
-        "currentTab": 29
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 829.5,
+    "width": 479.5,
     "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
+      "obsidian42-brat:BRAT": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -520,47 +164,49 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "table-editor-obsidian:Advanced Tables Toolbar": false,
-      "timeline-view:Open timeline view": false
+      "timeline-view:Open timeline view": false,
+      "jupyter:Start Jupyter Server": false,
+      "jupyter:Create Jupyter Notebook": false
     }
   },
-  "active": "e7acac71c16e3dfb",
+  "active": "fe6af7629416b5ce",
   "lastOpenFiles": [
-    "Clickhouse/table_remaking.md",
-    "Clickhouse/mobile_report_total/units_on_sk_platform_rep_mobile_total/units_on_sk_platform_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
-    "Clickhouse/t_count_of_subscribes_by_adreses/t_count_of_subscribes_by_adreses.md",
-    "companies_st_partne.md",
-    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.md",
-    "count_of_nuw_addresses.md",
-    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.ipynb",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
-    "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/mobile_report_total",
-    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/units_on_sk_platform_rep_mobile_total/units_on_sk_platform_rep_mobile_total.ipynb",
-    "Clickhouse/mobile_report_total/units_on_sk_platform_rep_mobile_total",
-    "Clickhouse/Sources/Mobile/entries_st_mobile.md",
+    "Clickhouse/all_tables.md",
+    "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/new_users_pd_rep_mobile_total-checkpoint.md",
+    "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/new_users_pd_rep_mobile_total-checkpoint.ipynb",
+    "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/new_users_pd_rep_mobile_total.ipynb",
+    "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/new_users_pd_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.ipynb",
     "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.ipynb",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.md",
-    "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
-    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full/mobile_report_rep_mobile_full.md",
-    "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.md",
-    "Clickhouse/mobile_report_total/maf_rep_mobile_total/maf_rep_mobile_total.md",
-    "partner_report/temp_file",
-    "SMS/expense_smsc_2025_06.csv",
-    "SMS/expense_smsc_2025_05.csv",
-    "all_order_accumulated_data.md",
-    "Clickhouse/Sources/Partner/billing_orders_dir_partner.md",
-    "billing_and_accruals.md",
-    "device_history_by_company_and_city.md",
+    "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.ipynb",
+    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.ipynb",
+    "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.ipynb",
+    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.ipynb",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
+    "Clickhouse/all_tables.ipynb",
+    "Clickhouse/schedule 1.ipynb",
+    "Clickhouse/schedule 1.md",
+    "Clickhouse/schedule.md",
+    "join_algorithm.md",
+    "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/Untitled.md",
+    "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.md",
+    "mobile_report_rep_mobile_full_new.md",
+    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/mobile_report_cum_rep_mobile_full/mobile_report_cum_rep_mobile_full.md",
+    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
+    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.md",
+    "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_gropped_reconnects_and_daily_percentage_dataset.md",
+    "Clickhouse/Sources/Asgard/cameras_st_asgard.md",
+    "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
+    "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total/Untitled.md",
     "clichouse_schedule_function.md",
-    "Clickhouse/Sources/tables.md",
-    "Clickhouse/Sources/Partner/complaints_st_partner.md",
-    "d_subscriptions_id_stat.md",
-    "dh_Отчет по рекуррентным платежам.md",
-    "Clickhouse/Sources/Partner/complaints_st_partner.ipynb",
-    "Clickhouse/t_device-history-by-company-and-city-clickhouse/t_device-history-by-company-and-city-clickhouse.md",
+    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
+    "d_gropped_reconnects_and_daily_percentage_dataset.md",
+    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full/mobile_report_rep_mobile_full.md",
+    "Clickhouse/t_requests_st_support/t_requests_info_st_support.md",
+    "d_requests_info_st_support.md",
+    "Untitled 1.md",
+    "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_billing_and_accruals.md",
     "citizens_st_mobile.canvas",
     "tables.canvas",
     "uk_addresses_partner.canvas",

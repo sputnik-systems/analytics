@@ -8,7 +8,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: myenv
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -58,7 +58,9 @@ CREATE TABLE db1.total_active_users_per_day_full_table
     `monetization` UInt8,
     `subscriptions_state` String,
     `address_uuid` String,
-    `flat_uuid` String
+    `flat_uuid` String,
+    `created_at` String,
+    `activated_at` DateTime
 )
 ENGINE = MergeTree()
 ORDER BY partner_uuid
@@ -71,7 +73,7 @@ ch.query_run(query_text)
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.total_active_users_per_day_full_table_mv
     REFRESH EVERY 1 DAY OFFSET 4 HOUR 10 MINUTE TO db1.total_active_users_per_day_full_table AS
-    SELECT
+       SELECT
         r_m_c.partner_uuid AS partner_uuid,
         ses_st_m.citizen_id AS citizen_id,
         r_m_c.report_date AS report_date,
@@ -79,18 +81,23 @@ query_text = """--sql
         sub_st_m.state AS subscriptions_state,
         r_m_c.city AS city,
         r_m_c.address_uuid AS address_uuid,
-        r_m_c.flat_uuid AS flat_uuid
+        r_m_c.flat_uuid AS flat_uuid,
+        c_d_m.created_at AS created_at,
+        r_m_c.activated_at AS activated_at
     FROM db1.rep_mobile_citizens_id_city_partner as r_m_c
-    ANY JOIN db1.`sessions_st_mobile_ch` AS ses_st_m
+    JOIN db1.`sessions_st_mobile_ch` AS ses_st_m
         ON r_m_c.citizen_id = ses_st_m.citizen_id
         AND r_m_c.report_date = ses_st_m.report_date 
-    LEFT ANY JOIN db1.`subscriptions_st_mobile_ch` AS sub_st_m
+    LEFT JOIN db1.`subscriptions_st_mobile_ch` AS sub_st_m
         ON ses_st_m.citizen_id = sub_st_m.citizen_id
         AND ses_st_m.report_date = sub_st_m.report_date
+    LEFT JOIN db1.`citizens_dir_mobile_ch` AS c_d_m ON c_d_m.`citizen_id`  = r_m_c.`citizen_id`
     WHERE 
         toDate(`last_use`) 
         BETWEEN toStartOfMonth(r_m_c.report_date) and r_m_c.report_date 
         AND  r_m_c.state = 'activated'
+    limit 100
+    --
     SETTINGS join_any_take_last_row = 1,
             join_algorithm = 'partial_merge'
     """
@@ -102,6 +109,41 @@ ___
 ___
 ### query
 
+
+```python
+query_text = """--sql
+    SELECT
+        r_m_c.partner_uuid AS partner_uuid,
+        ses_st_m.citizen_id AS citizen_id,
+        r_m_c.report_date AS report_date,
+        r_m_c.monetization AS monetization,
+        sub_st_m.state AS subscriptions_state,
+        r_m_c.city AS city,
+        r_m_c.address_uuid AS address_uuid,
+        r_m_c.flat_uuid AS flat_uuid,
+        c_d_m.created_at AS created_at,
+        r_m_c.activated_at AS activated_at
+    FROM db1.rep_mobile_citizens_id_city_partner as r_m_c
+    JOIN db1.`sessions_st_mobile_ch` AS ses_st_m
+        ON r_m_c.citizen_id = ses_st_m.citizen_id
+        AND r_m_c.report_date = ses_st_m.report_date 
+    LEFT JOIN db1.`subscriptions_st_mobile_ch` AS sub_st_m
+        ON ses_st_m.citizen_id = sub_st_m.citizen_id
+        AND ses_st_m.report_date = sub_st_m.report_date
+    LEFT JOIN db1.`citizens_dir_mobile_ch` AS c_d_m ON c_d_m.`citizen_id`  = r_m_c.`citizen_id`
+    WHERE 
+        toDate(`last_use`) 
+        BETWEEN toStartOfMonth(r_m_c.report_date) and r_m_c.report_date 
+        AND  r_m_c.state = 'activated'
+    limit 100
+    --
+    SETTINGS join_any_take_last_row = 1,
+            join_algorithm = 'partial_merge'
+    
+    """
+
+ch.query_run(query_text)
+```
 
 ```python
 query_text = """--sql

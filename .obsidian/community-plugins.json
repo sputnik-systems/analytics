@@ -3,6 +3,10 @@
   "link-exploder",
   "dataview",
   "persistent-graph",
-  "jupymd",
-  "timeline-view"
+  "timeline-view",
+  "obsidian-open-in-other-editor",
+  "execute-code",
+  "obsidian42-brat",
+  "jupyter",
+  "jupymd"
 ]

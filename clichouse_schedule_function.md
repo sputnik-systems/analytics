@@ -1,4 +1,4 @@
-___
+__
 ### Tags: #YandexFunctions
 
 ### Links: 

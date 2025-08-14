@@ -8,14 +8,14 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: myenv
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
 
 ## Start
 
-```python
+```python jupyter={"is_executing": false}
 import clickhouse_connect
 import datetime
 import os
@@ -47,7 +47,7 @@ ___
 [[companies_st_partner]]
 ___
 
-```python
+```python jupyter={"is_executing": false}
 query_text = """--sql
     SELECT
         citizens_st_mobile.report_date AS report_date,
@@ -60,16 +60,17 @@ query_text = """--sql
         installation_point_st_partner.partner_uuid AS partner_uuid,
         installation_point_st_partner.monetization AS monetization,
         installation_point_st_partner.monetization_is_allowed AS monetization_is_allowed,
-        flats_dir_partner.`created_at` AS flat_created_at
+        flats_dir_partner.created_at AS flat_created_at,
+        citizens_st_mobile.activated_at AS activated_at
     FROM db1.citizens_st_mobile_ch AS citizens_st_mobile
-    LEFT ANY JOIN db1.flats_dir_partner_ch AS flats_dir_partner 
+    LEFT JOIN db1.flats_dir_partner_ch AS flats_dir_partner 
         ON flats_dir_partner.flat_uuid = citizens_st_mobile.flat_uuid
-    LEFT ANY JOIN db1.entries_installation_points_dir_partner_ch AS entries_installation_points_dir_partner 
+    LEFT JOIN db1.entries_installation_points_dir_partner_ch AS entries_installation_points_dir_partner 
         ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
-    LEFT ANY JOIN db1.installation_point_st_partner_ch AS installation_point_st_partner
+    LEFT JOIN db1.installation_point_st_partner_ch AS installation_point_st_partner
         ON installation_point_st_partner.installation_point_id = entries_installation_points_dir_partner.installation_point_id
         AND installation_point_st_partner.report_date = citizens_st_mobile.report_date
-    LEFT ANY JOIN db1.companies_st_partner_ch AS companies_st_partner
+    LEFT JOIN db1.companies_st_partner_ch AS companies_st_partner
         ON installation_point_st_partner.partner_uuid = companies_st_partner.partner_uuid
         AND companies_st_partner.report_date = citizens_st_mobile.report_date
     WHERE citizens_st_mobile.state = 'activated'
@@ -85,15 +86,16 @@ CREATE TABLE db1.rep_mobile_citizens_id_city_partner
 (
     `report_date` Date,
     `citizen_id` Int32,
-    `trial_available` Int8,
+    `trial_available` Int32,
     `state` String,
     `flat_uuid` String,
     `address_uuid` String,
     `city` String,
     `partner_uuid` String,
-    `monetization` Int8,
-    `monetization_is_allowed` Int8,
-    `flat_created_at` DateTime
+    `monetization` Int16,
+    `monetization_is_allowed` Int16,
+    `flat_created_at` DateTime,
+    `activated_at` DateTime
 )
 ENGINE = MergeTree()
 ORDER BY citizen_id
@@ -106,7 +108,7 @@ ch.query_run(query_text)
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.rep_mobile_citizens_id_city_partner_mv
     REFRESH EVERY 1 DAY OFFSET 4 HOUR 5 MINUTE TO db1.rep_mobile_citizens_id_city_partner AS
-    SELECT
+   SELECT
         citizens_st_mobile.report_date AS report_date,
         citizens_st_mobile.citizen_id AS citizen_id,
         citizens_st_mobile.trial_available AS trial_available,
@@ -117,16 +119,17 @@ query_text = """--sql
         installation_point_st_partner.partner_uuid AS partner_uuid,
         installation_point_st_partner.monetization AS monetization,
         installation_point_st_partner.monetization_is_allowed AS monetization_is_allowed,
-        flats_dir_partner.`created_at` AS flat_created_at
+        flats_dir_partner.`created_at` AS flat_created_at,
+        citizens_st_mobile_ch.activated_at AS activated_at
     FROM db1.citizens_st_mobile_ch AS citizens_st_mobile
-    LEFT ANY JOIN db1.flats_dir_partner_ch AS flats_dir_partner 
+    LEFT JOIN db1.flats_dir_partner_ch AS flats_dir_partner 
         ON flats_dir_partner.flat_uuid = citizens_st_mobile.flat_uuid
-    LEFT ANY JOIN db1.entries_installation_points_dir_partner_ch AS entries_installation_points_dir_partner 
+    LEFT JOIN db1.entries_installation_points_dir_partner_ch AS entries_installation_points_dir_partner 
         ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
-    LEFT ANY JOIN db1.installation_point_st_partner_ch AS installation_point_st_partner
+    LEFT JOIN db1.installation_point_st_partner_ch AS installation_point_st_partner
         ON installation_point_st_partner.installation_point_id = entries_installation_points_dir_partner.installation_point_id
         AND installation_point_st_partner.report_date = citizens_st_mobile.report_date
-    LEFT ANY JOIN db1.companies_st_partner_ch AS companies_st_partner
+    LEFT JOIN db1.companies_st_partner_ch AS companies_st_partner
         ON installation_point_st_partner.partner_uuid = companies_st_partner.partner_uuid
         AND companies_st_partner.report_date = citizens_st_mobile.report_date
     WHERE citizens_st_mobile.state = 'activated'

@@ -1,4 +1,241 @@
 {
-	"nodes":[],
-	"edges":[]
+  "nodes": [
+    {
+      "type": "file",
+      "id": "c51c30cc-25c8-49cb-badc-9dd0eea8a4d2",
+      "x": -106.5,
+      "y": 1177.2,
+      "width": 540,
+      "height": 456,
+      "file": "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_gropped_reconnects_and_daily_percentage_dataset.md"
+    },
+    {
+      "type": "text",
+      "id": "bb93b23b-6b74-4751-868e-6c70457070ba",
+      "x": -490.5,
+      "y": 1236.2,
+      "width": 168,
+      "height": 108,
+      "color": "6",
+      "text": "---\ntext-align: center\n\n---\n\n \n ## User  \n Business Analyst"
+    },
+    {
+      "type": "nested-canvas",
+      "id": "993eda24-7467-449a-ae22-b9970fb0f557",
+      "x": -172.5,
+      "y": 1430.2,
+      "width": 420,
+      "height": 180,
+      "canvas": {
+        "nodes": [
+          {
+            "type": "text",
+            "id": "922a8668-53cb-41d2-b292-671a70442e1f",
+            "x": 12,
+            "y": 12,
+            "width": 206,
+            "height": 108,
+            "color": "6",
+            "text": "---\nfiles: [\"working with files from s3/df_obj.csv\",\"working with files from s3/base (28).csv\",\"working with files from s3/query.txt\",\"working with files from s3/for_classes/for_functions/Dowloading_from_query.py\"]\ntext-align: center\n\n--- \n## S3 Data Loader  \n  Python"
+          },
+          {
+            "type": "text",
+            "id": "4f8965c6-0031-48e5-8b84-fbdd67eea138",
+            "x": 368,
+            "y": 12,
+            "width": 279,
+            "height": 108,
+            "color": "6",
+            "text": "---\nfiles: [\"main.py\",\"functions/entries-st-mobile-correction.py\",\"functions/reconnects-and-daily-percentage-dataset/index.py\",\"functions/blocked-flats/index.py\",\"functions/support-requests-data/index.py\",\"Clickhouse/Sources/Partner/companies_st_partner.ipynb\",\"Clickhouse/Sources/Asgard/intercoms_st_asgard.ipynb\",\"Clickhouse/Sources/Mobile/citizens_st_mobile.ipynb\"]\ntext-align: center\n\n--- \n## Data Transform Engine  \n  Python"
+          }
+        ],
+        "edges": [
+          {
+            "id": "9cf994be-160b-47a8-be0d-8cefba754c10",
+            "fromNode": "922a8668-53cb-41d2-b292-671a70442e1f",
+            "fromSide": "right",
+            "toNode": "4f8965c6-0031-48e5-8b84-fbdd67eea138",
+            "toSide": "left",
+            "toEnd": "arrow",
+            "label": "Sends raw data"
+          }
+        ]
+      },
+      "title": "Data Pipeline Service | Python, Jupyter, Apache Airflow"
+    },
+    {
+      "type": "nested-canvas",
+      "id": "e0ad7eb1-d342-4519-be03-8541aac00f34",
+      "x": 397.5,
+      "y": 1230.2,
+      "width": 420,
+      "height": 180,
+      "canvas": {
+        "nodes": [
+          {
+            "type": "text",
+            "id": "8938ae06-e446-4079-9b47-343a2f8d47b3",
+            "x": 493,
+            "y": 170,
+            "width": 262,
+            "height": 108,
+            "color": "6",
+            "text": "---\nfiles: [\"Clickhouse/clickhouse_client.py\",\"Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md\",\"Clickhouse/mobile_report_total/maf_rep_mobile_total/maf_rep_mobile_total.md\",\"Clickhouse/t_device_billings/t_device_billings.md\",\"Clickhouse/Sources/Partner/companies_st_partner.md\"]\ntext-align: center\n---\n## ClickHouse Database  \n  ClickHouse"
+          },
+          {
+            "type": "text",
+            "id": "0f20ef23-4a2f-49b6-8c60-91560744cdb2",
+            "x": 12,
+            "y": 328,
+            "width": 331,
+            "height": 108,
+            "color": "6",
+            "text": "---\nfiles: [\"Clickhouse/Refreshable Materialized View schedule.ipynb\",\"Clickhouse/Refreshable Materialized View schedule.md\"]\ntext-align: center\n\n--- \n## Materialized Views Manager  \n  Python, ClickHouse"
+          },
+          {
+            "type": "text",
+            "id": "d38aa1fa-5437-4c1a-8b0a-9933c19895fd",
+            "x": 64,
+            "y": 170,
+            "width": 279,
+            "height": 108,
+            "color": "1",
+            "text": "---\nfiles: [\"main.py\",\"functions/entries-st-mobile-correction.py\",\"functions/reconnects-and-daily-percentage-dataset/index.py\",\"functions/blocked-flats/index.py\",\"functions/support-requests-data/index.py\",\"Clickhouse/Sources/Partner/companies_st_partner.ipynb\",\"Clickhouse/Sources/Asgard/intercoms_st_asgard.ipynb\",\"Clickhouse/Sources/Mobile/citizens_st_mobile.ipynb\"]\ntext-align: center\n\n--- \n## Data Transform Engine  \n  Python"
+          },
+          {
+            "type": "text",
+            "id": "ebd2ef87-2286-45ce-b617-f465ad5cf149",
+            "x": 41,
+            "y": 12,
+            "width": 302,
+            "height": 108,
+            "color": "1",
+            "text": "---\nfiles: [\"for_google_sheets/google_sheets_api.ipynb\",\"for_google_sheets/apps_script.ipynb\"]\ntext-align: center\n\n--- \n## Google Sheets Integrator  \n  Python, Google API"
+          }
+        ],
+        "edges": [
+          {
+            "id": "e308a9d4-f359-44dc-aff6-eca6a0b0ee44",
+            "fromNode": "0f20ef23-4a2f-49b6-8c60-91560744cdb2",
+            "fromSide": "right",
+            "toNode": "8938ae06-e446-4079-9b47-343a2f8d47b3",
+            "toSide": "left",
+            "toEnd": "arrow",
+            "label": "Manages views"
+          },
+          {
+            "id": "af31a18e-b935-4f17-9460-fd85229c92c4",
+            "fromNode": "d38aa1fa-5437-4c1a-8b0a-9933c19895fd",
+            "fromSide": "right",
+            "toNode": "8938ae06-e446-4079-9b47-343a2f8d47b3",
+            "toSide": "left",
+            "toEnd": "arrow",
+            "label": "Loads data"
+          },
+          {
+            "id": "2742b6c6-8cfe-4c65-b977-50f504064a28",
+            "fromNode": "ebd2ef87-2286-45ce-b617-f465ad5cf149",
+            "fromSide": "right",
+            "toNode": "8938ae06-e446-4079-9b47-343a2f8d47b3",
+            "toSide": "left",
+            "toEnd": "arrow",
+            "label": "Extracts data"
+          }
+        ]
+      },
+      "title": "Analytical Data Store | ClickHouse DB"
+    },
+    {
+      "type": "nested-canvas",
+      "id": "0ec0533d-7667-4f37-aaae-c213449d3005",
+      "x": -172.5,
+      "y": 1200.2,
+      "width": 420,
+      "height": 180,
+      "canvas": {
+        "nodes": [
+          {
+            "type": "text",
+            "id": "3bf0bdb2-9d19-41fd-8672-f4b2ed105753",
+            "x": 330,
+            "y": 12,
+            "width": 308,
+            "height": 108,
+            "color": "6",
+            "text": "---\nfiles: [\"mobile_report/mobile_report_auto.ipynb\",\"partner_report/rep_partner_auto.ipynb\",\"commerce/report_commercial_software.ipynb\",\"mobile_report cifral/mobile_report_cifral_auto.ipynb\"]\ntext-align: center\n\n--- \n## Report Generation Engine  \n  Python, Jupyter"
+          },
+          {
+            "type": "text",
+            "id": "93ecacd2-5e08-4065-b46a-20f58932685c",
+            "x": 788,
+            "y": 12,
+            "width": 302,
+            "height": 108,
+            "color": "6",
+            "text": "---\nfiles: [\"for_google_sheets/google_sheets_api.ipynb\",\"for_google_sheets/apps_script.ipynb\"]\ntext-align: center\n\n--- \n## Google Sheets Integrator  \n  Python, Google API"
+          },
+          {
+            "type": "text",
+            "id": "efa26e5c-d044-4a0f-bf1f-277f016a5a85",
+            "x": 12,
+            "y": 12,
+            "width": 168,
+            "height": 108,
+            "color": "1",
+            "text": "---\ntext-align: center\n\n---\n\n \n ## User  \n Business Analyst"
+          }
+        ],
+        "edges": [
+          {
+            "id": "e04fe2de-4765-4751-8ed0-9aefaa18a723",
+            "fromNode": "3bf0bdb2-9d19-41fd-8672-f4b2ed105753",
+            "fromSide": "right",
+            "toNode": "93ecacd2-5e08-4065-b46a-20f58932685c",
+            "toSide": "left",
+            "toEnd": "arrow",
+            "label": "Sends reports"
+          },
+          {
+            "id": "da8e2372-1a49-4eb5-9c50-8ea7e0ec74f2",
+            "fromNode": "efa26e5c-d044-4a0f-bf1f-277f016a5a85",
+            "fromSide": "right",
+            "toNode": "3bf0bdb2-9d19-41fd-8672-f4b2ed105753",
+            "toSide": "left",
+            "toEnd": "arrow",
+            "label": "Views reports"
+          }
+        ]
+      },
+      "title": "Business Intelligence Platform | Python, Jupyter Notebooks"
+    }
+  ],
+  "edges": [
+    {
+      "id": "af31a18e-b935-4f17-9460-fd85229c92c4",
+      "fromNode": "993eda24-7467-449a-ae22-b9970fb0f557",
+      "fromSide": "right",
+      "toNode": "e0ad7eb1-d342-4519-be03-8541aac00f34",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Loads data"
+    },
+    {
+      "id": "da8e2372-1a49-4eb5-9c50-8ea7e0ec74f2",
+      "fromNode": "bb93b23b-6b74-4751-868e-6c70457070ba",
+      "fromSide": "right",
+      "toNode": "0ec0533d-7667-4f37-aaae-c213449d3005",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Views reports"
+    },
+    {
+      "id": "2742b6c6-8cfe-4c65-b977-50f504064a28",
+      "fromNode": "0ec0533d-7667-4f37-aaae-c213449d3005",
+      "fromSide": "right",
+      "toNode": "e0ad7eb1-d342-4519-be03-8541aac00f34",
+      "toSide": "left",
+      "toEnd": "arrow",
+      "label": "Extracts data"
+    }
+  ]
 }

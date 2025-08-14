@@ -8,10 +8,10 @@ from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
 
 load_dotenv()
-ClickHouse_host = os.environ['ClickHouse_host']
-ClickHouse_port = os.environ['ClickHouse_port']
-ClickHouse_username = os.environ['ClickHouse_username']
-ClickHouse_password = os.environ['ClickHouse_password']
+ClickHouse_host = os.environ.get('ClickHouse_host')
+ClickHouse_port = os.environ.get('ClickHouse_port')
+ClickHouse_username = os.environ.get('ClickHouse_username')
+ClickHouse_password = os.environ.get('ClickHouse_password')
 
 
 class ClickHouse_client:

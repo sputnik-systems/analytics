@@ -8,58 +8,65 @@
   "collapse-color-groups": false,
   "colorGroups": [
     {
-      "query": "tag:#Tables  ",
+      "query": "tag:#Source  ",
       "color": {
         "a": 1,
-        "rgb": 3173087
+        "rgb": 14701138
+      }
+    },
+    {
+      "query": "tag:#Dashboards  ",
+      "color": {
+        "a": 1,
+        "rgb": 16424448
       }
     },
     {
       "query": "tag:#Datasets  ",
       "color": {
         "a": 1,
-        "rgb": 29954
+        "rgb": 1218816
       }
     },
     {
-      "query": "tag: #Dashboards",
+      "query": "tag:#Tables  ",
       "color": {
         "a": 1,
-        "rgb": 16743168
+        "rgb": 746740
       }
     },
     {
-      "query": "tag: #Source",
+      "query": "tag:#Mobile_Report  ",
       "color": {
         "a": 1,
-        "rgb": 16076109
+        "rgb": 5431473
       }
     },
     {
-      "query": "tag: #YandexFunctions  ",
+      "query": "tag:#YandexFunctions  ",
       "color": {
         "a": 1,
-        "rgb": 2322775
+        "rgb": 555109
       }
     },
     {
-      "query": "tag: #Mobile_Report",
+      "query": "tag:#tools  ",
       "color": {
         "a": 1,
-        "rgb": 6278642
+        "rgb": 11012082
       }
     }
   ],
   "collapse-display": false,
   "showArrow": false,
-  "textFadeMultiplier": 0.2,
-  "nodeSizeMultiplier": 0.891145833333333,
-  "lineSizeMultiplier": 0.584895833333333,
+  "textFadeMultiplier": -0.1,
+  "nodeSizeMultiplier": 1.00472727272727,
+  "lineSizeMultiplier": 0.632,
   "collapse-forces": false,
-  "centerStrength": 0.578125,
-  "repelStrength": 15.2083333333333,
-  "linkStrength": 0.572916666666667,
-  "linkDistance": 30,
-  "scale": 0.2148846782380398,
+  "centerStrength": 0.493358070500928,
+  "repelStrength": 13.1918367346939,
+  "linkStrength": 0.236883116883117,
+  "linkDistance": 235,
+  "scale": 1.367566323300742,
   "close": false
 }
