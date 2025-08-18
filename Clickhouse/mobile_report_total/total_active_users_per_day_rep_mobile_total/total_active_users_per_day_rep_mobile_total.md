@@ -8,7 +8,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: Python 3 (ipykernel)
+    display_name: myenv
     language: python
     name: python3
 ---
@@ -129,7 +129,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.total_activated_account_rep_mobile_full_mv
+    DROP TABLE db1.total_active_users_per_day_rep_mobile_total_mv
     """
 
 ch.query_run(query_text)
@@ -139,7 +139,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.total_activated_account_rep_mobile_full
+    DROP TABLE db1.total_active_users_per_day_rep_mobile_total
     """
 
 ch.query_run(query_text)

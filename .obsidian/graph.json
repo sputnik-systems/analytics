@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "",
+  "search": " digital_key",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -58,7 +58,7 @@
     }
   ],
   "collapse-display": false,
-  "showArrow": false,
+  "showArrow": true,
   "textFadeMultiplier": -0.1,
   "nodeSizeMultiplier": 1.00472727272727,
   "lineSizeMultiplier": 0.632,
@@ -67,6 +67,6 @@
   "repelStrength": 13.1918367346939,
   "linkStrength": 0.236883116883117,
   "linkDistance": 235,
-  "scale": 1.367566323300742,
+  "scale": 0.6633963768298723,
   "close": false
 }

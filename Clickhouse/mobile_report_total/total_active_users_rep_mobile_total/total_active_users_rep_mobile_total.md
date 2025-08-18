@@ -8,9 +8,9 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: myenv
+    display_name: Python (myenv)
     language: python
-    name: python3
+    name: myenv
 ---
 
 ## Start
@@ -37,11 +37,7 @@ ___
 
 ### Links:  
 
-[[total_active_users_per_day_full_table]]
-
-[[entries_st_mobile]]
-
-[[citizens_dir_mobile]]
+[[total_active_users_first_mention]]
 
 
 ### Table
@@ -73,94 +69,66 @@ ch.query_run(query_text)
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.total_active_users_rep_mobile_total_mv
     REFRESH EVERY 1 DAY OFFSET 6 HOUR 8 MINUTE TO db1.total_active_users_rep_mobile_total AS
-    WITH full_table AS(
-    SELECT
-        *
-    FROM
-        (SELECT
-            total_act.report_date AS report_date,
-            total_act.partner_uuid AS partner_uuid,
-            total_act.citizen_id AS citizen_id,
-            total_act.monetization AS monetization,
-            total_act.subscriptions_state AS subscriptions_state,
-            entr_st_m.ble_available AS ble_available,
-            cit_dir_m.activated_at AS activated_at,
-            total_act.city AS city,
-            ROW_NUMBER() OVER (
-                    PARTITION BY
-                        toStartOfMonth(total_act.report_date),
-                        total_act.citizen_id
-                    ORDER BY total_act.report_date
-                ) = 1 AS is_first_mention_in_month
-        FROM db1.total_active_users_per_day_full_table AS total_act
-        LEFT JOIN db1.`entries_st_mobile_ch` AS entr_st_m
-            ON `entr_st_m`.`report_date` = total_act.`report_date` 
-            AND`entr_st_m`.`address_uuid` = total_act.`address_uuid`
-        LEFT JOIN db1.`citizens_dir_mobile_ch` AS cit_dir_m
-                    ON `cit_dir_m`.`citizen_id` = total_act.`citizen_id`)
-    WHERE is_first_mention_in_month = 1
-    ),
-    --
-    dec_t AS (SELECT
-        DISTINCT
-        t1.report_date  AS report_date,
-        t2.city  AS city,
-        t2.partner_uuid  AS partner_uuid
-    FROM
-        (SELECT DISTINCT report_date FROM full_table) AS t1
-    CROSS JOIN
-        (SELECT DISTINCT city, partner_uuid FROM full_table ) AS t2
-    ),
-    --
-    dec_and_full AS (
-    SELECT
-    dec_t.report_date AS report_date,
-    dec_t.partner_uuid AS partner_uuid,
-    dec_t.city AS city,
-    total_active_users_day,
-    new_active_users_day,
-    total_active_users_monetization_day,
-    total_active_user_subscribed_monetization_day,
-    total_active_users_ble_available_day,
-    total_active_users_ble_available_monetization_day,
-    total_active_users_ble_available_subscribed_monetization_day
-    FROM dec_t
-    LEFT join (
-        SELECT 
+    WITH dec_t AS (SELECT
+            DISTINCT
+            t1.report_date  AS report_date,
+            t2.city  AS city,
+            t2.partner_uuid  AS partner_uuid
+        FROM
+            (SELECT DISTINCT report_date FROM db1.total_active_users_first_mention) AS t1
+        CROSS JOIN
+            (SELECT DISTINCT city, partner_uuid FROM db1.total_active_users_first_mention ) AS t2
+        ),
+        --
+        dec_and_full AS (
+        SELECT
+        dec_t.report_date AS report_date,
+        dec_t.partner_uuid AS partner_uuid,
+        dec_t.city AS city,
+        total_active_users_day,
+        new_active_users_day,
+        total_active_users_monetization_day,
+        total_active_user_subscribed_monetization_day,
+        total_active_users_ble_available_day,
+        total_active_users_ble_available_monetization_day,
+        total_active_users_ble_available_subscribed_monetization_day
+        FROM dec_t
+        LEFT join (
+            SELECT
+                report_date,
+                partner_uuid,
+                city,
+                count(DISTINCT citizen_id) AS total_active_users_day,
+                count(DISTINCT if(toDateOrNull(activated_at) BETWEEN toStartOfMonth(report_date) and report_date,citizen_id,null)) AS new_active_users_day,
+                count(DISTINCT if(monetization = 1,citizen_id,null)) AS total_active_users_monetization_day,
+                count(DISTINCT if(monetization = 1 and subscriptions_state = 'activated',citizen_id,null)) as total_active_user_subscribed_monetization_day,
+                count(DISTINCT if(ble_available = 'true',citizen_id,null)) AS total_active_users_ble_available_day,
+                count(DISTINCT if(ble_available = 'true' and monetization = 1,citizen_id,null)) AS total_active_users_ble_available_monetization_day,
+                count(DISTINCT if(ble_available = 'true' and monetization = 1 and subscriptions_state = 'activated',citizen_id,null)) AS total_active_users_ble_available_subscribed_monetization_day
+            FROM db1.total_active_users_first_mention
+            GROUP BY
+                report_date,
+                partner_uuid,
+                city) AS full_table
+            ON dec_t.report_date = full_table.report_date
+            AND dec_t.partner_uuid = full_table.partner_uuid
+            AND dec_t.city = full_table.city
+        )
+        --
+        SELECT
             report_date,
             partner_uuid,
             city,
-            count(DISTINCT citizen_id) AS total_active_users_day,
-            count(DISTINCT if(toDateOrNull(activated_at) BETWEEN toStartOfMonth(report_date) and report_date,citizen_id,null)) AS new_active_users_day,
-            count(DISTINCT if(monetization = 1,citizen_id,null)) AS total_active_users_monetization_day,
-            count(DISTINCT if(monetization = 1 and subscriptions_state = 'activated',citizen_id,null)) as total_active_user_subscribed_monetization_day,
-            count(DISTINCT if(ble_available = 'true',citizen_id,null)) AS total_active_users_ble_available_day,
-            count(DISTINCT if(ble_available = 'true' and monetization = 1,citizen_id,null)) AS total_active_users_ble_available_monetization_day,
-            count(DISTINCT if(ble_available = 'true' and monetization = 1 and subscriptions_state = 'activated',citizen_id,null)) AS total_active_users_ble_available_subscribed_monetization_day
-        FROM full_table 
-        GROUP BY
-            report_date,
-            partner_uuid,
-            city) AS full_table
-        ON dec_t.report_date = full_table.report_date 
-        AND dec_t.partner_uuid = full_table.partner_uuid
-        AND dec_t.city = full_table.city
-    )
-    --
-    SELECT
-        report_date,
-        partner_uuid,
-        city,
-        sum(total_active_users_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS total_active_users,
-        sum(new_active_users_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS new_active_users,
-        sum(total_active_users_monetization_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS total_active_users_monetization,
-        sum(total_active_user_subscribed_monetization_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS total_active_user_subscribed_monetization,
-        sum(total_active_users_ble_available_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS total_active_users_ble_available,
-        sum(total_active_users_ble_available_monetization_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) 
-            AS total_active_users_ble_available_monetization,
-        sum(total_active_users_ble_available_subscribed_monetization_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) 
-            AS total_active_users_ble_available_subscribed_monetization
-    FROM dec_and_full
+            sum(total_active_users_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS total_active_users,
+            sum(new_active_users_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS new_active_users,
+            sum(total_active_users_monetization_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS total_active_users_monetization,
+            sum(total_active_user_subscribed_monetization_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS total_active_user_subscribed_monetization,
+            sum(total_active_users_ble_available_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date) AS total_active_users_ble_available,
+            sum(total_active_users_ble_available_monetization_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date)
+                AS total_active_users_ble_available_monetization,
+            sum(total_active_users_ble_available_subscribed_monetization_day) OVER (PARTITION BY toStartOfMonth(report_date),partner_uuid, city ORDER BY report_date)
+                AS total_active_users_ble_available_subscribed_monetization
+        FROM dec_and_full
     """
 ch.query_run(query_text)
 ```
@@ -174,8 +142,10 @@ ___
 ```python
 query_text = """--sql
     SELECT
-        *
+        report_date,
+        sum(new_active_users)
     FROM db1.total_active_users_rep_mobile_total
+    GROUP BY report_date
     ORDER BY report_date DESC
     limit 100
     """

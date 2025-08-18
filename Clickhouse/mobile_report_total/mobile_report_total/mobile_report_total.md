@@ -8,9 +8,9 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: myenv
+    display_name: Python (myenv)
     language: python
-    name: python3
+    name: myenv
 ---
 
 ```python
@@ -75,6 +75,8 @@ CREATE TABLE db1.mobile_report_total
     `ios_sub_first_new_cart_transition` UInt64,
     `ios_sub_from_cart` UInt64,
     `paying_new_users_in_last_28_days` UInt64,
+    `sub_first_new_month` UInt64,
+    `sub_extended_month` UInt64,
     `paying_users` UInt64,
     `paying_users_day` UInt64,
     `paying_users_partner_pro` UInt64,
@@ -83,11 +85,13 @@ CREATE TABLE db1.mobile_report_total
     `paying_users_standart_ios_from_cart` UInt64,
     `paying_users_standart_yakassa` UInt64,
     `renew_failed_at` UInt64,
+    `renew_failed_at_month` UInt64,
     `renew_failed_at_andeoid_cart` UInt64,
     `renew_failed_at_android` UInt64,
     `renew_failed_at_ios` UInt64,
     `renew_failed_at_ios_cart` UInt64,
     `renew_stopped_at` UInt64,
+    `renew_stopped_at_month` UInt64,
     `renew_stopped_at_android` UInt64,
     `renew_stopped_at_android_cart` UInt64,
     `renew_stopped_at_ios` UInt64,
@@ -220,6 +224,8 @@ query_text = """--sql
         `ios_sub_first_new_cart`,
         `ios_sub_first_new_cart_transition`,
         `ios_sub_from_cart`,
+        `sub_first_new_month` ,
+        `sub_extended_month` ,
         `paying_new_users_in_last_28_days`,
         `paying_users`,
         `paying_users_day`,
@@ -229,11 +235,13 @@ query_text = """--sql
         `paying_users_standart_ios_from_cart`,
         `paying_users_standart_yakassa`,
         `renew_failed_at_c` AS `renew_failed_at`,
+        `renew_failed_at_month`,
         `renew_failed_at_andeoid_cart`,
         `renew_failed_at_android`,
         `renew_failed_at_ios`,
         `renew_failed_at_ios_cart`,
         `renew_stopped_at_c` AS `renew_stopped_at`,
+        `renew_stopped_at_month`,
         `renew_stopped_at_android`,
         `renew_stopped_at_android_cart`,
         `renew_stopped_at_ios`,
@@ -386,8 +394,21 @@ ___
 ```python
 query_text = """--sql
     SELECT
+        *
+    FROM db1.mobile_report_total
+    ORDER BY report_date desc
+    limit 10
+    """
+
+ch.query_run(query_text)
+
+```
+
+```python
+query_text = """--sql
+    SELECT
         report_date,
-        sum(units_on_platform)
+        sum(new_active_users)
     FROM db1.mobile_report_total
     GROUP BY report_date
     ORDER BY report_date desc

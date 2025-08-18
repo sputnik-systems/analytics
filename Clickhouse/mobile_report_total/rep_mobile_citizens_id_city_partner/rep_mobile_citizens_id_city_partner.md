@@ -8,9 +8,9 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: Python 3 (ipykernel)
+    display_name: Python (myenv)
     language: python
-    name: python3
+    name: myenv
 ---
 
 ## Start
@@ -149,6 +149,7 @@ query_text = """--sql
     SELECT
         *
     FROM db1.rep_mobile_citizens_id_city_partner
+    ORDER BY report_date
     limit 100
     """
 
