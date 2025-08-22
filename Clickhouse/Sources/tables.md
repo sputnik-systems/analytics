@@ -200,3 +200,17 @@ ___
 [[categories_st_support]]
 
 [[categories_sc_support]]
+
+
+____
+
+### Bitrix
+
+[[category_id_dir_bitrix]]
+
+[[companies_id_dir_bitrix]]
+
+[[deals_base_dir_bitrix]]
+
+[[productrows_dir_bitrix]]
+

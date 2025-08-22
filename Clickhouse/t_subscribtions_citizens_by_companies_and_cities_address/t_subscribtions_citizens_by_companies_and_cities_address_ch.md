@@ -60,7 +60,8 @@ query_text = """--sql
         `payments_amount` UInt32,
         `activated_citizen_id` UInt32,
         `subscribed_citizen_id` UInt32,
-        `flat_uuid` UInt32
+        `flat_uuid` UInt32,
+        `address_uuid` String
     )
     ENGINE = MergeTree()
     ORDER BY report_date
@@ -83,9 +84,8 @@ WITH citizens_st_mobile AS(
 		flat_uuid,
 		state
 	FROM db1.`citizens_st_mobile_ch` 
-	WHERE report_date = dateTrunc('month', report_date) 
-		AND report_date ='2025-06-01'
-		AND `state` = 'activated'
+	WHERE `state` = 'activated'
+		and report_date = yesterday()
 	),
 	subscriptions_st_mobile AS(
 	SELECT 
@@ -93,17 +93,15 @@ WITH citizens_st_mobile AS(
 		citizen_id,
 		state
 	FROM db1.subscriptions_st_mobile_ch
-	WHERE report_date = dateTrunc('month', report_date) 
-		AND report_date ='2025-06-01'
-		AND state = 'activated'
+	WHERE state = 'activated'
+		and report_date = yesterday()
 	),
 	installation_point_st AS (
 	SELECT 
 		report_date,
 		installation_point_id
 	FROM db1.installation_point_st_partner_ch
-	WHERE report_date = dateTrunc('month', report_date) 
-		AND report_date ='2025-06-01'
+	WHERE report_date= yesterday()
 	),
 	intercoms_st_partner AS (
 	SELECT
@@ -112,8 +110,7 @@ WITH citizens_st_mobile AS(
 		partner_uuid,
 		installation_point_id
 	FROM db1.intercoms_st_partner_ch 
-	WHERE report_date = dateTrunc('month', report_date) 
-		AND report_date ='2025-06-01'
+	WHERE report_date = yesterday()
 	),
 	citizen_payments_st_mobile AS (
 	SELECT
@@ -121,9 +118,8 @@ WITH citizens_st_mobile AS(
 		citizen_id,
 		amount
 	FROM db1.citizen_payments_st_mobile_ch 
-	WHERE report_date = dateTrunc('month', report_date) 
-		AND report_date ='2025-06-01'
-		AND state = 'success'
+	WHERE state = 'success'
+		AND report_date = yesterday()
 	),
 	t4 AS(
 	SELECT  
@@ -135,6 +131,7 @@ WITH citizens_st_mobile AS(
 		intercoms_st_partner.partner_uuid AS partner_uuid,
 		motherboard_id,
 		full_address,
+		address_uuid,
 		tin
 	FROM intercoms_st_partner
 	LEFT JOIN  db1.intercoms_dir_asgard_ch AS intercoms_dir_asgard
@@ -146,8 +143,6 @@ WITH citizens_st_mobile AS(
 		AND installation_point_st.`report_date` = intercoms_st_partner.`report_date`
 	LEFT JOIN db1.entries_installation_points_dir_partner_ch AS entries_installation_points 
 			ON installation_point_st.`installation_point_id` = entries_installation_points.`installation_point_id`
-	WHERE intercoms_st_partner.report_date  = dateTrunc('month', intercoms_st_partner.report_date ) 
-		AND intercoms_st_partner.report_date ='2025-06-01'
 	),
 	--
 	t1 AS (SELECT
@@ -247,6 +242,7 @@ WITH citizens_st_mobile AS(
 		t4.partner_lk AS partner_lk,
 		t4.motherboard_id AS motherboard_id,
 		t4.tin AS tin,
+		t4.address_uuid AS address_uuid,
 		payments_amount,
 		activated_citizen_id,
 		subscribed_citizen_id,
@@ -259,6 +255,7 @@ WITH citizens_st_mobile AS(
 				AND t1.intercom_uuid = t3.intercom_uuid
 	LEFT JOIN t4  ON t1.report_date = t4.report_date
 				AND t1.intercom_uuid = t4.intercom_uuid
+--	SETTINGS join_algorithm = 'partial_merge'
 	"""
 ch.query_run(query_text)
 ```
@@ -288,6 +285,13 @@ ch.query_run(query_text)
 ```python
 query_text = """
     DROP TABLE db1.t_subscribtions_citizens_by_companies_and_cities_address_ch
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    DROP TABLE db1.t_subscribtions_citizens_by_companies_and_cities_address_mv
     """
 ch.query_run(query_text)
 ```

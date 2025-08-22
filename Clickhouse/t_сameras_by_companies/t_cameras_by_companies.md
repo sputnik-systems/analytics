@@ -114,7 +114,8 @@ LIMIT 1
 ch.query_run(query_text)
 ```
 
-# Requests
+# query
+
 
 ```python
 query_text = """--sql

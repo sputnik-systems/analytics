@@ -146,7 +146,7 @@ FROM t2
 JOIN db1.categories_st_support_ch AS cat_s_sup 
 	ON cat_s_sup.report_date = t2.report_date
 	AND lowerUTF8(cat_s_sup.Details) = lowerUTF8(t2.detailed_category)
-WHERE  lowerUTF8(subcategory) != 'info'
+WHERE  lowerUTF8(subcategory) != 'info' and splitByChar('|',Category)[1] != 'Другое' 
     """
 
 ch.query_run(query_text)

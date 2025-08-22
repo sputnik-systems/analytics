@@ -79,8 +79,8 @@ CREATE TABLE db1.complaints_st_partner
     `process_error`	String,
     `actor_type` String,
     `actor_identifier` String,
-    `created_at` DateTime,
-    `updated_at` DateTime,
+    `created_at` DateTime64,
+    `updated_at` DateTime64,
 )
 ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/complaints_st_partner/year=*/month=*/*.csv', 'CSVWithNames')
 PARTITION BY report_date
@@ -108,8 +108,8 @@ query_text = """--sql
     `process_error`	String,
     `actor_type` String,
     `actor_identifier` String,
-    `created_at` DateTime,
-    `updated_at` DateTime,
+    `created_at` DateTime64,
+    `updated_at` DateTime64,
 )
     ENGINE = MergeTree()
     ORDER BY src_uuid

@@ -84,7 +84,11 @@ query_text = """--sql
         `region` String,
         `country` String,
         `city` String,
-        `city_uuid` String
+        `city_uuid` String,
+        `parts` Array(String),
+        `entrance_number` String,
+        `building_number` String,
+        `streat_name` String        
     )
     ENGINE = MergeTree()
     ORDER BY installation_point_id
@@ -116,7 +120,11 @@ query_text = """--sql
 	    `region`,
 	    `country`,
 	    `city`,
-		`city_uuid`
+		`city_uuid`,
+		splitByString(', ', full_address) AS parts,
+        parts[-1] AS entrance_number,
+        parts[-2] AS building_number,
+        parts[-3] AS streat_name 
 	FROM db1.entries_installation_points_dir_partner
     """
 

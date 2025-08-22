@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": " digital_key",
+  "search": "",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -67,6 +67,6 @@
   "repelStrength": 13.1918367346939,
   "linkStrength": 0.236883116883117,
   "linkDistance": 235,
-  "scale": 0.6633963768298723,
+  "scale": 0.200225830078125,
   "close": false
 }

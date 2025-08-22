@@ -8,12 +8,12 @@
         "type": "tabs",
         "children": [
           {
-            "id": "e84e0c5cecabc25e",
+            "id": "b8a7adc66135fdc5",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "d_gropped_reconnects_and_daily_percentage_dataset_ch.md",
+                "file": "Clickhouse/Sources/Partner/uk_st_partner.md",
                 "mode": "source",
                 "source": false,
                 "backlinks": true,
@@ -28,57 +28,151 @@
                 }
               },
               "icon": "lucide-file",
-              "title": "d_gropped_reconnects_and_daily_percentage_dataset_ch"
+              "title": "uk_st_partner"
             }
           },
           {
-            "id": "5003ffafc26ec2c5",
+            "id": "76e0bbe8bfa3ab4f",
             "type": "leaf",
             "state": {
-              "type": "jupyter-view",
+              "type": "markdown",
               "state": {
-                "file": "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_gropped_reconnects_and_daily_percentage_dataset.ipynb"
+                "file": "Clickhouse/Sources/Partner/uk_addresses_partner.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
               },
-              "icon": "none",
-              "title": "t_gropped_reconnects_and_daily_percentage_dataset.ipynb"
+              "icon": "lucide-file",
+              "title": "uk_addresses_partner"
             }
           },
           {
-            "id": "a04c8658afafccf5",
+            "id": "556356a9df98e84f",
             "type": "leaf",
             "state": {
-              "type": "empty",
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/Sources/Partner/uk_addresses_st_partner.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "uk_addresses_st_partner"
+            }
+          },
+          {
+            "id": "d253d49df24ccdec",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/Sources/Support/categories_st_support.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "categories_st_support"
+            }
+          },
+          {
+            "id": "71ef93b488710c22",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "t_uk_adresses_subscribtions"
+            }
+          },
+          {
+            "id": "e335e41c81e251ba",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "d_complaints_st_partner.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "d_complaints_st_partner"
+            }
+          },
+          {
+            "id": "31a722f65633069d",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
               "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           },
           {
-            "id": "afed6f859bbe66bf",
+            "id": "ce7ccd00faba6e06",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clickhouse/Sources/Asgard/metrics_asgard.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
-              },
-              "icon": "lucide-file",
-              "title": "metrics_asgard"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 7
       }
     ],
     "direction": "vertical"
@@ -110,7 +204,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": " digital_key",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -131,8 +225,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -218,6 +311,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "obsidian42-brat:BRAT": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
@@ -231,47 +325,47 @@
       "jupyter:Create Jupyter Notebook": false
     }
   },
-  "active": "dcce8c5322958ebc",
+  "active": "ce7ccd00faba6e06",
   "lastOpenFiles": [
-    "Clickhouse/bitrix24/deals_garantijnyj_remont_all_fields.csv",
-    "Clickhouse/bitrix24/bytrix24.ipynb",
-    "Clickhouse/bitrix24",
-    "Clickhouse/Sources/Asgard/metrics_all_intercoms_asgard.md",
-    "Clickhouse/Sources/Partner/installation_point_st_partner.md",
-    "Clickhouse/Sources/Asgard/intercoms_st_asgard.md",
-    "Clickhouse/t_buildings_cohorts/t_buildings_cohorts.md",
-    "Clickhouse/Sources/Asgard/metrics_asgard.md",
-    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
-    "d_gropped_reconnects_and_daily_percentage_dataset_ch.md",
-    "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_gropped_reconnects_and_daily_percentage_dataset.ipynb",
-    "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_gropped_reconnects_and_daily_percentage_dataset.md",
-    "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.md",
-    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.ipynb",
-    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.md",
-    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/total_active_users_first_mention/total_active_users_first_mention.md",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
-    "Clickhouse/mobile_report_total/total_active_users_first_mention/total_active_users_first_mention.ipynb",
-    "Clickhouse/mobile_report_total/total_active_users_first_mention",
-    "Clickhouse/mobile_report_total/total_active_users_first_mention/1.ipynb",
-    "Clickhouse/mobile_report_total/total_active_users_first_mention/1",
-    "Clickhouse/mobile_report_total/total_active_users_first_mention/total_active_users_per_day_full_table.ipynb",
-    "Clickhouse/mobile_report_total/total_active_users_first_mantion",
-    "Clickhouse/mobile_report_total/mobile_report_cum_rep_mobile_full/mobile_report_cum_rep_mobile_full.md",
-    "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.md",
-    "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
-    "d_count_of_nuw_addresses.md",
-    "Отчет по рекуррентным платежам - Eжедневные данные.md",
-    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
-    "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_full_table_comerce_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/subscriptions_report_full_table_comerce_rep_mobile_total copy/subscriptions_report_full_table_comerce_rep_mobile_total.md",
-    "Untitled 2.md",
-    "mobile_report_rep_mobile_full_new.md",
-    "dh Количество ИО-22 и ИО-PRO по компаниям.md",
+    "Clickhouse/t_uk_adresses_subscribtions copy/t_uk_adresses_subscribtions.md",
+    "Clickhouse/t_uk_adresses_subscribtions copy/t_uk_adresses_subscribtions.ipynb",
+    "Clickhouse/t_uk_adresses_subscribtions copy",
+    "Clickhouse/Sources/Bitrix/deals_base_dir_bitrix.md",
+    "in_progress/bitrix24/656556.csv",
+    "in_progress/bitrix24/test.csv",
+    "in_progress/bitrix24/first_50_deals.csv",
+    "in_progress/bitrix24/deals_garantijnyj_remont_all_fields.csv",
+    "in_progress/bitrix24/deal_stage_dictionary.csv",
+    "in_progress/bitrix24/deal_products_exploded.csv",
+    "in_progress/bitrix24/deal_products_aggregated.csv",
+    "in_progress/bitrix24/companies_export.csv",
+    "uk_addresses_partner.canvas",
+    "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
+    "Clickhouse/Sources/Partner/intercoms_st_partner.md",
+    "Clickhouse/Sources/Support/requests_st_support.md",
+    "join_algorithm.md",
+    "companies_st_partne.md",
+    "Clickhouse/t_complaints_st_partner/t_complaints_st_partner.md",
+    "d_complaints_st_partner.md",
+    "Clickhouse/t_сameras_by_companies/t_cameras_by_companies.md",
+    "Clickhouse/t_requests_st_support/t_requests_info_st_support.md",
+    "all_installetion_points.md",
+    "d_requests_info_st_support.md",
+    "t_requests_info_st_support.md",
+    "Clickhouse/Sources/Support/categories_st_support.md",
+    "Clickhouse/t_all_installetion_points/t_all_installetion_points.md",
+    "Clickhouse/Sources/Modified sources/t_all_installetion_points/t_all_installetion_points.md",
+    "t_all_installetion_points.md",
+    "Clickhouse/Sources/Modified sources/t_all_installetion_points.md",
+    "Clickhouse/Sources/Modified sources/all_installetion_points.md",
+    "Clickhouse/Sources/Bitrix/companies_id_dir_bitrix.md",
+    "Clickhouse/Sources/Bitrix/productrows_dir_bitrix.md",
+    "Clickhouse/Sources/Bitrix/category_id_dir_bitrix.md",
+    "Clickhouse/Sources/Bitrix/bitrix_productrows.md",
+    "Clickhouse/Sources/Bitrix/bitrix_deals_base.md",
+    "Clickhouse/Sources/Bitrix/bitrix_companies.md",
     "citizens_st_mobile.canvas",
     "tables.canvas",
-    "uk_addresses_partner.canvas",
     "tables-0.canvas",
     "Untitled 2.canvas",
     "Untitled 1.canvas",
