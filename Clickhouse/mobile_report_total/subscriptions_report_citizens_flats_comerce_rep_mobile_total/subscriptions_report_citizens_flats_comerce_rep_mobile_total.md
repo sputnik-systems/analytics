@@ -61,7 +61,8 @@ CREATE TABLE db1.subscriptions_report_citizens_flats_comerce_rep_mobile_total
     `expires_date` String,
     `renew_stopped_at` String,
     `renew_failed_at` String,
-    `started_from` String
+    `started_from` String,
+    `address_uuid` String
 )
 ENGINE = MergeTree()
 ORDER BY citizen_id
@@ -88,7 +89,8 @@ query_text = """--sql
             expires_date,
             renew_stopped_at,
             renew_failed_at,
-            started_from
+            started_from,
+            address_uuid
         FROM db1.`rep_mobile_citizens_id_city_partner` AS rep_t 
         JOIN db1.`subscriptions_st_mobile_ch` AS sub_st ON 
                 sub_st.report_date = rep_t.report_date
