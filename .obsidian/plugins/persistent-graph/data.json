@@ -1,594 +1,619 @@
 {
   "nodePositions": [
     {
-      "id": "Clickhouse/Sources/Bitrix/category_id_dir_bitrix.md",
-      "x": 160.56947326660156,
-      "y": 627.424560546875
-    },
-    {
-      "id": "Clickhouse/Sources/Bitrix/companies_id_dir_bitrix.md",
-      "x": 543.4130249023438,
-      "y": -171.4095458984375
-    },
-    {
-      "id": "Clickhouse/Sources/Bitrix/deals_base_dir_bitrix.md",
-      "x": 649.7445068359375,
-      "y": 420.3716735839844
-    },
-    {
-      "id": "Clickhouse/Sources/Bitrix/productrows_dir_bitrix.md",
-      "x": -753.8712158203125,
-      "y": 398.2995910644531
-    },
-    {
-      "id": "Clickhouse/Sources/tables.md",
-      "x": 95.5240478515625,
-      "y": -166.35423278808594
-    },
-    {
       "id": "Clickhouse/Refreshable Materialized View schedule.md",
-      "x": -1196.5390625,
-      "y": 347.583251953125
+      "x": -1187.466552734375,
+      "y": 425.7689514160156
     },
     {
       "id": "Clickhouse/Sources/Asgard/cameras_daily_percentage_online_st_asgard.md",
-      "x": -205.68817138671875,
-      "y": 162.02438354492188
+      "x": -244.97698974609375,
+      "y": 266.2503356933594
     },
     {
       "id": "Clickhouse/Sources/Asgard/cameras_dir_asgard.md",
-      "x": -857.7974243164062,
-      "y": -505.6370849609375
+      "x": -884.6492919921875,
+      "y": -416.14349365234375
     },
     {
       "id": "Clickhouse/Sources/Asgard/cameras_st_asgard.md",
-      "x": -957.0848388671875,
-      "y": -814.4478149414062
+      "x": -1019.5548095703125,
+      "y": -821.2596435546875
     },
     {
       "id": "Clickhouse/Sources/Asgard/flussonic_stats_st_asgard.md",
-      "x": -549.4898681640625,
-      "y": -135.96600341796875
+      "x": -600.3499755859375,
+      "y": -162.2211151123047
     },
     {
       "id": "Clickhouse/Sources/Asgard/hex_metrics_parquet_asgard.md",
-      "x": -341.67266845703125,
-      "y": -345.0168762207031
+      "x": -403.9232177734375,
+      "y": -330.9648742675781
     },
     {
       "id": "Clickhouse/Sources/Asgard/intercoms_daily_percentage_online_st_asgard.md",
-      "x": -96.43330383300781,
-      "y": -882.347900390625
+      "x": -79.26093292236328,
+      "y": -754.6070556640625
     },
     {
       "id": "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
-      "x": -652.9010009765625,
-      "y": -744.3399658203125
+      "x": -785.6277465820312,
+      "y": -773.3081665039062
     },
     {
       "id": "Clickhouse/Sources/Asgard/intercoms_st_asgard.md",
-      "x": 164.12002563476562,
-      "y": -1107.8946533203125
+      "x": 194.67860412597656,
+      "y": -912.766357421875
     },
     {
       "id": "Clickhouse/Sources/Asgard/metrics_all_intercoms_asgard.md",
-      "x": 500.8297424316406,
-      "y": 180.45896911621094
+      "x": 406.4979553222656,
+      "y": 108.93907165527344
     },
     {
       "id": "Clickhouse/Sources/Asgard/metrics_asgard.md",
-      "x": -244.76513671875,
-      "y": -82.43096160888672
+      "x": -246.00076293945312,
+      "y": -71.6451187133789
     },
     {
       "id": "Clickhouse/Sources/Asgard/no_video_on_stream_mobile_st_asgard.md",
-      "x": -493.5122375488281,
-      "y": 93.34259796142578
+      "x": -427.593505859375,
+      "y": 74.26996612548828
     },
     {
       "id": "Clickhouse/Sources/Asgard/opendoor_types_mobile_st_asgard.md",
-      "x": -89.29170989990234,
-      "y": -329.70660400390625
+      "x": -95.54197692871094,
+      "y": -305.7432556152344
     },
     {
       "id": "Clickhouse/Sources/Asgard/reconnects_intercoms_st_asgard.md",
-      "x": 197.57235717773438,
-      "y": -852.2747192382812
+      "x": 245.00070190429688,
+      "y": -694.4942016601562
+    },
+    {
+      "id": "Clickhouse/Sources/Bitrix/category_id_dir_bitrix.md",
+      "x": 227.64852905273438,
+      "y": 638.6809692382812
+    },
+    {
+      "id": "Clickhouse/Sources/Bitrix/companies_id_dir_bitrix.md",
+      "x": 604.2782592773438,
+      "y": -149.42147827148438
+    },
+    {
+      "id": "Clickhouse/Sources/Bitrix/deals_base_dir_bitrix.md",
+      "x": 610.1726684570312,
+      "y": 394.36834716796875
+    },
+    {
+      "id": "Clickhouse/Sources/Bitrix/productrows_dir_bitrix.md",
+      "x": -616.7300415039062,
+      "y": 426.7610778808594
     },
     {
       "id": "Clickhouse/Sources/Mobile/citizen_payments_dir_mobile.md",
-      "x": -203.79327392578125,
-      "y": 623.7920532226562
+      "x": -146.46470642089844,
+      "y": 657.24609375
     },
     {
       "id": "Clickhouse/Sources/Mobile/citizen_payments_st_mobile.md",
-      "x": 946.87646484375,
-      "y": 564.2446899414062
+      "x": 843.7728271484375,
+      "y": 557.4866333007812
     },
     {
       "id": "Clickhouse/Sources/Mobile/citizens_dir_mobile.md",
-      "x": -60.41914367675781,
-      "y": 928.8238525390625
+      "x": 21.12503433227539,
+      "y": 1007.2781372070312
     },
     {
       "id": "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
-      "x": 1110.2725830078125,
-      "y": 180.7567138671875
+      "x": 1135.57373046875,
+      "y": 166.9389190673828
     },
     {
       "id": "Clickhouse/Sources/Mobile/entries_st_mobile.md",
-      "x": -352.4076232910156,
-      "y": 932.0762939453125
+      "x": -286.278564453125,
+      "y": 926.175048828125
     },
     {
       "id": "Clickhouse/Sources/Mobile/sessions_st_mobile.md",
-      "x": -535.1771240234375,
-      "y": 711.0822143554688
+      "x": -523.4392700195312,
+      "y": 734.2817993164062
     },
     {
       "id": "Clickhouse/Sources/Mobile/subscriptions_st_mobile.md",
-      "x": 620.30615234375,
-      "y": 694.3529052734375
+      "x": 585.9273681640625,
+      "y": 733.7019653320312
     },
     {
       "id": "Clickhouse/Sources/Modified sources/all_installetion_points_parquet.md",
-      "x": -825.8388061523438,
-      "y": -180.32078552246094
+      "x": -894.1222534179688,
+      "y": -121.3635025024414
     },
     {
       "id": "Clickhouse/Sources/Partner/accruals_dir_partner.md",
-      "x": 267.9702453613281,
-      "y": 227.49359130859375
+      "x": 194.98048400878906,
+      "y": 251.97523498535156
     },
     {
       "id": "Clickhouse/Sources/Partner/billing_orders_devices_st_partner.md",
-      "x": -1080.178955078125,
-      "y": 92.96369934082031
+      "x": -1092.9425048828125,
+      "y": 118.22059631347656
     },
     {
       "id": "Clickhouse/Sources/Partner/billing_orders_dir_partner.md",
-      "x": 326.6817626953125,
-      "y": 464.474609375
+      "x": 350.66302490234375,
+      "y": 436.2047119140625
     },
     {
       "id": "Clickhouse/Sources/Partner/buildings_st_partner.md",
-      "x": 452.9259338378906,
-      "y": -465.588134765625
+      "x": 388.33428955078125,
+      "y": -480.45416259765625
     },
     {
       "id": "Clickhouse/Sources/Partner/cameras_dir_partner.md",
-      "x": -1092.5782470703125,
-      "y": -196.65773010253906
+      "x": -1153.3734130859375,
+      "y": -189.64146423339844
     },
     {
       "id": "Clickhouse/Sources/Partner/cameras_st_partner.md",
-      "x": -622.3435668945312,
-      "y": -445.6068420410156
+      "x": -658.5210571289062,
+      "y": -512.793212890625
     },
     {
       "id": "Clickhouse/Sources/Partner/companies_dir_partner.md",
-      "x": -424.3380126953125,
-      "y": -928.4409790039062
+      "x": -274.6485900878906,
+      "y": -1155.0611572265625
     },
     {
       "id": "Clickhouse/Sources/Partner/companies_st_partner.md",
-      "x": 731.2233276367188,
-      "y": 56.243682861328125
+      "x": 707.58935546875,
+      "y": 109.5483627319336
     },
     {
       "id": "Clickhouse/Sources/Partner/complaints_st_partner.md",
-      "x": -836.9033203125,
-      "y": 114.97918701171875
+      "x": -869.9960327148438,
+      "y": 218.34814453125
     },
     {
       "id": "Clickhouse/Sources/Partner/entries_installation_points_dir_partner.md",
-      "x": 987.4535522460938,
-      "y": -78.19143676757812
+      "x": 846.9192504882812,
+      "y": -201.67990112304688
     },
     {
       "id": "Clickhouse/Sources/Partner/flats_dir_partner.md",
-      "x": 276.9226989746094,
-      "y": 826.6209716796875
+      "x": 245.5991668701172,
+      "y": 872.159912109375
     },
     {
       "id": "Clickhouse/Sources/Partner/flats_st_partner.md",
-      "x": 50.03008270263672,
-      "y": 137.1800994873047
+      "x": -18.50489616394043,
+      "y": 136.07748413085938
     },
     {
       "id": "Clickhouse/Sources/Partner/gates_st_partner.md",
-      "x": 458.60784912109375,
-      "y": -702.0007934570312
+      "x": 519.9579467773438,
+      "y": -777.7661743164062
     },
     {
       "id": "Clickhouse/Sources/Partner/installation_point_st_partner.md",
-      "x": 886.798095703125,
-      "y": 287.082763671875
+      "x": 900.5491943359375,
+      "y": 272.3038330078125
     },
     {
       "id": "Clickhouse/Sources/Partner/intercoms_dir_partner.md",
-      "x": -48.692596435546875,
-      "y": -599.7326049804688
+      "x": -205.95098876953125,
+      "y": -521.40185546875
     },
     {
       "id": "Clickhouse/Sources/Partner/intercoms_st_partner.md",
-      "x": 720.8861694335938,
-      "y": -325.3146667480469
+      "x": 624.1591186523438,
+      "y": -449.0162048339844
     },
     {
       "id": "Clickhouse/Sources/Partner/service_history_dir_partner.md",
-      "x": 326.8631591796875,
-      "y": -88.63296508789062
+      "x": 340.9621887207031,
+      "y": -174.25778198242188
     },
     {
       "id": "Clickhouse/Sources/Partner/uk_addresses_partner.md",
-      "x": -13.224287986755371,
-      "y": 411.3462219238281
+      "x": -23.40932273864746,
+      "y": 451.58416748046875
     },
     {
       "id": "Clickhouse/Sources/Partner/uk_addresses_st_partner.md",
-      "x": -329.6939392089844,
-      "y": -658.37353515625
+      "x": -444.16424560546875,
+      "y": -698.4826049804688
     },
     {
       "id": "Clickhouse/Sources/Partner/uk_dir_partner.md",
-      "x": 170.8436279296875,
-      "y": -520.7651977539062
+      "x": 93.47045135498047,
+      "y": -518.8714599609375
     },
     {
       "id": "Clickhouse/Sources/Partner/uk_st_partner.md",
-      "x": -556.4132080078125,
-      "y": 294.2872619628906
+      "x": -632.9232788085938,
+      "y": 116.3048095703125
     },
     {
       "id": "Clickhouse/Sources/Partner/users_st_partner.md",
-      "x": -324.0633850097656,
-      "y": 416.1466064453125
+      "x": -371.84130859375,
+      "y": 469.7066650390625
     },
     {
       "id": "Clickhouse/Sources/Support/categories_st_support.md",
-      "x": -53.70014572143555,
-      "y": -1215.8316650390625
+      "x": -86.43841552734375,
+      "y": -1359.9639892578125
     },
     {
       "id": "Clickhouse/Sources/Support/requests_st_support.md",
-      "x": -603.3875732421875,
-      "y": -1221.218505859375
+      "x": -545.1578979492188,
+      "y": -1224.5665283203125
+    },
+    {
+      "id": "Clickhouse/Sources/tables.md",
+      "x": 78.35509490966797,
+      "y": -117.58677673339844
     },
     {
       "id": "Clickhouse/all_tables.md",
-      "x": -931.049560546875,
-      "y": 660.8472290039062
+      "x": -905.860595703125,
+      "y": 634.3178100585938
     },
     {
       "id": "Clickhouse/mobile_report_total/maf_rep_mobile_total/maf_rep_mobile_total.md",
-      "x": -39.563133239746094,
-      "y": 1342.9296875
+      "x": -128.18833923339844,
+      "y": 1401.4093017578125
     },
     {
       "id": "Clickhouse/mobile_report_total/mobile_report_cum_rep_mobile_full/mobile_report_cum_rep_mobile_full.md",
-      "x": 1055.496826171875,
-      "y": 1274.24365234375
+      "x": 1021.6303100585938,
+      "y": 1311.8619384765625
     },
     {
       "id": "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full/mobile_report_rep_mobile_full.md",
-      "x": 897.1792602539062,
-      "y": 867.2221069335938
+      "x": 875.5318603515625,
+      "y": 942.6513671875
     },
     {
       "id": "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.md",
-      "x": 496.7450256347656,
-      "y": 1523.489990234375
+      "x": 441.525146484375,
+      "y": 1588.1646728515625
     },
     {
       "id": "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/new_users_pd_rep_mobile_total.md",
-      "x": 340.1433410644531,
-      "y": 1259.0386962890625
+      "x": 313.2076721191406,
+      "y": 1305.6859130859375
+    },
+    {
+      "id": "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/Untitled.base",
+      "x": -1611.705810546875,
+      "y": 384.0049743652344
     },
     {
       "id": "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
-      "x": 517.716552734375,
-      "y": 968.4363403320312
+      "x": 483.1229553222656,
+      "y": 1012.14013671875
     },
     {
       "id": "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total.md",
-      "x": 1199.3653564453125,
-      "y": 1003.6713256835938
+      "x": 1163.3553466796875,
+      "y": 1073.846923828125
     },
     {
       "id": "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.md",
-      "x": 638.8442993164062,
-      "y": 1243.4432373046875
+      "x": 605.7189331054688,
+      "y": 1345.7724609375
     },
     {
       "id": "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.md",
-      "x": 113.62743377685547,
-      "y": 1136.3001708984375
+      "x": 71.1325454711914,
+      "y": 1254.72607421875
     },
     {
       "id": "Clickhouse/mobile_report_total/total_active_users_first_mention/total_active_users_first_mention.md",
-      "x": -40.33256530761719,
-      "y": 1591.9346923828125
+      "x": -135.45022583007812,
+      "y": 1651.707275390625
     },
     {
       "id": "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
-      "x": -299.88519287109375,
-      "y": 1240.3577880859375
+      "x": -318.5078125,
+      "y": 1195.095458984375
     },
     {
       "id": "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.md",
-      "x": 217.30873107910156,
-      "y": 1569.78466796875
+      "x": 142.0786590576172,
+      "y": 1616.0345458984375
     },
     {
       "id": "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.md",
-      "x": -275.504638671875,
-      "y": 1590.127197265625
+      "x": -370.80902099609375,
+      "y": 1578.0439453125
     },
     {
       "id": "Clickhouse/mobile_report_total/units_on_sk_platform_rep_mobile_total/units_on_sk_platform_rep_mobile_total.md",
-      "x": 1435.22900390625,
-      "y": 695.0750122070312
+      "x": 1290.0245361328125,
+      "y": 824.0087890625
     },
     {
       "id": "Clickhouse/schedule.md",
-      "x": -1379.41845703125,
-      "y": 839.6854248046875
+      "x": -1385.40869140625,
+      "y": 907.3370361328125
     },
     {
       "id": "Clickhouse/t_all_installetion_points/t_all_installetion_points.md",
-      "x": 549.2318115234375,
-      "y": -954.0193481445312
+      "x": 545.69921875,
+      "y": -1048.894287109375
     },
     {
       "id": "Clickhouse/t_billing_and_accruals/t_billing_and_accruals.md",
-      "x": -1219.0477294921875,
-      "y": 1119.0565185546875
-    },
-    {
-      "id": "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
-      "x": -935.0452880859375,
-      "y": -1362.893310546875
-    },
-    {
-      "id": "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
-      "x": 1399.5150146484375,
-      "y": -279.9480285644531
-    },
-    {
-      "id": "Clickhouse/t_buildings_cohorts/t_buildings_cohorts.md",
-      "x": 1065.46142578125,
-      "y": -374.73553466796875
-    },
-    {
-      "id": "Clickhouse/t_complaints_st_partner/t_complaints_st_partner.md",
-      "x": -1081.22607421875,
-      "y": -562.8201293945312
-    },
-    {
-      "id": "Clickhouse/t_count_io_22_io_pro/t_count_io_22_io_pro.md",
-      "x": 408.3649597167969,
-      "y": -1197.4984130859375
-    },
-    {
-      "id": "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
-      "x": 1273.3524169921875,
-      "y": 436.47662353515625
-    },
-    {
-      "id": "Clickhouse/t_count_of_subscribes_by_adreses/t_count_of_subscribes_by_adreses.md",
-      "x": 849.0177612304688,
-      "y": -527.2676391601562
-    },
-    {
-      "id": "Clickhouse/t_device-history-by-company-and-city-clickhouse/t_device-history-by-company-and-city-clickhouse.md",
-      "x": -1298.0452880859375,
-      "y": -791.3947143554688
-    },
-    {
-      "id": "Clickhouse/t_device_billings/t_device_billings.md",
-      "x": -1289.8638916015625,
-      "y": -362.0188293457031
-    },
-    {
-      "id": "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_gropped_reconnects_and_daily_percentage_dataset.md",
-      "x": -145.43173217773438,
-      "y": -1435.880615234375
-    },
-    {
-      "id": "Clickhouse/t_requests_st_support/t_requests_info_st_support.md",
-      "x": -986.9165649414062,
-      "y": -1093.951904296875
-    },
-    {
-      "id": "Clickhouse/t_requests_st_support/t_requests_st_support.md",
-      "x": -372.00146484375,
-      "y": -1520.4910888671875
-    },
-    {
-      "id": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities/t_subscribtions_citizens_by_companies_and_cities.md",
-      "x": 1206.9307861328125,
-      "y": 736.9407958984375
-    },
-    {
-      "id": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/partial_merge.md",
-      "x": -1068.3355712890625,
-      "y": 901.1498413085938
-    },
-    {
-      "id": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
-      "x": 1358.4869384765625,
-      "y": 143.30027770996094
-    },
-    {
-      "id": "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
-      "x": -279.4515380859375,
-      "y": -1104.9189453125
-    },
-    {
-      "id": "Clickhouse/t_сameras_by_companies/t_cameras_by_companies.md",
-      "x": -732.541015625,
-      "y": -981.4627075195312
-    },
-    {
-      "id": "Clickhouse/table_remaking.md",
-      "x": -1238.4493408203125,
-      "y": 598.7566528320312
-    },
-    {
-      "id": "Clickhouse/test.md",
-      "x": -581.1165161132812,
-      "y": 1127.5645751953125
-    },
-    {
-      "id": "LEFT ANY JOIN.md",
-      "x": -796.4512939453125,
-      "y": 1406.393798828125
-    },
-    {
-      "id": "README.md",
-      "x": -1614.0413818359375,
-      "y": -276.39959716796875
-    },
-    {
-      "id": "Untitled 1.canvas",
-      "x": -543.3336181640625,
-      "y": 1474.08740234375
-    },
-    {
-      "id": "Untitled 2.canvas",
-      "x": -1527.9306640625,
-      "y": 557.4224243164062
-    },
-    {
-      "id": "Untitled.canvas",
-      "x": -774.065185546875,
-      "y": 933.6770629882812
-    },
-    {
-      "id": "Untitled.md",
-      "x": -1484.240966796875,
-      "y": 306.9540100097656
-    },
-    {
-      "id": "all_order_accumulated_data.md",
-      "x": 1503.6495361328125,
-      "y": -739.9694213867188
-    },
-    {
-      "id": "billing_and_accruals.md",
-      "x": 1298.4066162109375,
-      "y": -973.1016845703125
-    },
-    {
-      "id": "categories_sc_support.md",
-      "x": 763.767822265625,
-      "y": -785.5037841796875
-    },
-    {
-      "id": "citizens_st_mobile.canvas",
-      "x": -950.1210327148438,
-      "y": 1208.3441162109375
-    },
-    {
-      "id": "clichouse_schedule_function.md",
-      "x": 1289.439208984375,
-      "y": -573.45751953125
-    },
-    {
-      "id": "count_of_nuw_addresses.md",
-      "x": 1084.2955322265625,
-      "y": -802.2913818359375
-    },
-    {
-      "id": "d_buildings_cohorts.md",
-      "x": 871.12744140625,
-      "y": -1032.3807373046875
-    },
-    {
-      "id": "d_complaints_st_partner.md",
-      "x": -1498.234130859375,
-      "y": -577.2451171875
-    },
-    {
-      "id": "d_count_io_22_io_pro.md",
-      "x": 235.78546142578125,
-      "y": -1508.1917724609375
-    },
-    {
-      "id": "d_count_of_nuw_addresses.md",
-      "x": 1589.54296875,
-      "y": 411.7818908691406
-    },
-    {
-      "id": "d_gropped_reconnects_and_daily_percentage_dataset_ch.md",
-      "x": -7.863149166107178,
-      "y": -1670.9605712890625
-    },
-    {
-      "id": "d_mobile_report_rep_mobile_full_new.md",
-      "x": 836.9326171875,
-      "y": 1077.890625
-    },
-    {
-      "id": "d_requests_info_st_support.md",
-      "x": -1277.7489013671875,
-      "y": -1061.6373291015625
-    },
-    {
-      "id": "d_requests_st_support.md",
-      "x": -633.8062744140625,
-      "y": -1501.966552734375
-    },
-    {
-      "id": "d_subscriptions_id_stat.md",
-      "x": 1112.0531005859375,
-      "y": -1191.6572265625
-    },
-    {
-      "id": "device_history_by_company_and_city.md",
-      "x": 1611.2281494140625,
-      "y": -413.78912353515625
-    },
-    {
-      "id": "dh Когорты домов.md",
-      "x": 662.8623046875,
-      "y": -1334.5230712890625
-    },
-    {
-      "id": "dh Количество ИО-22 и ИО-PRO по компаниям.md",
-      "x": 493.5472717285156,
-      "y": -1572.7562255859375
-    },
-    {
-      "id": "dh_Ежемесячный отчет тест.md",
-      "x": 800.4779663085938,
-      "y": 1433.4754638671875
-    },
-    {
-      "id": "dh_Отчет по рекуррентным платежам.md",
-      "x": 895.1952514648438,
-      "y": -1386.29443359375
-    },
-    {
-      "id": "join_algorithm.md",
-      "x": -1409.6937255859375,
-      "y": -37.52235412597656
-    },
-    {
-      "id": "tables.canvas",
-      "x": -1648.9842529296875,
-      "y": 86.58243560791016
-    },
-    {
-      "id": "Отчет по рекуррентным платежам - Eжедневные данные.md",
-      "x": 1660.50537109375,
-      "y": 90.46993255615234
+      "x": -1222.466064453125,
+      "y": 1181.114013671875
     },
     {
       "id": "Clickhouse/t_bitrix_deals_sales/t_bitrix_deals_sales.md",
-      "x": 1274.448974609375,
-      "y": -88.3978500366211
+      "x": 1020.2462158203125,
+      "y": -74.5124740600586
+    },
+    {
+      "id": "Clickhouse/t_building_dir_partner/dh_Саппорт - новые метрики.md",
+      "x": -1039.058349609375,
+      "y": -1341.1376953125
+    },
+    {
+      "id": "Clickhouse/t_building_dir_partner/t_building_dir_partner.md",
+      "x": 1238.7115478515625,
+      "y": -231.30015563964844
+    },
+    {
+      "id": "Clickhouse/t_buildings_cohorts/t_buildings_cohorts.md",
+      "x": 1089.9180908203125,
+      "y": -478.18487548828125
+    },
+    {
+      "id": "Clickhouse/t_complaints_st_partner/t_complaints_st_partner.md",
+      "x": -1075.582275390625,
+      "y": -550.8115234375
+    },
+    {
+      "id": "Clickhouse/t_count_io_22_io_pro/t_count_io_22_io_pro.md",
+      "x": 335.1629333496094,
+      "y": -1228.484619140625
+    },
+    {
+      "id": "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
+      "x": 1199.6246337890625,
+      "y": 484.1379089355469
+    },
+    {
+      "id": "Clickhouse/t_count_of_subscribes_by_adreses/t_count_of_subscribes_by_adreses.md",
+      "x": 852.0139770507812,
+      "y": -551.858642578125
+    },
+    {
+      "id": "Clickhouse/t_device-history-by-company-and-city-clickhouse/t_device-history-by-company-and-city-clickhouse.md",
+      "x": -1307.4017333984375,
+      "y": -821.7584838867188
+    },
+    {
+      "id": "Clickhouse/t_device_billings/t_device_billings.md",
+      "x": -1321.9632568359375,
+      "y": -407.1439514160156
+    },
+    {
+      "id": "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_gropped_reconnects_and_daily_percentage_dataset.md",
+      "x": -253.88546752929688,
+      "y": -1631.6712646484375
+    },
+    {
+      "id": "Clickhouse/t_requests_st_support/t_requests_info_st_support.md",
+      "x": -928.8439331054688,
+      "y": -1121.956298828125
+    },
+    {
+      "id": "Clickhouse/t_requests_st_support/t_requests_st_support.md",
+      "x": -466.88348388671875,
+      "y": -1497.0445556640625
+    },
+    {
+      "id": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities/t_subscribtions_citizens_by_companies_and_cities.md",
+      "x": 1067.115478515625,
+      "y": 730.8353881835938
+    },
+    {
+      "id": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/partial_merge.md",
+      "x": -1055.7119140625,
+      "y": 931.4146118164062
+    },
+    {
+      "id": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_sub_by_intercoms/t_sub_by_intercoms.md",
+      "x": -264.838623046875,
+      "y": -871.7620239257812
+    },
+    {
+      "id": "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
+      "x": 1366.2999267578125,
+      "y": 168.6564483642578
+    },
+    {
+      "id": "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
+      "x": 53.94805908203125,
+      "y": -1096.3548583984375
+    },
+    {
+      "id": "Clickhouse/t_сameras_by_companies/t_cameras_by_companies.md",
+      "x": -674.341064453125,
+      "y": -996.2713623046875
+    },
+    {
+      "id": "Clickhouse/table_remaking.md",
+      "x": -1202.6409912109375,
+      "y": 685.558837890625
+    },
+    {
+      "id": "Clickhouse/test.md",
+      "x": -610.8267822265625,
+      "y": 1138.3294677734375
+    },
+    {
+      "id": "LEFT ANY JOIN.md",
+      "x": -851.1881103515625,
+      "y": 1444.9412841796875
+    },
+    {
+      "id": "README.md",
+      "x": -1648.3602294921875,
+      "y": -310.0068054199219
+    },
+    {
+      "id": "Untitled 1.canvas",
+      "x": -596.9224853515625,
+      "y": 1461.2899169921875
+    },
+    {
+      "id": "Untitled 2.canvas",
+      "x": -1506.47314453125,
+      "y": 636.3673706054688
+    },
+    {
+      "id": "Untitled.canvas",
+      "x": -767.767578125,
+      "y": 913.2806396484375
+    },
+    {
+      "id": "Untitled.md",
+      "x": -1406.213623046875,
+      "y": 222.06051635742188
+    },
+    {
+      "id": "all_order_accumulated_data.md",
+      "x": 1472.77734375,
+      "y": -836.0330810546875
+    },
+    {
+      "id": "billing_and_accruals.md",
+      "x": 1271.2276611328125,
+      "y": -1045.641357421875
+    },
+    {
+      "id": "categories_sc_support.md",
+      "x": 789.5758056640625,
+      "y": -844.9520874023438
+    },
+    {
+      "id": "citizens_st_mobile.canvas",
+      "x": -933.4866333007812,
+      "y": 1205.5828857421875
+    },
+    {
+      "id": "clichouse_schedule_function.md",
+      "x": 1366.798828125,
+      "y": -577.5578002929688
+    },
+    {
+      "id": "count_of_nuw_addresses.md",
+      "x": 1136.6070556640625,
+      "y": -813.8737182617188
+    },
+    {
+      "id": "d_bitrix_deals_sales.md",
+      "x": 1575.6619873046875,
+      "y": 459.8293762207031
+    },
+    {
+      "id": "d_buildings_cohorts.md",
+      "x": 893.642333984375,
+      "y": -1091.8233642578125
+    },
+    {
+      "id": "d_complaints_st_partner.md",
+      "x": -1524.2452392578125,
+      "y": -625.5150756835938
+    },
+    {
+      "id": "d_count_io_22_io_pro.md",
+      "x": 223.66226196289062,
+      "y": -1517.0032958984375
+    },
+    {
+      "id": "d_count_of_nuw_addresses.md",
+      "x": 1510.338134765625,
+      "y": 698.3255004882812
+    },
+    {
+      "id": "d_gropped_reconnects_and_daily_percentage_dataset_ch.md",
+      "x": 25.36158561706543,
+      "y": -1688.776611328125
+    },
+    {
+      "id": "d_mobile_report_rep_mobile_full_new.md",
+      "x": 756.8244018554688,
+      "y": 1132.029296875
+    },
+    {
+      "id": "d_requests_info_st_support.md",
+      "x": -1282.8643798828125,
+      "y": -1089.233154296875
+    },
+    {
+      "id": "d_requests_st_support.md",
+      "x": -759.096435546875,
+      "y": -1488.279052734375
+    },
+    {
+      "id": "d_subscriptions_id_stat.md",
+      "x": 1090.9417724609375,
+      "y": -1267.0040283203125
+    },
+    {
+      "id": "device_history_by_company_and_city.md",
+      "x": 1607.2415771484375,
+      "y": -459.9051208496094
+    },
+    {
+      "id": "dh Когорты домов.md",
+      "x": 626.1320190429688,
+      "y": -1362.717529296875
+    },
+    {
+      "id": "dh Количество ИО-22 и ИО-PRO по компаниям.md",
+      "x": 474.92425537109375,
+      "y": -1612.74169921875
+    },
+    {
+      "id": "dh_Ежемесячный отчет тест.md",
+      "x": 799.8336181640625,
+      "y": 1502.65380859375
+    },
+    {
+      "id": "dh_Отчет по рекуррентным платежам.md",
+      "x": 864.68115234375,
+      "y": -1445.2745361328125
+    },
+    {
+      "id": "join_algorithm.md",
+      "x": -1454.6229248046875,
+      "y": -80.07025146484375
+    },
+    {
+      "id": "tables.canvas",
+      "x": -1680.339111328125,
+      "y": 64.14501190185547
+    },
+    {
+      "id": "Отчет по рекуррентным платежам - Eжедневные данные.md",
+      "x": 1635.1397705078125,
+      "y": 209.51292419433594
+    },
+    {
+      "id": "d_uk_adresses_subscribtions.md",
+      "x": 1436.347412109375,
+      "y": -195.59217834472656
+    },
+    {
+      "id": "dh_Подъезды УК.md",
+      "x": 1714.1961669921875,
+      "y": -147.72373962402344
     }
   ],
   "automaticallyRestoreNodePositions": true

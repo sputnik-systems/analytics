@@ -2,7 +2,7 @@
   "pythonExecutable": "path",
   "pythonExecutablePath": "/home/boris/myenv/bin/python",
   "startJupyterAuto": true,
-  "jupyterEnvType": "lab",
+  "jupyterEnvType": "notebook",
   "useSimpleMode": true,
   "displayServerRibbonIcon": true,
   "useStatusNotices": true,
@@ -14,6 +14,6 @@
   "updatePopup": true,
   "knownVersion": "0.6.2-beta",
   "deleteCheckpoints": true,
-  "moveCheckpointsToTrash": false,
+  "moveCheckpointsToTrash": true,
   "checkpointsFolder": ""
 }

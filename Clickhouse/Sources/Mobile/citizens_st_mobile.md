@@ -9,7 +9,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: myenv
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -147,8 +147,8 @@ for day_index in dates_pd.index:
 ### add data after 2025-05-30
 
 ```python
-start_date = datetime.datetime.strptime('2025-07-27','%Y-%m-%d').date()
-end_date = datetime.datetime.strptime('2025-07-27','%Y-%m-%d').date()
+start_date = datetime.datetime.strptime('2025-08-27','%Y-%m-%d').date()
+end_date = datetime.datetime.strptime('2025-08-27','%Y-%m-%d').date()
 
 dates_pd = pd.DataFrame({
         'date': pd.date_range(start=start_date, end=end_date).strftime('%Y-%m-%d'),
@@ -187,9 +187,10 @@ ___
 ```python
 query_text = """--sql
     SELECT
-        *
+        report_date,
+        count(*)
     FROM db1.citizens_st_mobile_ch
-    WHERE report_date = '2025-07-27'
+    GROUP By report_date
     ORDER BY report_date desc
     limit 100
     """
@@ -203,7 +204,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    ALTER TABLE db1.citizens_st_mobile_ch DELETE WHERE report_date = '2025-07-27'
+    ALTER TABLE db1.citizens_st_mobile_ch DELETE WHERE report_date = '2025-08-26'
     """
 
 ch.query_run(query_text)

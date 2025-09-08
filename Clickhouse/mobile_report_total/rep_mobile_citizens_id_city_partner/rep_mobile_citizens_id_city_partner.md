@@ -8,7 +8,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: myenv
+    display_name: Python 3 (ipykernel)
     language: python
     name: python3
 ---
@@ -107,7 +107,7 @@ ch.query_run(query_text)
 ```python
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.rep_mobile_citizens_id_city_partner_mv
-    REFRESH EVERY 1 DAY OFFSET 4 HOUR 5 MINUTE TO db1.rep_mobile_citizens_id_city_partner AS
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR 40 MINUTE TO db1.rep_mobile_citizens_id_city_partner AS
    SELECT
         citizens_st_mobile.report_date AS report_date,
         citizens_st_mobile.citizen_id AS citizen_id,
@@ -149,7 +149,7 @@ query_text = """--sql
     SELECT
         *
     FROM db1.rep_mobile_citizens_id_city_partner
-    ORDER BY report_date
+    ORDER BY report_date DESC
     limit 100
     """
 

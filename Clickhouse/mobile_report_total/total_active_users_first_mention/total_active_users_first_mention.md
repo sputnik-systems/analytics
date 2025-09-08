@@ -2,12 +2,15 @@
 jupyter:
   jupytext:
     formats: ipynb,md
-    main_language: python
     text_representation:
       extension: .md
       format_name: markdown
       format_version: '1.3'
       jupytext_version: 1.17.2
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
 ---
 
 ## Start
@@ -104,32 +107,49 @@ ch.query_run(query_text)
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.total_active_users_first_mention_mv
     REFRESH EVERY 1 DAY OFFSET 4 HOUR 20 MINUTE TO db1.total_active_users_first_mention AS
-          SELECT
-        *
-    FROM
-        (SELECT
-            total_act.report_date AS report_date,
-            total_act.partner_uuid AS partner_uuid,
-            total_act.citizen_id AS citizen_id,
-            total_act.monetization AS monetization,
-            total_act.subscriptions_state AS subscriptions_state,
-            entr_st_m.ble_available AS ble_available,
-            cit_dir_m.activated_at AS activated_at,
-            total_act.city AS city,
-            ROW_NUMBER() OVER (
-                    PARTITION BY
-                        toStartOfMonth(total_act.report_date),
-                        total_act.citizen_id
-                    ORDER BY total_act.report_date
-                ) = 1 AS is_first_mention_in_month
-        FROM db1.total_active_users_per_day_full_table AS total_act
-        LEFT JOIN db1.`entries_st_mobile_ch` AS entr_st_m
-            ON `entr_st_m`.`report_date` = total_act.`report_date`
-            AND`entr_st_m`.`address_uuid` = total_act.`address_uuid`
-        LEFT JOIN db1.`citizens_dir_mobile_ch` AS cit_dir_m
-                    ON `cit_dir_m`.`citizen_id` = total_act.`citizen_id`
-            )
-    WHERE is_first_mention_in_month = 1
+    WITH first_mantion AS (
+SELECT
+	report_date,
+	citizen_id,
+	ROW_NUMBER() OVER (
+	                    PARTITION BY
+	                        toStartOfMonth(report_date),
+	                       citizen_id
+	                    ORDER BY report_date
+	                ) = 1 AS is_first_mention_in_month
+FROM db1.total_active_users_per_day_full_table
+),
+--
+total_act AS (
+SELECT
+        total_act.report_date AS report_date,
+        total_act.partner_uuid AS partner_uuid,
+        total_act.citizen_id AS citizen_id,
+        total_act.monetization AS monetization,
+        total_act.subscriptions_state AS subscriptions_state,
+        total_act.address_uuid AS address_uuid,
+        total_act.city AS city
+FROM db1.total_active_users_per_day_full_table AS total_act
+JOIN first_mantion ON total_act.report_date = first_mantion.report_date
+					AND total_act.citizen_id = first_mantion.citizen_id
+WHERE first_mantion.is_first_mention_in_month = 1
+)
+--
+SELECT
+    total_act.report_date AS report_date,
+    total_act.partner_uuid AS partner_uuid,
+    total_act.citizen_id AS citizen_id,
+    total_act.monetization AS monetization,
+    total_act.subscriptions_state AS subscriptions_state,
+    total_act.city AS city,
+    entr_st_m.ble_available AS ble_available,
+    cit_dir_m.activated_at AS activated_at
+FROM total_act
+LEFT JOIN db1.`entries_st_mobile_ch` AS entr_st_m
+        ON `entr_st_m`.`report_date` = total_act.`report_date`
+        AND`entr_st_m`.`address_uuid` = total_act.`address_uuid`
+LEFT JOIN db1.`citizens_dir_mobile_ch` AS cit_dir_m
+                ON `cit_dir_m`.`citizen_id` = total_act.`citizen_id`
     """
 ch.query_run(query_text)
 ```
@@ -157,7 +177,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    ALTER TABLE db1.total_active_users_per_day_full_table DELETE WHERE report_date = '2025-07-17'
+    ALTER TABLE db1.total_active_users_first_mention DELETE WHERE report_date = '2025-07-17'
     """
 
 ch.query_run(query_text)
@@ -167,7 +187,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.total_active_users_per_day_full_table_mv
+    DROP TABLE db1.total_active_users_first_mention_mv
     """
 
 ch.query_run(query_text)
@@ -177,7 +197,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.total_active_users_per_day_full_table
+    DROP TABLE db1.total_active_users_first_mention
     """
 
 ch.query_run(query_text)
@@ -187,7 +207,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.total_active_users_per_day_full_table_mv
+SYSTEM REFRESH VIEW db1.total_active_users_first_mention_mv
 """
 
 ch.query_run(query_text)

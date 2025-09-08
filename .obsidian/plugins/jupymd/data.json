@@ -1,5 +1,5 @@
 {
   "pythonInterpreter": "/home/boris/myenv/bin/python",
   "notebookEditorCommand": "code",
-  "enableCodeBlocks": true
+  "enableCodeBlocks": false
 }

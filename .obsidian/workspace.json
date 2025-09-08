@@ -8,54 +8,53 @@
         "type": "tabs",
         "children": [
           {
-            "id": "b8a7adc66135fdc5",
+            "id": "8bb2210ee4752bee",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "jupyter-view",
               "state": {
-                "file": "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
+                "file": "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.ipynb"
               },
-              "icon": "lucide-file",
-              "title": "t_uk_adresses_subscribtions"
+              "icon": "none",
+              "title": "mobile_report_total.ipynb"
             }
           },
           {
-            "id": "dc4e146da5b563df",
+            "id": "23db77c25c5edac3",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "jupyter-view",
               "state": {
-                "file": "clichouse_schedule_function.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
+                "file": "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.ipynb"
               },
-              "icon": "lucide-file",
-              "title": "clichouse_schedule_function"
+              "icon": "none",
+              "title": "rep_mobile_citizens_id_city_partner.ipynb"
+            }
+          },
+          {
+            "id": "c93b1f9f2159297c",
+            "type": "leaf",
+            "state": {
+              "type": "jupyter-view",
+              "state": {
+                "file": "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.ipynb"
+              },
+              "icon": "none",
+              "title": "mobile_report_total.ipynb"
+            }
+          },
+          {
+            "id": "b4c3cf9dd5225ad5",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -82,23 +81,6 @@
             }
           },
           {
-            "id": "dcce8c5322958ebc",
-            "type": "leaf",
-            "state": {
-              "type": "search",
-              "state": {
-                "query": "",
-                "matchingCase": false,
-                "explainSearch": false,
-                "collapseAll": true,
-                "extraContext": false,
-                "sortOrder": "alphabetical"
-              },
-              "icon": "lucide-search",
-              "title": "Search"
-            }
-          },
-          {
             "id": "4c03c039079892aa",
             "type": "leaf",
             "state": {
@@ -112,7 +94,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 437.5110321044922
+    "width": 408.5
   },
   "right": {
     "id": "be27a329106dfeaa",
@@ -123,22 +105,39 @@
         "type": "tabs",
         "children": [
           {
+            "id": "dcce8c5322958ebc",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "total_active_users_first_mention",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": true,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
             "id": "e05cf1ff3e3c42c1",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
+                "file": "Clickhouse/mobile_report_total/total_active_users_first_mention/total_active_users_first_mention.ipynb",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
+                "showSearch": true,
+                "searchQuery": "total_active_users_first_mention",
                 "backlinkCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for t_count_of_nuw_addresses"
+              "title": "Backlinks for total_active_users_first_mention"
             }
           },
           {
@@ -176,21 +175,20 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Clickhouse/mobile_report_total/nuw_users_pd_rep_mobile_total/nuw_users_pd_rep_mobile_total.md",
+                "file": "Clickhouse/mobile_report_total/total_active_users_first_mention/total_active_users_first_mention.ipynb",
                 "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
+                "showSearch": true,
+                "searchQuery": "total_active_users_first_mention"
               },
               "icon": "lucide-list",
-              "title": "Outline of nuw_users_pd_rep_mobile_total"
+              "title": "Outline of total_active_users_first_mention"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 479.5,
-    "collapsed": true
+    "width": 356.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -208,45 +206,45 @@
       "jupyter:Create Jupyter Notebook": false
     }
   },
-  "active": "b8a7adc66135fdc5",
+  "active": "b4c3cf9dd5225ad5",
   "lastOpenFiles": [
-    "clichouse_schedule_function.md",
-    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
+    "ai_bi/docs/mobile_report_rep_mobile_full_kb.md",
+    "ai_bi/docs/mobile_report_rep_mobile_full.md",
+    "ai_bi/date/chroma",
+    "ai_bi/scripts",
+    "ai_bi/runtime.txt",
+    "ai_bi/retriever.py",
+    "ai_bi/requirements.txt",
+    "ai_bi/prompts.py",
+    "ai_bi/ingest.py",
+    "ai_bi/docs",
+    "ai_bi/date",
+    "ai_bi/clickhouse_client.py",
+    "ai_bi/README.md",
+    "Clickhouse/all_tables.md",
+    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
+    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.md",
+    "Clickhouse/mobile_report_total/total_active_users_first_mention/total_active_users_first_mention.md",
+    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
+    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
+    "dh_Подъезды УК.md",
+    "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
+    "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
+    "d_count_of_nuw_addresses.md",
+    "d_uk_adresses_subscribtions.md",
+    "d_complaints_st_partner.md",
+    "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/new_users_pd_rep_mobile_total.md",
     "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full/mobile_report_rep_mobile_full.md",
+    "Clickhouse/mobile_report_total/mobile_report_cum_rep_mobile_full/mobile_report_cum_rep_mobile_full.md",
+    "Clickhouse/Sources/Mobile/subscriptions_st_mobile.md",
+    "clichouse_schedule_function.md",
+    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
+    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
     "Clickhouse/Sources/Partner/uk_st_partner.md",
     "Clickhouse/Sources/Partner/uk_addresses_partner.md",
-    "Clickhouse/Sources/Partner/uk_addresses_st_partner.md",
-    "Clickhouse/Sources/Support/categories_st_support.md",
-    "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
-    "d_complaints_st_partner.md",
-    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
-    "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
-    "d_buildings_cohorts.md",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_sub_by_intercoms/t_sub_by_intercoms.md",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_sub_by_intercoms/t_sub_by_intercoms.ipynb",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_sub_by_intercoms/t_subscribtions_citizens_by_companies_and_cities_address_ch.ipynb",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_sub_by_intercoms",
-    "d_bitrix_deals_sales.md",
-    "Clickhouse/t_bitrix_deals_sales/t_bitrix_deals_sales.md",
-    "Clickhouse/t_bitrix_deals_sales/t_bitrix_deals_sales.ipynb",
-    "Clickhouse/t_bitrix_deals_sales/t_uk_adresses_subscribtions.md",
-    "Clickhouse/t_bitrix_deals_sales/t_uk_adresses_subscribtions.ipynb",
-    "Clickhouse/t_bitrix_deals_sales",
-    "Clickhouse/t_bitrix_deals/t_uk_adresses_subscribtions.md",
-    "Clickhouse/t_bitrix_deals/t_uk_adresses_subscribtions.ipynb",
-    "Clickhouse/t_bitrix_deals",
-    "Clickhouse/t_uk_adresses_subscribtions copy/t_uk_adresses_subscribtions.md",
-    "Clickhouse/t_uk_adresses_subscribtions copy/t_uk_adresses_subscribtions.ipynb",
-    "Clickhouse/t_uk_adresses_subscribtions copy",
-    "Clickhouse/Sources/Bitrix/deals_base_dir_bitrix.md",
     "uk_addresses_partner.canvas",
-    "Clickhouse/Sources/Partner/intercoms_st_partner.md",
-    "Clickhouse/Sources/Support/requests_st_support.md",
-    "join_algorithm.md",
-    "companies_st_partne.md",
-    "Clickhouse/t_complaints_st_partner/t_complaints_st_partner.md",
     "citizens_st_mobile.canvas",
     "tables.canvas",
     "tables-0.canvas",
