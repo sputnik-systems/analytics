@@ -1,1 +1,0 @@
-https://console.yandex.cloud/folders/b1gb310irjlk6b99e14g/storage/buckets/aggregated-data?key=billing_and_accruals%2F

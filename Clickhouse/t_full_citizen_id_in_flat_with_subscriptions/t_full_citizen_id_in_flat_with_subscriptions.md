@@ -1,0 +1,123 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,md
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.17.2
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+```python
+import clickhouse_connect
+import datetime
+import os
+import pytz
+import pandas as pd
+from dateutil.relativedelta import relativedelta
+from dotenv import load_dotenv
+
+import sys
+sys.path.append('/home/boris/Documents/Work/analytics/Clickhouse')
+from clickhouse_client import ClickHouse_client
+ch = ClickHouse_client()
+pd.set_option('display.max_rows', 1000)
+```
+
+___
+### Tags: #Tables
+
+### Links: 
+[[rep_mobile_citizens_id_city_partner]]
+
+[[subscriptions_st_mobile_ch]]
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.t_full_citizen_id_in_flat_with_subscriptions
+    (
+        `report_date` Date,
+        `address_uuid` String,
+        `citizen_id` UInt64
+    )
+    ENGINE = MergeTree()
+    ORDER BY address_uuid
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+CREATE MATERIALIZED VIEW db1.t_full_citizen_id_in_flat_with_subscriptions_mv
+REFRESH EVERY 1 DAY OFFSET 4 HOUR 25 MINUTE TO db1.t_full_citizen_id_in_flat_with_subscriptions AS 
+WITH t1 AS (SELECT 
+	rmcicp.report_date AS report_date,
+	flat_uuid
+FROM db1.rep_mobile_citizens_id_city_partner AS rmcicp
+JOIN db1.subscriptions_st_mobile_ch AS ssm 
+	ON rmcicp.report_date = ssm.report_date 
+	AND rmcicp.citizen_id = ssm.citizen_id
+WHERE  ssm.state = 'activated'
+)
+SELECT
+	t1.report_date AS report_date,
+	rmcicp.address_uuid AS address_uuid,
+	rmcicp.citizen_id AS citizen_id
+FROM db1.rep_mobile_citizens_id_city_partner AS rmcicp
+JOIN t1 AS ssm 
+	ON rmcicp.report_date = ssm.report_date 
+	AND rmcicp.flat_uuid = ssm.flat_uuid
+WHERE t1.flat_uuid !=''
+    """
+ch.query_run(query_text)
+```
+
+___
+## Tools
+___
+### query
+
+```python
+query_text = """
+    SELECT
+        *
+    FROM db1.t_full_citizen_id_in_flat_with_subscriptions
+    order by report_date desc
+    limit 10
+    """
+ch.query_run(query_text)
+```
+
+### drop table
+
+```python
+query_text = """
+    DROP TABLE db1.t_full_citizen_id_in_flat_with_subscriptions
+    """
+ch.query_run(query_text)
+```
+
+### drop mv
+
+```python
+query_text = """
+    DROP TABLE db1.t_full_citizen_id_in_flat_with_subscriptions_mv
+    """
+ch.query_run(query_text)
+
+```
+
+### SYSTEM REFRESH
+
+```python
+query_text = """
+SYSTEM REFRESH VIEW db1.t_full_citizen_id_in_flat_with_subscriptions_mv
+"""
+
+ch.query_run(query_text)
+```

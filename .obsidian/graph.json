@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "",
+  "search": "t_citizen_id_in_flat_with_subscriptions",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -55,6 +55,13 @@
         "a": 1,
         "rgb": 11012082
       }
+    },
+    {
+      "query": "tag:#KnowledgeBase  ",
+      "color": {
+        "a": 1,
+        "rgb": 16711901
+      }
     }
   ],
   "collapse-display": false,
@@ -65,8 +72,8 @@
   "collapse-forces": false,
   "centerStrength": 0.493358070500928,
   "repelStrength": 13.1918367346939,
-  "linkStrength": 0.236883116883117,
-  "linkDistance": 235,
-  "scale": 0.13348388671875,
+  "linkStrength": 0.393229166666667,
+  "linkDistance": 138,
+  "scale": 1.0136432647705078,
   "close": false
 }

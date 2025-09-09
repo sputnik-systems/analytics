@@ -22,6 +22,7 @@
         ".obsidian": true,
         ".venv": true,
         ".vscode": true,
-        "Clickhouse/Sources/Partner/companies_dir_partner.ipynb": true
+        "Clickhouse/Sources/Partner/companies_dir_partner.ipynb": true,
+        "Clickhouse/t_payments_amount/t_payments_amount.ipynb": true
     }
 }

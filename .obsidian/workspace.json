@@ -4,57 +4,59 @@
     "type": "split",
     "children": [
       {
-        "id": "6df3176c61ac613e",
+        "id": "63c6776406ae2ac7",
         "type": "tabs",
         "children": [
           {
-            "id": "8bb2210ee4752bee",
+            "id": "a6fd2c8ab2147b84",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clickhouse/t_full_citizen_id_in_flat_with_subscriptions/t_full_citizen_id_in_flat_with_subscriptions.md",
+                "mode": "source",
+                "source": false,
+                "backlinks": true,
+                "backlinkOpts": {
+                  "collapseAll": false,
+                  "extraContext": false,
+                  "sortOrder": "alphabetical",
+                  "showSearch": false,
+                  "searchQuery": "",
+                  "backlinkCollapsed": false,
+                  "unlinkedCollapsed": true
+                }
+              },
+              "icon": "lucide-file",
+              "title": "t_full_citizen_id_in_flat_with_subscriptions"
+            }
+          },
+          {
+            "id": "21973a125605e773",
             "type": "leaf",
             "state": {
               "type": "jupyter-view",
               "state": {
-                "file": "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.ipynb"
+                "file": "Clickhouse/t_citizen_id_in_flat_with_subscriptions/t_citizen_id_in_flat_with_subscriptions.ipynb"
               },
               "icon": "none",
-              "title": "mobile_report_total.ipynb"
+              "title": "t_citizen_id_in_flat_with_subscriptions.ipynb"
             }
           },
           {
-            "id": "23db77c25c5edac3",
+            "id": "0728b1694e623c8b",
             "type": "leaf",
             "state": {
               "type": "jupyter-view",
               "state": {
-                "file": "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.ipynb"
+                "file": "Clickhouse/t_full_citizen_id_in_flat_with_subscriptions/t_full_citizen_id_in_flat_with_subscriptions.ipynb"
               },
               "icon": "none",
-              "title": "rep_mobile_citizens_id_city_partner.ipynb"
-            }
-          },
-          {
-            "id": "c93b1f9f2159297c",
-            "type": "leaf",
-            "state": {
-              "type": "jupyter-view",
-              "state": {
-                "file": "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.ipynb"
-              },
-              "icon": "none",
-              "title": "mobile_report_total.ipynb"
-            }
-          },
-          {
-            "id": "b4c3cf9dd5225ad5",
-            "type": "leaf",
-            "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "title": "t_full_citizen_id_in_flat_with_subscriptions.ipynb"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -94,7 +96,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 408.5
+    "width": 301.5
   },
   "right": {
     "id": "be27a329106dfeaa",
@@ -110,7 +112,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "total_active_users_first_mention",
+                "query": "t_full_citizen_id_in_flat_with_subscriptions",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -188,7 +190,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 356.5
+    "width": 446.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -206,51 +208,50 @@
       "jupyter:Create Jupyter Notebook": false
     }
   },
-  "active": "b4c3cf9dd5225ad5",
+  "active": "21973a125605e773",
   "lastOpenFiles": [
-    "ai_bi/docs/mobile_report_rep_mobile_full_kb.md",
-    "ai_bi/docs/mobile_report_rep_mobile_full.md",
-    "ai_bi/date/chroma",
-    "ai_bi/scripts",
-    "ai_bi/runtime.txt",
-    "ai_bi/retriever.py",
-    "ai_bi/requirements.txt",
-    "ai_bi/prompts.py",
-    "ai_bi/ingest.py",
-    "ai_bi/docs",
-    "ai_bi/date",
-    "ai_bi/clickhouse_client.py",
-    "ai_bi/README.md",
-    "Clickhouse/all_tables.md",
-    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
-    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.md",
-    "Clickhouse/mobile_report_total/total_active_users_first_mention/total_active_users_first_mention.md",
-    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
-    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
-    "dh_Подъезды УК.md",
-    "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
+    "Clickhouse/t_full_citizen_id_in_flat_with_subscriptions/t_full_citizen_id_in_flat_with_subscriptions.md",
+    "Clickhouse/t_citizen_id_in_flat_with_subscriptions/t_citizen_id_in_flat_with_subscriptions.ipynb",
+    "Clickhouse/t_full_citizen_id_in_flat_with_subscriptions/t_full_citizen_id_in_flat_with_subscriptions.ipynb",
+    "Clickhouse/t_citizen_id_in_flat_with_subscriptions/t_citizen_id_in_flat_with_subscriptions.md",
     "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
-    "d_count_of_nuw_addresses.md",
-    "d_uk_adresses_subscribtions.md",
-    "d_complaints_st_partner.md",
-    "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/new_users_pd_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full/mobile_report_rep_mobile_full.md",
-    "Clickhouse/mobile_report_total/mobile_report_cum_rep_mobile_full/mobile_report_cum_rep_mobile_full.md",
-    "Clickhouse/Sources/Mobile/subscriptions_st_mobile.md",
-    "clichouse_schedule_function.md",
+    "Tools/t_count_of_nuw_addresses_ch.md",
+    "Tools/clichouse_schedule_function.md",
     "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
-    "Clickhouse/Sources/Asgard/intercoms_dir_asgard.md",
-    "Clickhouse/Sources/Partner/uk_st_partner.md",
-    "Clickhouse/Sources/Partner/uk_addresses_partner.md",
-    "uk_addresses_partner.canvas",
-    "citizens_st_mobile.canvas",
-    "tables.canvas",
-    "tables-0.canvas",
+    "Clickhouse/t_gropped_reconnects_and_daily_percentage_dataset/t_gropped_reconnects_and_daily_percentage_dataset.md",
+    "Dashboads/dh Когорты домов.md",
+    "citizen_payments_st_mobile_ch.md",
+    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.ipynb",
+    "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
+    "Datasets/d_uk_adresses_subscribtions.md",
+    "Dashboads/dh_Подъезды УК.md",
+    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full/mobile_report_rep_mobile_full.md",
+    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.ipynb",
+    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.ipynb",
+    "Clickhouse/t_activated_citizen_id/t_activated_citizen_id.md",
+    "Clickhouse/t_activated_citizen_id/t_activated_citizen_id.ipynb",
+    "Clickhouse/t_activated_citizen_id",
+    "Clickhouse/t_subscribed_citizen_id/t_subscribed_citizen_id.md",
+    "Clickhouse/t_subscribed_citizen_id/t_subscribed_citizen_id.ipynb",
+    "Clickhouse/t_subscribed_citizen_id",
+    "Clickhouse/t_payments_amount/t_payments_amount.md",
+    "Clickhouse/t_payments_amount/t_payments_amount.ipynb",
+    "Dashboads/Untitled.md",
+    "Dashboads/dh_Ежемесячный отчет тест.md",
+    "Dashboads/dh_Отчет по рекуррентным платежам - Eжедневные данные.md",
+    "join_algorithm.md",
     "Untitled 2.canvas",
     "Untitled 1.canvas",
+    "Untitled.md",
     "Untitled.canvas",
+    "tables.canvas",
+    "LEFT ANY JOIN.md",
+    "device_history_by_company_and_city.md",
+    "count_of_nuw_addresses.md",
+    "categories_sc_support.md",
+    "citizens_st_mobile.canvas",
+    "uk_addresses_partner.canvas",
+    "tables-0.canvas",
     "count_of_nuw_addresses-0.canvas",
     "count_of_nuw_addresses.canvas",
     "adding_tables.canvas",
