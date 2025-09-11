@@ -8,7 +8,7 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.2
   kernelspec:
-    display_name: Python 3 (ipykernel)
+    display_name: myenv
     language: python
     name: python3
 ---
@@ -31,6 +31,10 @@ ch = ClickHouse_client()
 pd.set_option('display.max_rows', 1000)
 
 
+```
+
+```python
+pip install Jupytext
 ```
 
 ___
@@ -148,6 +152,24 @@ query_text = """--sql
         *
     FROM db1.t_uk_adresses_subscribtions
     ORDER BY report_date
+    limit 10
+    """
+
+ch.query_run(query_text)
+
+```
+
+```python
+query_text = """--sql
+    SELECT
+        report_date,
+        sum(activated_citizen_id),
+        sum(citizen_id_in_flat_with_subscriptions),
+        sum(subscribed_citizen_id),
+        sum(payments_amount),
+    FROM db1.t_uk_adresses_subscribtions
+    group by report_date
+    ORDER BY report_date DESC
     limit 10
     """
 

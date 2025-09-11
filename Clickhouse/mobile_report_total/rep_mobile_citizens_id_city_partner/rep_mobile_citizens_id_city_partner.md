@@ -6,9 +6,9 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.17.2
+      jupytext_version: 1.17.3
   kernelspec:
-    display_name: Python 3 (ipykernel)
+    display_name: myenv
     language: python
     name: python3
 ---
@@ -107,7 +107,7 @@ ch.query_run(query_text)
 ```python
 query_text = """--sql
     CREATE MATERIALIZED VIEW db1.rep_mobile_citizens_id_city_partner_mv
-    REFRESH EVERY 1 DAY OFFSET 3 HOUR 40 MINUTE TO db1.rep_mobile_citizens_id_city_partner AS
+    REFRESH EVERY 1 DAY OFFSET 3 HOUR 55 MINUTE TO db1.rep_mobile_citizens_id_city_partner AS
    SELECT
         citizens_st_mobile.report_date AS report_date,
         citizens_st_mobile.citizen_id AS citizen_id,

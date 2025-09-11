@@ -1,0 +1,204 @@
+---
+jupyter:
+  jupytext:
+    formats: ipynb,md
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.17.2
+  kernelspec:
+    display_name: myenv
+    language: python
+    name: python3
+---
+
+## Start
+
+```python
+import clickhouse_connect
+import datetime
+import os
+import pytz
+import pandas as pd
+from dateutil.relativedelta import relativedelta
+from dotenv import load_dotenv
+
+import sys
+sys.path.append('/home/boris/Documents/Work/analytics/Clickhouse')
+from clickhouse_client import ClickHouse_client
+ch = ClickHouse_client()
+pd.set_option('display.max_rows', 1000)
+```
+
+___
+## Tags: #Tables
+
+# Links:
+
+[[installation_point_st_partner_ch]]
+
+[[entries_installation_points_dir_partner_ch]]
+
+[[t_subscribed_citizen_id]]
+
+[[companies_st_partner_ch]]
+
+[[companies_dir_partner_ch]]
+
+```python
+query_text = """--sql
+    CREATE TABLE db1.t_subsctibtions_by_enteries 
+    (
+        `report_date` Date,
+        `full_address` String,
+        `city` String,
+        `installation_point_id` Int64,
+        `flats_count` Int16,
+        `flats_count_range` Int16,
+        `address_uuid` String,
+        `partner_uuid` String,
+        `subscribed_citizen_id_count` UInt64,
+        `tariff_full` String,
+        `company_name` String,
+        `tin` String,
+        `partner_lk` String,
+        `subscribtion_rate` Float64,
+        `subscribtion_rate_range` Float64
+    )
+    ENGINE = MergeTree()
+    ORDER BY report_date
+    """
+ch.query_run(query_text)
+
+```
+
+```python
+query_text = """--sql
+CREATE MATERIALIZED VIEW db1.t_subsctibtions_by_enteries_mv
+REFRESH EVERY 1 DAY OFFSET 5 HOUR 50 MINUTE TO db1.t_subsctibtions_by_enteries AS 
+WITH t_entries AS (SELECT
+    report_date,
+    full_address,
+    city,
+    installation_point_id,
+    flats_count,
+    flats_count_full AS flats_count_range,
+    address_uuid,
+    partner_uuid
+FROM installation_point_st_partner_ch AS inst_st
+LEFT JOIN entries_installation_points_dir_partner_ch using(installation_point_id)
+),
+t_subscribed AS(
+SELECT
+    report_date,
+    address_uuid,
+    subscribed_citizen_id AS subscribed_citizen_id_count
+FROM t_subscribed_citizen_id
+),
+t_companies AS(
+SELECT
+    report_date,
+    c_st.partner_uuid AS partner_uuid,
+    tariff_full,
+    company_name,
+    tin,
+    partner_lk
+FROM companies_st_partner_ch as c_st
+LEFT JOIN companies_dir_partner_ch using(partner_uuid)
+)
+--
+SELECT
+    t_entries.report_date AS report_date,
+    full_address,
+    city,
+    installation_point_id,
+    flats_count,
+    flats_count_range,
+    t_entries.address_uuid AS address_uuid,
+    t_entries.partner_uuid AS partner_uuid,
+    subscribed_citizen_id_count,
+    tariff_full,
+    company_name,
+    tin,
+    partner_lk,
+    subscribed_citizen_id_count/flats_count*100 AS subscribtion_rate,
+    subscribed_citizen_id_count/flats_count_range*100 AS subscribtion_rate_range
+FROM t_entries
+LEFT JOIN t_subscribed
+    ON t_subscribed.report_date = t_entries.report_date
+    AND t_subscribed.address_uuid = t_entries.address_uuid
+LEFT JOIN t_companies
+    ON t_companies.report_date = t_entries.report_date
+    AND t_companies.partner_uuid = t_entries.partner_uuid
+ORDER BY report_date DESC
+	"""
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    SELECT
+        report_date,
+        sum(subscribed_citizen_id_count)
+    FROM db1.t_subsctibtions_by_enteries_mv
+    group by report_date
+    order by
+    report_date desc
+    LIMIT 10
+
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    SELECT
+        report_date,
+        count(*)
+    FROM db1.t_subsctibtions_by_enteries
+    group by report_date
+    order by
+    report_date desc
+    LIMIT 10
+
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    SELECT
+        report_date,
+        sum(activated_citizen_id)
+    FROM db1.t_subscribtions_citizens_by_companies_and_cities_address_ch
+    group by report_date
+    order by
+    report_date desc
+    LIMIT 10
+
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+SYSTEM REFRESH VIEW db1.t_subsctibtions_by_enteries_mv
+"""
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    DROP TABLE db1.t_subsctibtions_by_enteries_mv
+    """
+ch.query_run(query_text)
+```
+
+```python
+query_text = """
+    DROP TABLE db1.t_subsctibtions_by_enteries
+    """
+ch.query_run(query_text)
+```

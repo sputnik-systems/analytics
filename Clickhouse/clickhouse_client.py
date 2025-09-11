@@ -21,7 +21,8 @@ class ClickHouse_client:
                                         username=ClickHouse_username, 
                                         password=ClickHouse_password, 
                                         secure=True,
-                                        verify=False)
+                                        verify=False,
+                                        database='db1')
 
 
     def query_run (self, query_text):
@@ -29,7 +30,7 @@ class ClickHouse_client:
         result = self.client.query(query_text)
         self.df = pd.DataFrame(result.result_rows, columns=result.column_names)
         # self.df = pl.DataFrame(result.result_rows, schema=result.column_names)
-        self.df =  pl.from_pandas(self.df)
+        # self.df =  pl.from_pandas(self.df)
         # display(self.df)
         return self.df
 

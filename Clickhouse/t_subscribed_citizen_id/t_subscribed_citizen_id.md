@@ -26,7 +26,12 @@ ch = ClickHouse_client()
 pd.set_option('display.max_rows', 1000)
 ```
 
+___
+## Tags: #Tables
 
+# Links:
+
+[[subscriptions_report_citizens_flats_comerce_rep_mobile_total]]
 
 ```python
 query_text = """--sql

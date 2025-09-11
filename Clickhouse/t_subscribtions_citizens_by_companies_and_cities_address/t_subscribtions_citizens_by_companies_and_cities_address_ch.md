@@ -155,6 +155,24 @@ ch.query_run(query_text)
 ```
 
 ```python
+query_text = """--sql
+    SELECT
+        report_date,
+        sum(activated_citizen_id),
+        sum(citizen_id_in_flat_with_subscriptions),
+        sum(subscribed_citizen_id),
+        sum(payments_amount),
+    FROM db1.t_subscribtions_citizens_by_companies_and_cities_address_ch
+    group by report_date
+    ORDER BY report_date DESC
+    limit 10
+    """
+
+ch.query_run(query_text)
+
+```
+
+```python
 query_text = """
     SELECT
         report_date,

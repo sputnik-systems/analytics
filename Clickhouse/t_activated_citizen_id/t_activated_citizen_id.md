@@ -52,8 +52,8 @@ ch.query_run(query_text)
 ```
 
 ```python
-start_date = datetime.datetime.strptime('2023-09-01','%Y-%m-%d').date()
-end_date = datetime.datetime.strptime('2025-09-05','%Y-%m-%d').date()
+start_date = datetime.datetime.strptime('2025-09-04','%Y-%m-%d').date()
+end_date = datetime.datetime.strptime('2025-09-09','%Y-%m-%d').date()
 
 dates_pd = pd.DataFrame({
         'date': pd.date_range(start=start_date, end=end_date).strftime('%Y-%m-%d'),
@@ -77,6 +77,14 @@ for day_index in dates_pd.index:
     """
     ch.query_run(query_text)
     print(date)
+```
+
+```python
+query_text = """--sql
+    ALTER TABLE db1.t_activated_citizen_id DELETE WHERE report_date = '2025-09-09'
+    """
+
+ch.query_run(query_text)
 ```
 
 ```python
