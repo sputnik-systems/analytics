@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "t_subsctibtions_by_enteries_mv",
+  "search": "t_subsctibtions_by_enteries",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -74,6 +74,6 @@
   "repelStrength": 13.1918367346939,
   "linkStrength": 0.393229166666667,
   "linkDistance": 138,
-  "scale": 0.6757621765136719,
+  "scale": 1.5204648971557617,
   "close": false
 }

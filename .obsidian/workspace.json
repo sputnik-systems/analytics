@@ -11,24 +11,12 @@
             "id": "c92d75cd05cfd126",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "jupyter-view",
               "state": {
-                "file": "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total.md",
-                "mode": "source",
-                "source": false,
-                "backlinks": true,
-                "backlinkOpts": {
-                  "collapseAll": false,
-                  "extraContext": false,
-                  "sortOrder": "alphabetical",
-                  "showSearch": false,
-                  "searchQuery": "",
-                  "backlinkCollapsed": false,
-                  "unlinkedCollapsed": true
-                }
+                "file": "Clickhouse/t_subsctibtions_by_enteries/t_subsctibtions_by_enteries.ipynb"
               },
-              "icon": "lucide-file",
-              "title": "subscriptions_report_citizens_flats_comerce_rep_mobile_total"
+              "icon": "none",
+              "title": "t_subsctibtions_by_enteries.ipynb"
             }
           }
         ]
@@ -190,7 +178,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 685.5
+    "width": 576.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -208,141 +196,23 @@
       "jupyter:Create Jupyter Notebook": false
     }
   },
-  "floating": {
-    "id": "289574ddbd240af2",
-    "type": "floating",
-    "children": [
-      {
-        "id": "eed257c1d75abc88",
-        "type": "window",
-        "children": [
-          {
-            "id": "f3d26cb58313f125",
-            "type": "tabs",
-            "children": [
-              {
-                "id": "710d4adb4e0093b3",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "ai_bi/docs/kb_Подъезды УК.md",
-                    "mode": "source",
-                    "source": false,
-                    "backlinks": true,
-                    "backlinkOpts": {
-                      "collapseAll": false,
-                      "extraContext": false,
-                      "sortOrder": "alphabetical",
-                      "showSearch": false,
-                      "searchQuery": "",
-                      "backlinkCollapsed": false,
-                      "unlinkedCollapsed": true
-                    }
-                  },
-                  "icon": "lucide-file",
-                  "title": "kb_Подъезды УК"
-                }
-              },
-              {
-                "id": "2e76775b9e345f60",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "Dashboads/dh_Подъезды УК.md",
-                    "mode": "source",
-                    "source": false,
-                    "backlinks": true,
-                    "backlinkOpts": {
-                      "collapseAll": false,
-                      "extraContext": false,
-                      "sortOrder": "alphabetical",
-                      "showSearch": false,
-                      "searchQuery": "",
-                      "backlinkCollapsed": false,
-                      "unlinkedCollapsed": true
-                    }
-                  },
-                  "icon": "lucide-file",
-                  "title": "dh_Подъезды УК"
-                }
-              },
-              {
-                "id": "58626b4533fc4de5",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "Datasets/d_uk_adresses_subscribtions.md",
-                    "mode": "source",
-                    "source": false,
-                    "backlinks": true,
-                    "backlinkOpts": {
-                      "collapseAll": false,
-                      "extraContext": false,
-                      "sortOrder": "alphabetical",
-                      "showSearch": false,
-                      "searchQuery": "",
-                      "backlinkCollapsed": false,
-                      "unlinkedCollapsed": true
-                    }
-                  },
-                  "icon": "lucide-file",
-                  "title": "d_uk_adresses_subscribtions"
-                }
-              },
-              {
-                "id": "1c067cb7af138187",
-                "type": "leaf",
-                "state": {
-                  "type": "markdown",
-                  "state": {
-                    "file": "ai_bi/docs/kb_subsctibtions_by_enteries.md",
-                    "mode": "source",
-                    "source": false,
-                    "backlinks": true,
-                    "backlinkOpts": {
-                      "collapseAll": false,
-                      "extraContext": false,
-                      "sortOrder": "alphabetical",
-                      "showSearch": false,
-                      "searchQuery": "",
-                      "backlinkCollapsed": false,
-                      "unlinkedCollapsed": true
-                    }
-                  },
-                  "icon": "lucide-file",
-                  "title": "kb_subsctibtions_by_enteries"
-                }
-              }
-            ],
-            "currentTab": 3
-          }
-        ],
-        "direction": "vertical",
-        "x": 215,
-        "y": 80,
-        "width": 1586,
-        "height": 1000,
-        "maximize": true,
-        "zoom": 0
-      }
-    ]
-  },
-  "active": "1c067cb7af138187",
+  "active": "f5df11c8bb9f71ff",
   "lastOpenFiles": [
-    "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total.md",
-    "ai_bi/docs/kb_subsctibtions_by_enteries.md",
+    "ai_bi.zip",
+    "Clickhouse/t_subsctibtions_by_enteries/t_subsctibtions_by_enteries.ipynb",
+    "Clickhouse/t_subsctibtions_by_enteries/t_subsctibtions_by_enteries.md",
+    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
     "ai_bi/docs/kb_Подъезды УК.md",
+    "ai_bi/docs/kb_Отчет_по_рекуррентным_платежам_месяцы.md",
+    "ai_bi/docs/kb_Отчет_по_рекуррентным_платежам.md",
+    "ai_bi/docs/kb_subsctibtions_by_enteries.md",
+    "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total.md",
     "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
     "Datasets/d_bitrix_deals_sales.md",
     "Datasets/d_uk_adresses_subscribtions.md",
     "Clickhouse/t_subscribed_citizen_id/t_subscribed_citizen_id.md",
-    "Clickhouse/t_subsctibtions_by_enteries/t_subsctibtions_by_enteries.md",
     "Clickhouse/Sources/Partner/companies_st_partner.md",
     "ai_bi/docs/kb_t_subsctibtions_by_enteries.md",
-    "Clickhouse/t_subsctibtions_by_enteries/t_subsctibtions_by_enteries.ipynb",
     "Clickhouse/t_subsctibtions_by_enteries/t_subscribtions_citizens_by_companies_and_cities_address_ch.ipynb",
     "Clickhouse/t_subsctibtions_by_enteries/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
     "Clickhouse/t_subsctibtions_by_enteries",
@@ -352,22 +222,17 @@
     "Clickhouse/Sources/Partner/entries_installation_points_dir_partner.md",
     "Clickhouse/Sources/Mobile/citizens_st_mobile.ipynb",
     "Clickhouse/Sources/Mobile/entries_st_mobile.ipynb",
-    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
     "Clickhouse/Sources/Mobile/subscriptions_st_mobile.ipynb",
     "Clickhouse/Sources/Mobile/subscriptions_st_mobile.md",
     "Clickhouse/Sources/Asgard/intercoms_st_asgard.md",
     "Clickhouse/t_activated_citizen_id/t_activated_citizen_id.md",
     "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
     "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
-    "Clickhouse/__pycache__/clickhouse_client.cpython-313.pyc",
     "Clickhouse/Sources/Partner/uk_addresses_st_partner.md",
     "Datasets/d_subscriptions_id_stat.md",
-    "ai_bi/docs/kb_Отчет_по_рекуррентным_платежам_месяцы.md",
     "ai_bi/docs/d_subscriptions_id_stat]], [[d_count_of_nuw_addresses.md",
-    "ai_bi/docs/kb_Отчет_по_рекуррентным_платежам.md",
     "Dashboads/dh_Подъезды УК.md",
     "Dashboads/dh_Отчет по рекуррентным платежам - Eжедневные данные.md",
-    "Dashboads/dh_Отчет по рекуррентным платежам.md",
     "Untitled 2.canvas",
     "Untitled 1.canvas",
     "Untitled.canvas",

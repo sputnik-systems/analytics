@@ -47,3 +47,30 @@ class ClickHouse_client:
         # print(self.query_schema)
         # display(self.query_schema)
         # return(self.query_schema)
+    def get_schema_dr(self, database: str, tables: list[str] | None = None) -> dict:
+        """
+        Возвращает схему с теми же именами колонок, что и get_schema,
+        но с типами: report_date -> Date, остальные -> UInt32.
+        Формат: {table: [(name, type), ...], ...}
+        """
+        base = self.get_schema(database, tables)
+        schema_dr: dict[str, list[tuple[str, str]]] = {}
+
+        for table, cols in base.items():
+            coerced: list[tuple[str, str]] = []
+            for name, _ctype in cols:
+                if name == "report_date":
+                    coerced.append((name, "Date"))
+                else:
+                    coerced.append((name, "UInt32"))
+            schema_dr[table] = coerced
+
+        return schema_dr
+
+    def get_schema_dict (self, query_text):
+        query_text = query_text
+        result = self.client.query(query_text)
+        # Вывод результата
+        return result
+    
+
