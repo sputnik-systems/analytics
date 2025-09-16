@@ -1,0 +1,17 @@
+INSERT INTO db1.citizens_st_mobile_ch
+SELECT
+    report_date,
+    citizen_id,
+    trial_available,
+    state,
+    toDateTimeOrZero(activated_at) AS activated_at,
+    flat_uuid,
+    address_uuid
+FROM db1.citizens_st_mobile
+WHERE report_date = '{0}' 
+    AND (
+        _path LIKE '{1}' OR
+        _path LIKE '{2}' OR
+        _path LIKE '{3}' OR
+        _path LIKE '{4}'
+        )

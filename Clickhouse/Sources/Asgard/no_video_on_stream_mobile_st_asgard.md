@@ -6,7 +6,11 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.17.2
+      jupytext_version: 1.17.3
+  kernelspec:
+    display_name: myenv
+    language: python
+    name: python3
 ---
 
 ## Start
@@ -39,15 +43,13 @@ ___
 # creating a table from s3
 
 query_text = """--sql
-    CREATE TABLE db1.no_video_on_stream_mobile_st_asgard_mv
+    CREATE TABLE db1.no_video_on_stream_mobile_st_asgard
     (
-        `partner_uuid` String,
-        `business_partner_uuid`  String,
-        `updated_at` DateTime,
-        `partner_uk_email` String,
-        `report_date` Date
+        `report_date` Date,
+        `camera_uuid` String,
+        `count` Int32
     )
-    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/uk_st_partner/year=*/month=*/*.csv','CSVWithNames')
+    ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/no_video_on_stream_mobile_st_asgard/year=*/month=*/*.csv','CSVWithNames')
     """
 
 ch.query_run(query_text)
@@ -57,16 +59,14 @@ ch.query_run(query_text)
 # creating a table for materialized view
 
 query_text = """--sql
-    CREATE TABLE db1.uk_st_partner_ch
+    CREATE TABLE db1.no_video_on_stream_mobile_st_asgard_ch
     (
-        `partner_uuid` String,
-        `business_partner_uuid` String,
-        `updated_at` DateTime,
-        `partner_uk_email` String,
-        `report_date` Date
+        `report_date` Date,
+        `camera_uuid` String,
+        `count` Int32
     )
     ENGINE = MergeTree()
-    ORDER BY partner_uuid
+    ORDER BY camera_uuid
     """
 
 ch.query_run(query_text)
@@ -80,7 +80,7 @@ query_text = """--sql
     REFRESH EVERY 1 DAY OFFSET 3 HOUR RANDOMIZE FOR 1 HOUR TO db1.no_video_on_stream_mobile_st_asgard_ch AS
     SELECT
         *
-    FROM db1.uk_st_partner
+    FROM db1.no_video_on_stream_mobile_st_asgard
     """
 
 ch.query_run(query_text)
@@ -96,6 +96,7 @@ query_text = """--sql
     SELECT
         *
     FROM db1.no_video_on_stream_mobile_st_asgard_ch
+    ORDER BY report_date desc
     LIMIT 2
     """
 

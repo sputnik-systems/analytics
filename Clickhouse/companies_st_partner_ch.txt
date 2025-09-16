@@ -1,0 +1,30 @@
+INSERT INTO db1.companies_st_partner_ch
+SELECT
+    DISTINCT
+    `report_date` ,
+    `partner_uuid` ,
+    `is_blocked` ,
+    `pro_subs` ,
+    `enterprise_subs` ,
+    `billing_pro` ,
+    `enterprise_not_paid` ,
+    `enterprise_test` ,
+    max(`balance`) OVER (partition by partner_uuid,report_date) AS `balance`,
+    CASE
+        WHEN pro_subs = 1 THEN 'pro'
+        WHEN kz_pro = 1 THEN 'kz_pro'
+        WHEN enterprise_subs = 1 then 'enterprise'
+        ELSE 'start'
+    END AS `tariff`,
+    `kz_pro`,
+    CASE
+        WHEN enterprise_test = 1 then 'Enterprise Тест'
+        WHEN enterprise_not_paid = 1 then 'Enterprise без биллинга'
+        WHEN enterprise_subs = 1 then 'Enterprise'
+        WHEN kz_pro = 1  then 'PRO Казахстан'
+        WHEN pro_subs = 1 and billing_pro = 0 then 'PRO без биллинга'
+        WHEN pro_subs = 1 and billing_pro = 1 then 'PRO'
+        ELSE 'Start'
+    END as tariff_full
+FROM db1.companies_st_partner
+WHERE report_date = '{0}'

@@ -72,18 +72,22 @@ CREATE TABLE db1.complaints_st_partner
     `src_address_type` String,
     `device_uuid` String,
     `device_type` String,
-    `err_code`	String,
-    `err_src` String,	
-    `err_func`	String,
-    `aasm_state` String,	
-    `process_error`	String,
+    `err_code` String,
+    `err_src` String,
+    `err_func` String,
+    `aasm_state` String,
+    `process_error` String,
     `actor_type` String,
     `actor_identifier` String,
-    `created_at` DateTime64,
-    `updated_at` DateTime64,
+    `created_at` DateTime64(3),
+    `updated_at` DateTime64(3)
 )
-ENGINE = S3('https://storage.yandexcloud.net/dwh-asgard/complaints_st_partner/year=*/month=*/*.csv', 'CSVWithNames')
+ENGINE = S3(
+    'https://storage.yandexcloud.net/dwh-asgard/complaints_st_partner/year=*/month=*/*.csv',
+    'CSVWithNames'
+)
 PARTITION BY report_date
+SETTINGS date_time_input_format = 'best_effort'
     """
 
 ch.query_run(query_text)
@@ -141,7 +145,19 @@ query_text = """--sql
     SELECT
         *
     FROM db1.complaints_st_partner_ch
-    ORDER BY report_date desc
+    ORDER BY report_date DESC
+    limit 100
+    """
+
+ch.query_run(query_text)
+```
+
+```python
+query_text = """--sql
+    SELECT
+        *
+    FROM db1.complaints_st_partner
+    WHERE report_date = '2025-08-16'
     limit 100
     """
 
@@ -165,7 +181,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.complaints_st_partner_mv
+    DROP TABLE db1.complaints_st_partner
     """
 
 ch.query_run(query_text)

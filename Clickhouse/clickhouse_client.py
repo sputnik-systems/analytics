@@ -70,7 +70,11 @@ class ClickHouse_client:
     def get_schema_dict (self, query_text):
         query_text = query_text
         result = self.client.query(query_text)
-        # Вывод результата
-        return result
+        column_names = result.column_names
+        column_types = result.column_types
+        column_types_cleansed = tuple(str(i).split('.')[-1].split(' ')[0] for i in column_types)
+        column_info = list(zip(column_names, column_types_cleansed))
+
+        return column_info
     
 

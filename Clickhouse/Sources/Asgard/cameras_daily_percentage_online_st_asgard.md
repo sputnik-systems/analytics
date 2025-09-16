@@ -6,7 +6,11 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.17.2
+      jupytext_version: 1.17.3
+  kernelspec:
+    display_name: myenv
+    language: python
+    name: python3
 ---
 
 ## Start
@@ -134,7 +138,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """
-SYSTEM REFRESH VIEW db1.cameras_daily_percentage_online_st_asgard_ch
+SYSTEM REFRESH VIEW db1.intercoms_st_partner_mv
 """
 
 ch.query_run(query_text)

@@ -1,0 +1,25 @@
+INSERT INTO db1.total_active_users_per_day_full_table
+SELECT
+    r_m_c.report_date            AS report_date,
+    r_m_c.partner_uuid           AS partner_uuid,
+    r_m_c.city                   AS city,
+    ses_st_m.citizen_id          AS citizen_id,
+    r_m_c.monetization           AS monetization,
+    sub_st_m.state               AS subscriptions_state,
+    r_m_c.address_uuid           AS address_uuid,
+    r_m_c.flat_uuid              AS flat_uuid,
+    c_d_m.created_at             AS created_at,
+    r_m_c.activated_at           AS activated_at
+FROM db1.rep_mobile_citizens_id_city_partner AS r_m_c
+JOIN db1.sessions_st_mobile_ch AS ses_st_m
+  ON r_m_c.citizen_id = ses_st_m.citizen_id
+ AND r_m_c.report_date = ses_st_m.report_date
+LEFT JOIN db1.subscriptions_st_mobile_ch AS sub_st_m
+  ON ses_st_m.citizen_id = sub_st_m.citizen_id
+ AND ses_st_m.report_date = sub_st_m.report_date
+LEFT JOIN db1.citizens_dir_mobile_ch AS c_d_m
+  ON c_d_m.citizen_id = r_m_c.citizen_id
+WHERE
+    toDate(ses_st_m.last_use) BETWEEN toStartOfMonth(r_m_c.report_date) AND r_m_c.report_date
+  AND r_m_c.state = 'activated'
+  AND r_m_c.report_date = toDate('{0}');

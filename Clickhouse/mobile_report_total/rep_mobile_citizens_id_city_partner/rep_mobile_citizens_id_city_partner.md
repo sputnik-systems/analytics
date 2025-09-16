@@ -8,9 +8,9 @@ jupyter:
       format_version: '1.3'
       jupytext_version: 1.17.3
   kernelspec:
-    display_name: myenv
+    display_name: Python (myenv)
     language: python
-    name: python3
+    name: myenv
 ---
 
 ## Start

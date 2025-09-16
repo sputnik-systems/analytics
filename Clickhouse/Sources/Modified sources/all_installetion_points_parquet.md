@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.17.2
+      jupytext_version: 1.17.3
   kernelspec:
     display_name: myenv
     language: python
@@ -43,36 +43,50 @@ ___
 query_text = """--sql
 CREATE TABLE db1.all_installetion_points_parquet
 (
+    `report_date` Date,
     `address_uuid` String,
     `city` String,
     `country` String,
+    `region` String,
     `created_at` String,
     `full_address` String,
-    `installation_point_id` Int32,
-    `parent_uuid` String ,
-    `region` String,
-    `report_date` Date
+    `parent_uuid` String,
+    `installation_point_id` String
 )
-
-ENGINE = S3('https://storage.yandexcloud.net/aggregated-data/all_installetion_points_parquet/year=*/month=*/day=*/*.parquet','parquet')
+ENGINE = S3(
+    'https://storage.yandexcloud.net/aggregated-data/all_installetion_points_parquet/year=*/month=*/day=*/*.parquet',
+    'Parquet'
+)
 """
 
 ch.query_run(query_text)
 ```
 
 ```python
+    CAST(`report_date` AS DATE) AS `report_date`,
+    CAST(`address_uuid` AS UTF8) AS `address_uuid`,
+    CAST(`city` AS UTF8) AS `city`,
+    CAST(`country` AS UTF8) AS `country`,
+    CAST(`region` AS UTF8) AS `region`,
+    CAST(`created_at` AS UTF8) AS `created_at`,
+    CAST(`full_address` AS UTF8) AS `full_address`,
+    CAST(`parent_uuid` AS UTF8) AS `parent_uuid`,
+    CAST(`installation_point_id` AS UTF8) AS `installation_point_id`,
+```
+
+```python
 query_text = """--sql
 CREATE TABLE db1.all_installetion_points_parquet_ch
     (
+    `report_date` Date,
     `address_uuid` String,
     `city` String,
     `country` String,
+    `region` String,
     `created_at` String,
     `full_address` String,
-    `installation_point_id` Int32,
-    `parent_uuid` String ,
-    `region` String,
-    `report_date` Date
+    `parent_uuid` String,
+    `installation_point_id` Int32
     )
     ENGINE = MergeTree()
     ORDER BY installation_point_id
@@ -103,9 +117,9 @@ ___
 query_text = """--sql
     SELECT
         *
-    FROM db1.all_installetion_points_parquet_ch
+    FROM db1.all_installetion_points_parquet
     ORDER BY report_date desc
-    limit 100
+    limit 10
     """
 
 ch.query_run(query_text)
@@ -128,7 +142,7 @@ ch.query_run(query_text)
 
 ```python
 query_text = """--sql
-    DROP TABLE db1.all_installetion_points_parquet_mv
+    DROP TABLE db1.all_installetion_points_parquet
     """
 
 ch.query_run(query_text)

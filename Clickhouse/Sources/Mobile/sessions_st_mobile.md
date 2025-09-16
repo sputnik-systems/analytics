@@ -7,7 +7,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.17.2
+      jupytext_version: 1.17.3
   kernelspec:
     display_name: myenv
     language: python
@@ -126,6 +126,7 @@ query_text = """--sql
     SELECT
         *
     FROM db1.sessions_st_mobile_ch
+    ORDER BY report_date DESC
     LIMIT 10
     """
 

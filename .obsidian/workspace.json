@@ -11,12 +11,10 @@
             "id": "c92d75cd05cfd126",
             "type": "leaf",
             "state": {
-              "type": "jupyter-view",
-              "state": {
-                "file": "Clickhouse/t_subsctibtions_by_enteries/t_subsctibtions_by_enteries.ipynb"
-              },
-              "icon": "none",
-              "title": "t_subsctibtions_by_enteries.ipynb"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -87,7 +85,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "intercoms_st_asgard_ch",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": true,
@@ -174,11 +172,11 @@
             }
           }
         ],
-        "currentTab": 6
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
-    "width": 576.5
+    "width": 307.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -196,43 +194,44 @@
       "jupyter:Create Jupyter Notebook": false
     }
   },
-  "active": "f5df11c8bb9f71ff",
+  "active": "c92d75cd05cfd126",
   "lastOpenFiles": [
+    "Clickhouse/total_active_users_per_day_full_table.txt",
+    "Clickhouse/t_bitrix_deals_sales/t_bitrix_deals_sales.md",
+    "Clickhouse/mobile_report_total/units_on_sk_platform_rep_mobile_total/units_on_sk_platform_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/total_active_users_rep_mobile_total/total_active_users_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_rep_mobile_total/total_active_users_per_day_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/total_active_users_per_day_full_table/total_active_users_per_day_full_table.md",
+    "Clickhouse/mobile_report_total/total_activated_account_rep_mobile_full/total_activated_account_rep_mobile_full.md",
+    "Clickhouse/mobile_report_total/subscriptions_report_comerce_rep_mobile_total/subscriptions_report_comerce_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
+    "Clickhouse/mobile_report_total/new_users_pd_rep_mobile_total/new_users_pd_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/mobile_report_total/mobile_report_total.md",
+    "Clickhouse/mobile_report_total/mobile_report_rep_mobile_full/mobile_report_rep_mobile_full.md",
+    "Clickhouse/mobile_report_total/mobile_report_cum_rep_mobile_full/mobile_report_cum_rep_mobile_full.md",
+    "Clickhouse/mobile_report_total/maf_rep_mobile_total/maf_rep_mobile_total.md",
+    "Clickhouse/mobile_report_total/maf_rep_mobile_total/maf_rep_mobile_total.ipynb",
+    "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
+    "Clickhouse/date_range.ipynb",
+    "Clickhouse/table_remaking.md",
+    "Clickhouse/t_citizen_id_in_flat_with_subscriptions/t_citizen_id_in_flat_with_subscriptions.md",
+    "Clickhouse/t_activated_citizen_id/t_activated_citizen_id.md",
+    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
+    "Clickhouse/t_count_of_nuw_addresses/t_count_of_nuw_addresses.md",
+    "Clickhouse/Sources/Asgard/cameras_dir_asgard .md",
+    "Clickhouse/Sources/Asgard/cameras_dir_asgard .ipynb",
+    "Clickhouse/Sources/Asgard/cameras_st_asgard (copy).md",
+    "Clickhouse/Sources/Asgard/cameras_st_asgard (copy).ipynb",
+    "Clickhouse/Sources/Support/categories_st_support.md",
+    "Clickhouse/citizens_st_mobile_ch.txt",
+    "Clickhouse/ci",
+    "Clickhouse/companies_st_partner_ch.txt",
     "ai_bi.zip",
     "Clickhouse/t_subsctibtions_by_enteries/t_subsctibtions_by_enteries.ipynb",
     "Clickhouse/t_subsctibtions_by_enteries/t_subsctibtions_by_enteries.md",
-    "Clickhouse/Sources/Mobile/citizens_st_mobile.md",
     "ai_bi/docs/kb_Подъезды УК.md",
-    "ai_bi/docs/kb_Отчет_по_рекуррентным_платежам_месяцы.md",
-    "ai_bi/docs/kb_Отчет_по_рекуррентным_платежам.md",
-    "ai_bi/docs/kb_subsctibtions_by_enteries.md",
-    "Clickhouse/mobile_report_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total/subscriptions_report_citizens_flats_comerce_rep_mobile_total.md",
-    "Clickhouse/mobile_report_total/rep_mobile_citizens_id_city_partner/rep_mobile_citizens_id_city_partner.md",
-    "Datasets/d_bitrix_deals_sales.md",
-    "Datasets/d_uk_adresses_subscribtions.md",
-    "Clickhouse/t_subscribed_citizen_id/t_subscribed_citizen_id.md",
-    "Clickhouse/Sources/Partner/companies_st_partner.md",
-    "ai_bi/docs/kb_t_subsctibtions_by_enteries.md",
     "Clickhouse/t_subsctibtions_by_enteries/t_subscribtions_citizens_by_companies_and_cities_address_ch.ipynb",
-    "Clickhouse/t_subsctibtions_by_enteries/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
-    "Clickhouse/t_subsctibtions_by_enteries",
-    "Clickhouse/Sources/t_subscribtions_by_enteries",
-    "Clickhouse/Sources/t_subsctibtions_by_enteries",
-    "Clickhouse/Sources/t_",
-    "Clickhouse/Sources/Partner/entries_installation_points_dir_partner.md",
-    "Clickhouse/Sources/Mobile/citizens_st_mobile.ipynb",
-    "Clickhouse/Sources/Mobile/entries_st_mobile.ipynb",
-    "Clickhouse/Sources/Mobile/subscriptions_st_mobile.ipynb",
-    "Clickhouse/Sources/Mobile/subscriptions_st_mobile.md",
-    "Clickhouse/Sources/Asgard/intercoms_st_asgard.md",
-    "Clickhouse/t_activated_citizen_id/t_activated_citizen_id.md",
-    "Clickhouse/t_subscribtions_citizens_by_companies_and_cities_address/t_subscribtions_citizens_by_companies_and_cities_address_ch.md",
-    "Clickhouse/t_uk_adresses_subscribtions/t_uk_adresses_subscribtions.md",
-    "Clickhouse/Sources/Partner/uk_addresses_st_partner.md",
-    "Datasets/d_subscriptions_id_stat.md",
-    "ai_bi/docs/d_subscriptions_id_stat]], [[d_count_of_nuw_addresses.md",
-    "Dashboads/dh_Подъезды УК.md",
-    "Dashboads/dh_Отчет по рекуррентным платежам - Eжедневные данные.md",
     "Untitled 2.canvas",
     "Untitled 1.canvas",
     "Untitled.canvas",

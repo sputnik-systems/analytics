@@ -1,0 +1,27 @@
+INSERT INTO db1.rep_mobile_citizens_id_city_partner
+SELECT
+    citizens_st_mobile.report_date AS report_date,
+    citizens_st_mobile.citizen_id AS citizen_id,
+    citizens_st_mobile.trial_available AS trial_available,
+    citizens_st_mobile.state AS state,
+    citizens_st_mobile.flat_uuid AS flat_uuid,
+    flats_dir_partner.address_uuid AS address_uuid,
+    entries_installation_points_dir_partner.city AS city,
+    installation_point_st_partner.partner_uuid AS partner_uuid,
+    installation_point_st_partner.monetization AS monetization,
+    installation_point_st_partner.monetization_is_allowed AS monetization_is_allowed,
+    flats_dir_partner.`created_at` AS flat_created_at,
+    citizens_st_mobile_ch.activated_at AS activated_at
+FROM db1.citizens_st_mobile_ch AS citizens_st_mobile
+LEFT JOIN db1.flats_dir_partner_ch AS flats_dir_partner 
+    ON flats_dir_partner.flat_uuid = citizens_st_mobile.flat_uuid
+LEFT JOIN db1.entries_installation_points_dir_partner_ch AS entries_installation_points_dir_partner 
+    ON flats_dir_partner.address_uuid = entries_installation_points_dir_partner.address_uuid
+LEFT JOIN db1.installation_point_st_partner_ch AS installation_point_st_partner
+    ON installation_point_st_partner.installation_point_id = entries_installation_points_dir_partner.installation_point_id
+    AND installation_point_st_partner.report_date = citizens_st_mobile.report_date
+LEFT JOIN db1.companies_st_partner_ch AS companies_st_partner
+    ON installation_point_st_partner.partner_uuid = companies_st_partner.partner_uuid
+    AND companies_st_partner.report_date = citizens_st_mobile.report_date
+WHERE citizens_st_mobile.state = 'activated'
+    AND citizens_st_mobile.report_date = '{0}'

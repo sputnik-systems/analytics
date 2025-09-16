@@ -92,7 +92,7 @@ ___
 query_text = """--sql
     SELECT
         *
-    FROM db1.categories_st_support_ch
+    FROM db1.categories_st_support
     ORDER BY report_date desc
     limit 10
     """
